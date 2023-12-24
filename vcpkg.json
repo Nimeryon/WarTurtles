@@ -1,0 +1,8 @@
+{
+  "name": "warturtles",
+  "dependencies": [
+    "sfml",
+    "imgui",
+    "imgui-sfml"
+  ]
+}
