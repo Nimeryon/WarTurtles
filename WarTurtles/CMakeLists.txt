@@ -1,20 +1,6 @@
-project(WarTurtles)
+set (SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set (INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set (SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+add_executable(WarTurtles ${SRC_DIR}/main.cpp)
 
-add_executable(${PROJECT_NAME}
-    ${SRC}
-)
-
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${HEADER_DIR}>
-        $<BUILD_INTERFACE:${MY_LIB_HEADER}>
-)
-
-target_link_libraries(${PROJECT_NAME}
-    PUBLIC
-        TurtleEngine
-)
+target_link_libraries(WarTurtles TurtleEngine)

@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
-project(PathFinding)
 
-set (MY_LIB_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/MyLib/include)
+# Setup vcpkg script with CMake (note: should be placed before project() call)
+set(VCPKG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/vcpkg)
+set(CMAKE_TOOLCHAIN_FILE ${VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
+
+project(war_turtles)
+
+set(CMAKE_CXX_STANDARD 20)
+
+# vcpkg dependencies
+find_package(SFML COMPONENTS system window graphics audio CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
+find_package(ImGui-SFML CONFIG REQUIRED)
 
 add_subdirectory(TurtleEngine)
 add_subdirectory(WarTurtles)
