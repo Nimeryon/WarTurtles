@@ -28,18 +28,22 @@ namespace Turtle
     };
 
     
-    class AudioManager : public Singleton<AudioManager>
+    class AudioManager final
     {
     public:
-        void LoadSound(SoundEffect soundEffetName,SoundType type,std::string path);
-        void UnloadSound(SoundEffect soundEffetName);
-        void PlaySound(SoundEffect sound,bool loop = false);
-        void PauseSound(SoundEffect sound);
-        void StopSound(SoundEffect sound);
-        void SetPitch(SoundEffect sound,float pitch);
-        void SetRandomPitch(SoundEffect sound,float pitch);
-        void SetVolume(SoundEffect sound,float volume);
-        void SetGlobalVolume(SoundType soundType, float volume);
+        AudioManager() = default;
+        AudioManager(AudioManager&) = delete;
+        ~AudioManager() = default;
+        
+        void LoadSound(const SoundEffect& soundEffetName,const SoundType& type,const std::string& path);
+        void UnloadSound(const SoundEffect& soundEffetName);
+        void PlaySound(const SoundEffect& sound,bool loop = false);
+        void PauseSound(const SoundEffect& sound);
+        void StopSound(const SoundEffect& sound);
+        void SetPitch(const SoundEffect& sound,float pitch);
+        void SetRandomPitch(const SoundEffect& sound,float pitch);
+        void SetVolume(const SoundEffect& sound,float volume);
+        void SetGlobalVolume(const SoundType& soundType, float volume);
     private:
         std::unordered_map<SoundEffect,TurtleAudioInfo> _sounds;
         float _musicVolume = 100.f;

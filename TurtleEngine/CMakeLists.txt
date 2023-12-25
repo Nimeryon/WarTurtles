@@ -6,6 +6,7 @@ set(HEADERS
     ${INCLUDE_DIR}/Scene.h
     ${INCLUDE_DIR}/SceneManager.h
     ${INCLUDE_DIR}/AudioManager.h
+    ${INCLUDE_DIR}/TextureManager.h
     ${INCLUDE_DIR}/Utils/Clock.h
     ${INCLUDE_DIR}/Utils/Singleton.h
     ${INCLUDE_DIR}/Utils/Time.h
@@ -15,6 +16,7 @@ set(SOURCES
     ${SRC_DIR}/App.cpp
     ${SRC_DIR}/SceneManager.cpp
     ${SRC_DIR}/AudioManager.cpp
+    ${SRC_DIR}/TextureManager.cpp
     ${SRC_DIR}/Utils/Time.cpp
 )
 
@@ -36,4 +38,5 @@ target_link_libraries(TurtleEngine
         sfml-system sfml-graphics sfml-window sfml-audio
         imgui::imgui
         ImGui-SFML::ImGui-SFML
+	nlohmann_json
 )

@@ -1,6 +1,6 @@
 ﻿#include "AudioManager.h"
 
-void Turtle::AudioManager::LoadSound(SoundEffect soundEffetName,SoundType type, std::string path)
+void Turtle::AudioManager::LoadSound(const SoundEffect& soundEffetName,const SoundType& type,const std::string& path)
 {
     SoundBufferPtr buffer = std::make_unique<sf::SoundBuffer>();
     
@@ -15,7 +15,7 @@ void Turtle::AudioManager::LoadSound(SoundEffect soundEffetName,SoundType type, 
     }
 }
 
-void Turtle::AudioManager::UnloadSound(SoundEffect soundEffetName)
+void Turtle::AudioManager::UnloadSound(const SoundEffect& soundEffetName)
 {
     auto it = _sounds.find(soundEffetName);
     if (it != _sounds.end())
@@ -24,7 +24,7 @@ void Turtle::AudioManager::UnloadSound(SoundEffect soundEffetName)
     }
 }
 
-void Turtle::AudioManager::PlaySound(SoundEffect sound, bool loop)
+void Turtle::AudioManager::PlaySound(const SoundEffect& sound, bool loop)
 {
     auto it = _sounds.find(sound);
     if (it != _sounds.end()) {
@@ -37,7 +37,7 @@ void Turtle::AudioManager::PlaySound(SoundEffect sound, bool loop)
     }
 }
 
-void Turtle::AudioManager::PauseSound(SoundEffect sound)
+void Turtle::AudioManager::PauseSound(const SoundEffect& sound)
 {
     auto it = _sounds.find(sound);
     if (it != _sounds.end()) {
@@ -45,7 +45,7 @@ void Turtle::AudioManager::PauseSound(SoundEffect sound)
     }
 }
 
-void Turtle::AudioManager::StopSound(SoundEffect sound)
+void Turtle::AudioManager::StopSound(const SoundEffect& sound)
 {
     auto it = _sounds.find(sound);
     if (it != _sounds.end()) {
@@ -53,7 +53,7 @@ void Turtle::AudioManager::StopSound(SoundEffect sound)
     }
 }
 
-void Turtle::AudioManager::SetPitch(SoundEffect sound, float pitch)
+void Turtle::AudioManager::SetPitch(const SoundEffect& sound, float pitch)
 {
     auto it = _sounds.find(sound);
     if (it != _sounds.end()) {
@@ -61,7 +61,7 @@ void Turtle::AudioManager::SetPitch(SoundEffect sound, float pitch)
     }
 }
 
-void Turtle::AudioManager::SetRandomPitch(SoundEffect sound, float pitch)
+void Turtle::AudioManager::SetRandomPitch(const SoundEffect& sound, float pitch)
 {
     auto it = _sounds.find(sound);
     if (it != _sounds.end()) {
@@ -69,7 +69,7 @@ void Turtle::AudioManager::SetRandomPitch(SoundEffect sound, float pitch)
     }
 }
 
-void Turtle::AudioManager::SetVolume(SoundEffect sound, float volume)
+void Turtle::AudioManager::SetVolume(const SoundEffect& sound, float volume)
 {
     auto it = _sounds.find(sound);
     if (it != _sounds.end()) {
@@ -77,7 +77,7 @@ void Turtle::AudioManager::SetVolume(SoundEffect sound, float volume)
     }
 }
 
-void Turtle::AudioManager::SetGlobalVolume(SoundType soundType, float volume)
+void Turtle::AudioManager::SetGlobalVolume(const SoundType& soundType, float volume)
 {
     switch(soundType){
         case SoundType::Music:

@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD 20)
 find_package(SFML COMPONENTS system window graphics audio CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(ImGui-SFML CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 add_subdirectory(TurtleEngine)
 add_subdirectory(WarTurtles)

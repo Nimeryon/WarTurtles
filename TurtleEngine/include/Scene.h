@@ -1,6 +1,7 @@
 // Scene.h
 #ifndef SCENE_H // include guard
 #define SCENE_H
+#include "AudioManager.h"
 
 namespace sf
 {
@@ -36,6 +37,8 @@ public:
 	virtual void Draw(sf::RenderWindow& window) {}
 	// Called every frame in last
 	virtual void Gui(const Time& deltaTime) {}
+protected:
+	AudioManager m_audioManager;
 };
 }
 
