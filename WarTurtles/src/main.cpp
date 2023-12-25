@@ -13,6 +13,10 @@ class DemoScene : public Turtle::Scene
 	void OnCreate() override
 	{
 		Turtle::AudioManager::Instance().LoadSound("creeper",Turtle::SoundType::Sound,"../../Ressources/Audio/creeper.mp3");
+		Turtle::AudioManager::Instance().LoadSound("music",Turtle::SoundType::Music,"../../Ressources/Audio/music.mp3");
+		Turtle::AudioManager::Instance().SetGlobalVolume(Turtle::SoundType::Sound,100.f);
+		Turtle::AudioManager::Instance().SetGlobalVolume(Turtle::SoundType::Music,2.f);
+		Turtle::AudioManager::Instance().PlaySound("music",true);
 		Turtle::AudioManager::Instance().PlaySound("creeper");
 	}
 	void Gui(const Turtle::Time& deltaTime) override
