@@ -37,7 +37,7 @@ int main()
 
     Turtle::App game(window);
 
-    Turtle::SceneManager::Instance().AddScene(std::make_shared<DemoScene>());
+    Turtle::SceneManager::Instance().AddScene(std::make_unique<DemoScene>());
     Turtle::SceneManager::Instance().SetScene(0);
 
     game.Run();

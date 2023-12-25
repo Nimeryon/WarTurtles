@@ -2,6 +2,11 @@
 #ifndef SCENE_H // include guard
 #define SCENE_H
 
+namespace sf
+{
+	class RenderWindow;
+}
+
 namespace Turtle
 {
 class Time;

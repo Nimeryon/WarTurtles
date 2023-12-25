@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "Utils/Singleton.h"
+#include "Scene.h"
 
 namespace sf
 {
@@ -15,8 +16,9 @@ namespace Turtle
 {
 class Time;
 class Scene;
-using ScenePtr = std::shared_ptr<Scene>;
-
+	
+using ScenePtr = std::unique_ptr<Scene>;
+	
 class SceneManager : public Singleton<SceneManager>
 {
 public:
@@ -40,7 +42,7 @@ protected:
 private:
     std::unordered_map<unsigned int, ScenePtr> m_scenes;
 
-    ScenePtr m_currentScene;
+    Scene* m_currentScene;
     unsigned int m_insertedSceneID;
 };
 }

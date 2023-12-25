@@ -11,7 +11,7 @@ Turtle::SceneManager::SceneManager() :
 
 unsigned int Turtle::SceneManager::AddScene(ScenePtr scene)
 {
-	const auto& inserted = m_scenes.insert(std::make_pair(m_insertedSceneID, scene)).first;
+	const auto& inserted = m_scenes.emplace(m_insertedSceneID, std::move(scene)).first;
 	inserted->second->OnCreate();
 
 	m_insertedSceneID++;
@@ -23,7 +23,7 @@ void Turtle::SceneManager::RemoveScene(unsigned sceneID)
 	if (it != m_scenes.end())
 	{
 		// If scene to remove is the current scene we set current scene to null
-		if (m_currentScene == it->second)
+		if (m_currentScene == it->second.get())
 		{
 			m_currentScene = nullptr;
 		}
@@ -42,7 +42,8 @@ void Turtle::SceneManager::SetScene(unsigned sceneID)
 			m_currentScene->OnDisabled();
 		}
 
-		m_currentScene = it->second;
+		// Utilisation de std::move de manière plus explicite
+		m_currentScene = it->second.get();
 		m_currentScene->OnEnabled();
 	}
 }
