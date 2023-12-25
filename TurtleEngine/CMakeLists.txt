@@ -3,10 +3,17 @@ set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set(HEADERS
     ${INCLUDE_DIR}/App.h
+    ${INCLUDE_DIR}/Scene.h
+    ${INCLUDE_DIR}/SceneManager.h
+    ${INCLUDE_DIR}/Utils/Clock.h
+    ${INCLUDE_DIR}/Utils/Singleton.h
+    ${INCLUDE_DIR}/Utils/Time.h
 )
 
 set(SOURCES
     ${SRC_DIR}/App.cpp
+    ${SRC_DIR}/SceneManager.cpp
+    ${SRC_DIR}/Utils/Time.cpp
 )
 
 add_library(TurtleEngine
