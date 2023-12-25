@@ -5,6 +5,7 @@ set(HEADERS
     ${INCLUDE_DIR}/App.h
     ${INCLUDE_DIR}/Scene.h
     ${INCLUDE_DIR}/SceneManager.h
+    ${INCLUDE_DIR}/AudioManager.h
     ${INCLUDE_DIR}/Utils/Clock.h
     ${INCLUDE_DIR}/Utils/Singleton.h
     ${INCLUDE_DIR}/Utils/Time.h
@@ -13,6 +14,7 @@ set(HEADERS
 set(SOURCES
     ${SRC_DIR}/App.cpp
     ${SRC_DIR}/SceneManager.cpp
+    ${SRC_DIR}/AudioManager.cpp
     ${SRC_DIR}/Utils/Time.cpp
 )
 

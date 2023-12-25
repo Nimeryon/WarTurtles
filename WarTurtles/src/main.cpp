@@ -4,11 +4,17 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
 #include "App.h"
+#include "AudioManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
 class DemoScene : public Turtle::Scene
 {
+	void OnCreate() override
+	{
+		Turtle::AudioManager::Instance().LoadSound("creeper",Turtle::SoundType::Sound,"../../Ressources/Audio/creeper.mp3");
+		Turtle::AudioManager::Instance().PlaySound("creeper");
+	}
 	void Gui(const Turtle::Time& deltaTime) override
 	{
 		// Stylizing overlay
