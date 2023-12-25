@@ -32,6 +32,7 @@ namespace Turtle
     {
     public:
         void LoadSound(SoundEffect soundEffetName,SoundType type,std::string path);
+        void UnloadSound(SoundEffect soundEffetName);
         void PlaySound(SoundEffect sound,bool loop = false);
         void PauseSound(SoundEffect sound);
         void StopSound(SoundEffect sound);

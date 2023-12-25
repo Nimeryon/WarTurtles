@@ -15,6 +15,15 @@ void Turtle::AudioManager::LoadSound(SoundEffect soundEffetName,SoundType type, 
     }
 }
 
+void Turtle::AudioManager::UnloadSound(SoundEffect soundEffetName)
+{
+    auto it = _sounds.find(soundEffetName);
+    if (it != _sounds.end())
+    {
+        _sounds.erase(soundEffetName);
+    }
+}
+
 void Turtle::AudioManager::PlaySound(SoundEffect sound, bool loop)
 {
     auto it = _sounds.find(sound);
