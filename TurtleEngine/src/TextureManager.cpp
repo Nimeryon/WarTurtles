@@ -67,7 +67,7 @@ const Turtle::SpriteData& Turtle::TextureManager::GetSpriteData(const TextureTag
             return spriteIt->second;
         }
     }
-    return SpriteData::defaultSpriteData;//SpriteData::defaultSpriteData;
+    return SpriteData::defaultSpriteData;
 }
 
 
@@ -82,30 +82,22 @@ std::unordered_map<Turtle::SpriteTag, Turtle::SpriteData> Turtle::TextureManager
     }
     nlohmann::json jsonData;
     jsonFile >> jsonData;
-
-    try
-    {
-        for (const auto& sprite : jsonData["Sprites"])
-        {
-            if(!sprite.contains("Name"))
-            {
-                continue;
-            }
-            SpriteData spriteData;
-            spriteData.startX = sprite.contains("X")? static_cast<int>(sprite["X"]):0;
-            spriteData.startY = sprite.contains("Y")? static_cast<int>(sprite["Y"]):0;
-            spriteData.sizeX = sprite.contains("SizeX")? static_cast<int>(sprite["SizeX"]):0;
-            spriteData.sizeY = sprite.contains("SizeY")? static_cast<int>(sprite["SizeY"]):0;
-            spriteData.isRevertedX = sprite.contains("RevertedX")? static_cast<bool>(sprite["RevertedX"]):false;
-            spriteData.isRevertedY = sprite.contains("RevertedY")? static_cast<bool>(sprite["RevertedY"]):false;
-
-            spritesData.emplace(sprite["Name"],spriteData);
-        }
-    }
-    catch(...)
-    {
-        std::cerr<< "Unable to read tsprite file: "<< m_folderPath+tspritePath <<std::endl;
-    }
     
+    for (const auto& sprite : jsonData["Sprites"])
+    {
+        if(!sprite.contains("Name"))
+        {
+            continue;
+        }
+        SpriteData spriteData;
+        spriteData.startX = sprite.contains("X")? static_cast<int>(sprite["X"]):0;
+        spriteData.startY = sprite.contains("Y")? static_cast<int>(sprite["Y"]):0;
+        spriteData.sizeX = sprite.contains("SizeX")? static_cast<int>(sprite["SizeX"]):0;
+        spriteData.sizeY = sprite.contains("SizeY")? static_cast<int>(sprite["SizeY"]):0;
+        spriteData.isRevertedX = sprite.contains("RevertedX")? static_cast<bool>(sprite["RevertedX"]):false;
+        spriteData.isRevertedY = sprite.contains("RevertedY")? static_cast<bool>(sprite["RevertedY"]):false;
+
+        spritesData.emplace(sprite["Name"],spriteData);
+    }
     return spritesData;
 }
