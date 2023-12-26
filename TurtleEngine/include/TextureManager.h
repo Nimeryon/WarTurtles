@@ -1,9 +1,10 @@
-﻿#pragma once
+﻿// TextureManager.h
+#ifndef  TEXTURE_MANAGER_H// include guard
+#define TEXTURE_MANAGER_H
 #include <SFML/Graphics/Texture.hpp>
 #include <nlohmann/json.hpp>
 
 #include "Utils/Singleton.h"
-using json = nlohmann::json;
 
 namespace Turtle
 {
@@ -13,6 +14,8 @@ namespace Turtle
     
     struct SpriteData
     {
+        static const SpriteData defaultSpriteData;
+        
         int startX;
         int startY;
         int sizeX;
@@ -22,14 +25,16 @@ namespace Turtle
     };
     struct TextureData
     {
+        const static TextureData defaultTextureData;
+        
         TexturePtr Texture;
         std::unordered_map<SpriteTag,SpriteData> SpritesData;
     };
     
-    class TextureManager : public Singleton<TextureManager>
+    class TextureManager final
     {
     public:
-        TextureManager() = default;
+        TextureManager(const std::string& folderPath = "../../Ressources/Texture/");
         TextureManager(TextureManager&) = delete;
         ~TextureManager() = default;
         
@@ -37,10 +42,12 @@ namespace Turtle
         bool UnloadTexture(const TextureTag& textureTag);
         const TextureData& GetTextureData(const TextureTag& textureTag);
         const SpriteData& GetSpriteData(const TextureTag& textureTag,const SpriteTag& spriteTag);
+
         
+        std::unordered_map<SpriteTag,SpriteData> ReadTSpriteFile(const std::string& tspritePath);
     private:
+        std::string m_folderPath;
         std::unordered_map<TextureTag,TextureData> m_texturesData;
-        TextureData& ReadTSpriteFile(const std::string& tspritePath);
     };
 }
-
+#endif

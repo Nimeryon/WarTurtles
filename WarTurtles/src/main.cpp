@@ -1,4 +1,5 @@
 #include <format>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #include "imgui-SFML.h"
@@ -15,9 +16,16 @@ class DemoScene : public Turtle::Scene
 		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"creeper.mp3");
 		m_audioManager.LoadSound("music",Turtle::SoundType::Music,"music.mp3");
 		m_audioManager.SetGlobalVolume(Turtle::SoundType::Sound,100.f);
-		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,2.f);
+		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,5.f);
 		m_audioManager.PlaySound("music",true);
 		m_audioManager.PlaySound("creeper");
+
+		m_textureManager.LoadTexture("debug","debug.png");
+		for(auto data : m_textureManager.GetTextureData("debug").SpritesData)
+		{
+			std::cout<<data.first<<std::endl;
+		}
+		
 	}
 	void Gui(const Turtle::Time& deltaTime) override
 	{

@@ -2,6 +2,7 @@
 #ifndef SCENE_H // include guard
 #define SCENE_H
 #include "AudioManager.h"
+#include "TextureManager.h"
 #include "Utils/Window.h"
 #include "Utils/Time.h"
 
@@ -35,6 +36,7 @@ public:
 
 protected:
 	AudioManager m_audioManager;
+	TextureManager m_textureManager;
 };
 }
 
