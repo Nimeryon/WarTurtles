@@ -5,7 +5,7 @@
 
 namespace Turtle
 {
-class Clock : public sf::Clock {};
+using Clock = sf::Clock;
 }
 
 #endif /* CLOCK_H */

@@ -5,15 +5,11 @@
 
 namespace Turtle
 {
-class Time : public sf::Time
-{
-public:
-	static Time Seconds(float seconds);
-	static Time MilliSeconds(int milliSeconds);
-	static Time MicroSeconds(long long microSeconds);
+using Time = sf::Time;
 
-	Time operator=(const sf::Time& time);
-};
+static Time Seconds(float seconds) { return sf::seconds(seconds); }
+static Time MilliSeconds(int milliSeconds) { return sf::microseconds(milliSeconds); }
+static Time MicroSeconds(long long microSeconds) { return sf::microseconds(microSeconds); }
 }
 
 #endif /* TIME_H */
