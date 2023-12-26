@@ -8,6 +8,12 @@ Turtle::AudioManager::AudioManager(const std::string& folderPath) :
 
 bool Turtle::AudioManager::LoadSound(const SoundEffectTag& soundEffectName,const SoundType& type,const std::string& path)
 {
+   auto it = m_sounds.find(soundEffectName);
+   if (it != m_sounds.end())
+   {
+       //Audio is already loaded
+       return true;
+   } 
     SoundBufferPtr buffer = std::make_unique<sf::SoundBuffer>();
     
     if (buffer->loadFromFile(m_audioFolderPath+path))
