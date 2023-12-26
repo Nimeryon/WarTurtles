@@ -1,0 +1,39 @@
+{
+    "Sprites": [
+    {
+        "Name": "Green",
+        "X": "0",
+        "Y": "0",
+        "SizeX": "10",
+        "SizeY": "10",
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "Purple",
+        "X": "10",
+        "Y": "0",
+        "SizeX": "10",
+        "SizeY": "10",
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "Orange",
+        "X": "0",
+        "Y": "10",
+        "SizeX": "10",
+        "SizeY": "10",
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "Blue",
+        "X": "10",
+        "Y": "10",
+        "SizeX": "10",
+        "SizeY": "10",
+        "RevertedX": false,
+        "RevertedY": false
+    }]
+}
