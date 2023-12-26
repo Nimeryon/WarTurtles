@@ -10,44 +10,47 @@ namespace Turtle
 {
 using SoundBufferPtr  = std::unique_ptr<sf::SoundBuffer>;
 using SoundPtr = std::unique_ptr<sf::Sound>;
-using SoundEffect = std::string;
-
+using SoundEffectTag = std::string;
+    
 enum class SoundType
 {
-	MUSIC,
-	SOUND
+	Music,
+	Sound
 };
 
-struct TurtleAudioInfo
+struct AudioInfo
 {
+    AudioInfo():soundType(SoundType::Sound),volume(100.f),pitch(1.f){}
     SoundBufferPtr buffer;
     SoundPtr sound;
-    SoundType soundType = SoundType::SOUND;
-    float volume = 100.f;
-    float pitch = 1.f;
+    SoundType soundType;
+    float volume;
+    float pitch;
 };
 
 class AudioManager final
 {
 public:
-    AudioManager();
+    AudioManager(const std::string& folderPath = "../../Ressources/Audio/");
     AudioManager(AudioManager&) = delete;
     ~AudioManager() = default;
     
-    void LoadSound(const SoundEffect& soundEffectName,const SoundType& type,const std::string& path);
-    void UnloadSound(const SoundEffect& soundEffectName);
-    void PlaySound(const SoundEffect& sound,bool loop = false);
-    void PauseSound(const SoundEffect& sound);
-    void StopSound(const SoundEffect& sound);
-    void SetPitch(const SoundEffect& sound,float pitch);
-    void SetRandomPitch(const SoundEffect& sound,float pitch);
-    void SetVolume(const SoundEffect& sound,float volume);
+    bool LoadSound(const SoundEffectTag& soundEffectName,const SoundType& type,const std::string& path);
+    bool UnloadSound(const SoundEffectTag& soundEffectName);
+    void PlaySound(const SoundEffectTag& sound,bool loop = false);
+    void PauseSound(const SoundEffectTag& sound);
+    void StopSound(const SoundEffectTag& sound);
+    void SetPitch(const SoundEffectTag& sound,float pitch);
+    void SetRandomPitch(const SoundEffectTag& sound,float pitch);
+    void SetVolume(const SoundEffectTag& sound,float volume);
     void SetGlobalVolume(const SoundType& soundType, float volume);
 
 private:
-    std::unordered_map<SoundEffect,TurtleAudioInfo> m_sounds;
+    std::unordered_map<SoundEffectTag,AudioInfo> m_sounds;
     float m_musicVolume;
     float m_soundVolume;
+    const std::string m_audioFolderPath;
+    
 };
 }
 
