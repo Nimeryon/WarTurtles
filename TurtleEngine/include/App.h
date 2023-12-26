@@ -3,23 +3,19 @@
 #define APP_H
 #include "Utils/Clock.h"
 #include "Utils/Time.h"
-
-namespace sf
-{
-    class RenderWindow;
-}
+#include "Utils/Window.h"
 
 namespace Turtle
 {
 class App
 {
 public:
-    App(sf::RenderWindow& window, const Time& logicTime = Time::Seconds(1.f / 60.f));
+    App(Window& window, const Time& logicTime = Seconds(1.f / 60.f));
 
     void Run();
 
 private:
-    sf::RenderWindow& m_window;
+    Window& m_window;
 
     Clock m_clock;
     Time m_logicTime;
