@@ -4,7 +4,7 @@
 #include "App.h"
 #include "SceneManager.h"
 
-Turtle::App::App(sf::RenderWindow& window, const Time& logicTime) :
+Turtle::App::App(Window& window, const Time& logicTime) :
 	m_window(window),
 	m_logicTime(logicTime)
 {
@@ -23,6 +23,8 @@ void Turtle::App::Run()
 		_FixedUpdate(deltaTime);
 		_Draw(deltaTime);
 	}
+
+	ImGui::SFML::Shutdown();
 }
 
 void Turtle::App::_ProcessInputs()

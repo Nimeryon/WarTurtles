@@ -2,16 +2,11 @@
 #ifndef SCENE_H // include guard
 #define SCENE_H
 #include "AudioManager.h"
-
-namespace sf
-{
-	class RenderWindow;
-}
+#include "Utils/Window.h"
+#include "Utils/Time.h"
 
 namespace Turtle
 {
-class Time;
-
 class Scene
 {
 public:
@@ -34,9 +29,10 @@ public:
 	// Called logic time frame
 	virtual void FixedUpdate(const Time& fixedTime) {}
 	// Called every frame before GUI
-	virtual void Draw(sf::RenderWindow& window) {}
+	virtual void Draw(Window& window) {}
 	// Called every frame in last
 	virtual void Gui(const Time& deltaTime) {}
+
 protected:
 	AudioManager m_audioManager;
 };

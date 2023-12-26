@@ -12,8 +12,8 @@ class DemoScene : public Turtle::Scene
 {
 	void OnCreate() override
 	{
-		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"../../Ressources/Audio/creeper.mp3");
-		m_audioManager.LoadSound("music",Turtle::SoundType::Music,"../../Ressources/Audio/music.mp3");
+		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"creeper.mp3");
+		m_audioManager.LoadSound("music",Turtle::SoundType::Music,"music.mp3");
 		m_audioManager.SetGlobalVolume(Turtle::SoundType::Sound,100.f);
 		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,2.f);
 		m_audioManager.PlaySound("music",true);
@@ -43,12 +43,9 @@ class DemoScene : public Turtle::Scene
 int main()
 {
     // Create default window
-    sf::RenderWindow window(sf::VideoMode(720, 480), "Turtle engine exemple");
-
+    Turtle::Window window(Turtle::VideoMode(720, 480), "Turtle engine exemple");
     Turtle::App game(window);
-
-    Turtle::SceneManager::Instance().AddScene(std::make_unique<DemoScene>());
-    Turtle::SceneManager::Instance().SetScene(0);
+    Turtle::SceneManager::Instance().AddScene(std::make_unique<DemoScene>(), true);
 
     game.Run();
 
