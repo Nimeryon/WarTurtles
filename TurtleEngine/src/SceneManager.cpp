@@ -1,23 +1,29 @@
 #include "SceneManager.h"
 
-#include <SFML/Graphics/RenderWindow.hpp>
-
 #include "Utils/Time.h"
+#include "Utils/Window.h"
 #include "Scene.h"
 
 Turtle::SceneManager::SceneManager() :
+	m_currentScene(nullptr),
+	m_currentSceneID(0),
 	m_insertedSceneID(0)
 {}
 
-unsigned int Turtle::SceneManager::AddScene(ScenePtr scene)
+unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene)
 {
 	const auto& inserted = m_scenes.emplace(m_insertedSceneID, std::move(scene)).first;
 	inserted->second->OnCreate();
 
+	if (setScene)
+	{
+		SetScene(m_insertedSceneID);
+	}
+
 	m_insertedSceneID++;
 	return m_insertedSceneID - 1;
 }
-void Turtle::SceneManager::RemoveScene(unsigned sceneID)
+void Turtle::SceneManager::RemoveScene(unsigned int sceneID)
 {
 	const auto it = m_scenes.find(sceneID);
 	if (it != m_scenes.end())
@@ -26,13 +32,14 @@ void Turtle::SceneManager::RemoveScene(unsigned sceneID)
 		if (m_currentScene == it->second.get())
 		{
 			m_currentScene = nullptr;
+			m_currentSceneID = 0;
 		}
 
 		it->second->OnDestroyed();
 		m_scenes.erase(it);
 	}
 }
-void Turtle::SceneManager::SetScene(unsigned sceneID)
+void Turtle::SceneManager::SetScene(unsigned int sceneID)
 {
 	const auto it = m_scenes.find(sceneID);
 	if (it != m_scenes.end())
@@ -44,7 +51,19 @@ void Turtle::SceneManager::SetScene(unsigned sceneID)
 
 		// Utilisation de std::move de manière plus explicite
 		m_currentScene = it->second.get();
+		m_currentSceneID = sceneID;
 		m_currentScene->OnEnabled();
+	}
+}
+void Turtle::SceneManager::NextScene()
+{
+	SetScene(m_currentSceneID + 1);
+}
+void Turtle::SceneManager::PreviousScene()
+{
+	if (m_currentSceneID != 0)
+	{
+		SetScene(m_currentSceneID - 1);
 	}
 }
 
@@ -69,7 +88,7 @@ void Turtle::SceneManager::FixedUpdate(const Time& fixedTime) const
 		m_currentScene->FixedUpdate(fixedTime);
 	}
 }
-void Turtle::SceneManager::Draw(sf::RenderWindow& window) const
+void Turtle::SceneManager::Draw(Window& window) const
 {
 	if (m_currentScene)
 	{
