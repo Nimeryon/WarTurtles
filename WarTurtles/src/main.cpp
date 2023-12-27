@@ -21,7 +21,7 @@ class DemoScene : public Turtle::Scene
 		m_audioManager.PlaySound("creeper");
 
 		m_textureManager.LoadTexture("debug","debug.png");
-		for(auto data : m_textureManager.GetTextureData("debug").SpritesData)
+		for(const auto& data : m_textureManager.GetTextureData("debug").SpritesData)
 		{
 			std::cout<<data.first<<std::endl;
 		}
