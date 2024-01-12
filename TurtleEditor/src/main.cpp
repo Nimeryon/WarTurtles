@@ -51,7 +51,7 @@ class DemoScene : public Turtle::Scene
 int main()
 {
     // Create default window
-    Turtle::Window window(Turtle::VideoMode(720, 480), "WarTurtles");
+    Turtle::Window window(Turtle::VideoMode(720, 480), "Turtle Editor");
     Turtle::App game(window);
     Turtle::SceneManager::Instance().AddScene(std::make_unique<DemoScene>(), true);
 

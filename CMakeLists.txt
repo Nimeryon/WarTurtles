@@ -15,4 +15,7 @@ find_package(ImGui-SFML CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
 add_subdirectory(TurtleEngine)
+add_subdirectory(TurtleEditor)
 add_subdirectory(WarTurtles)
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT TurtleEditor)
