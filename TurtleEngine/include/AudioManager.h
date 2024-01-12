@@ -35,14 +35,16 @@ public:
     AudioManager(AudioManager&) = delete;
     ~AudioManager() = default;
     
-    bool LoadSound(const SoundEffectTag& soundEffectName,const SoundType& type,const std::string& path);
+    bool LoadSound(const SoundEffectTag& soundEffectName, const SoundType& type, const std::string& path);
     bool UnloadSound(const SoundEffectTag& soundEffectName);
-    void PlaySound(const SoundEffectTag& sound,bool loop = false);
-    void PauseSound(const SoundEffectTag& sound);
-    void StopSound(const SoundEffectTag& sound);
-    void SetPitch(const SoundEffectTag& sound,float pitch);
-    void SetRandomPitch(const SoundEffectTag& sound,float pitch);
-    void SetVolume(const SoundEffectTag& sound,float volume);
+
+    void PlaySound(const SoundEffectTag& sound, bool loop = false) const;
+    void PauseSound(const SoundEffectTag& sound) const;
+    void StopSound(const SoundEffectTag& sound) const;
+
+    void SetPitch(const SoundEffectTag& sound, float pitch);
+    void SetRandomPitch(const SoundEffectTag& sound, float pitch);
+    void SetVolume(const SoundEffectTag& sound, float volume);
     void SetGlobalVolume(const SoundType& soundType, float volume);
 
 private:
@@ -50,7 +52,6 @@ private:
     float m_musicVolume;
     float m_soundVolume;
     const std::string m_audioFolderPath;
-    
 };
 }
 

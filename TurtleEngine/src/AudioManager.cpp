@@ -6,22 +6,29 @@ Turtle::AudioManager::AudioManager(const std::string& folderPath) :
     m_audioFolderPath(folderPath)
 {}
 
-bool Turtle::AudioManager::LoadSound(const SoundEffectTag& soundEffectName,const SoundType& type,const std::string& path)
+bool Turtle::AudioManager::LoadSound(const SoundEffectTag& soundEffectName, const SoundType& type, const std::string& path)
 {
-    SoundBufferPtr buffer = std::make_unique<sf::SoundBuffer>();
-    
-    if (buffer->loadFromFile(m_audioFolderPath+path))
-    {
-        SoundPtr sound = std::make_unique<sf::Sound>();
-        sound->setBuffer(*buffer);
-        AudioInfo infos;
-        infos.buffer = std::move(buffer);
-        infos.sound = std::move(sound);
-        infos.soundType = type;
-        m_sounds[soundEffectName] = std::move(infos);
-        return true;
-    }
-    return false;
+	const auto it = m_sounds.find(soundEffectName);
+	if (it != m_sounds.end())
+	{
+	   //Audio is already loaded
+	   return true;
+	} 
+	SoundBufferPtr buffer = std::make_unique<sf::SoundBuffer>();
+
+	if (buffer->loadFromFile(m_audioFolderPath+path))
+	{
+	    SoundPtr sound = std::make_unique<sf::Sound>();
+	    sound->setBuffer(*buffer);
+	    AudioInfo infos;
+	    infos.buffer = std::move(buffer);
+	    infos.sound = std::move(sound);
+	    infos.soundType = type;
+	    m_sounds[soundEffectName] = std::move(infos);
+	    return true;
+	}
+
+	return false;
 }
 
 bool Turtle::AudioManager::UnloadSound(const SoundEffectTag& soundEffectName)
@@ -35,9 +42,9 @@ bool Turtle::AudioManager::UnloadSound(const SoundEffectTag& soundEffectName)
     return false;
 }
 
-void Turtle::AudioManager::PlaySound(const SoundEffectTag& sound, bool loop)
+void Turtle::AudioManager::PlaySound(const SoundEffectTag& sound, bool loop) const
 {
-    auto it = m_sounds.find(sound);
+    const auto it = m_sounds.find(sound);
     if (it != m_sounds.end())
     {
         const AudioInfo& infos = it->second;
@@ -49,18 +56,18 @@ void Turtle::AudioManager::PlaySound(const SoundEffectTag& sound, bool loop)
     }
 }
 
-void Turtle::AudioManager::PauseSound(const SoundEffectTag& sound)
+void Turtle::AudioManager::PauseSound(const SoundEffectTag& sound) const
 {
-    auto it = m_sounds.find(sound);
+    const auto it = m_sounds.find(sound);
     if (it != m_sounds.end())
     {
         it->second.sound->pause();
     }
 }
 
-void Turtle::AudioManager::StopSound(const SoundEffectTag& sound)
+void Turtle::AudioManager::StopSound(const SoundEffectTag& sound) const
 {
-    auto it = m_sounds.find(sound);
+    const auto it = m_sounds.find(sound);
     if (it != m_sounds.end())
     {
         it->second.sound->stop();
@@ -69,7 +76,7 @@ void Turtle::AudioManager::StopSound(const SoundEffectTag& sound)
 
 void Turtle::AudioManager::SetPitch(const SoundEffectTag& sound, float pitch)
 {
-    auto it = m_sounds.find(sound);
+    const auto it = m_sounds.find(sound);
     if (it != m_sounds.end())
     {
         it->second.pitch = pitch;
@@ -78,7 +85,8 @@ void Turtle::AudioManager::SetPitch(const SoundEffectTag& sound, float pitch)
 
 void Turtle::AudioManager::SetRandomPitch(const SoundEffectTag& sound, float pitch)
 {
-    auto it = m_sounds.find(sound);
+    // TODO
+    const auto it = m_sounds.find(sound);
     if (it != m_sounds.end())
     {
         it->second.pitch = pitch;
@@ -87,7 +95,7 @@ void Turtle::AudioManager::SetRandomPitch(const SoundEffectTag& sound, float pit
 
 void Turtle::AudioManager::SetVolume(const SoundEffectTag& sound, float volume)
 {
-    auto it = m_sounds.find(sound);
+    const auto it = m_sounds.find(sound);
     if (it != m_sounds.end())
     {
         it->second.volume = volume;
