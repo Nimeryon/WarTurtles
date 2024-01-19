@@ -4,27 +4,65 @@
 #include "Interfaces/IActivable.h"
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
+#include "Components/Component.h"
 
 namespace Turtle
 {
 class GameObject : public INamable, public IObject, public IActivable
 {
 public:
-	GameObject(const std::string& name, GameObject* parent = nullptr);
+	GameObject() = delete;
+	GameObject(const std::string& name, GameObject* parent = nullptr, const std::string& tags = "");
+
+	// =====================
+	// Tags
+	// =====================
+
+	const std::vector<std::string> GetTags() const;
+	const std::string& GetTagsString() const;
+	bool CompareTags(const std::string& tags) const;
+
+	// Tags separated by ',': Player,Object
+	void AddTags(const std::string& tags);
+	// Tags separated by ',': Player,Object
+	void RemoveTags(const std::string& tags);
+
+	// =====================
+	// Children
+	// =====================
 
 	GameObject* GetChild(const int& index) const;
 	// Return first child with name
-	GameObject* GetChild(const std::string& name) const;
+	GameObject* GetChildWidthName(const std::string& name) const;
+	// Return first child with tags
+	GameObject* GetChildWithTags(const std::string& tags) const;
+	// Return all children with name
+	const std::vector<GameObject*> GetChildrenWithName(const std::string& name) const;
+	// Return all children with tags
+	const std::vector<GameObject*> GetChildrenWithTags(const std::string& tags) const;
+	// return all children
 	const std::vector<GameObject*> GetChildren() const;
 
 	void SetParent(GameObject* object);
-	void AddChildren(GameObject* object);
-	void RemoveChildren(GameObject* object);
+	void AddChild(GameObject* object);
+	void RemoveChild(GameObject* object);
 	void RemoveFromParent();
 
+	// =====================
+	// Components
+	// =====================
+
+
+
 protected:
+	// tags separated by ','
+	std::string m_tags;
 	GameObject* m_parent;
 	std::vector<GameObject*> m_children;
+	std::vector<Component*> m_components;
+
+private:
+	bool m_needTransformUpdate;
 };
 }
 

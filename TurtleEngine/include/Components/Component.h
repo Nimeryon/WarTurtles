@@ -7,10 +7,16 @@
 
 namespace Turtle
 {
+class GameObject;
+
 class Component : public INamable, public IObject, public IActivable
 {
 public:
-	Component(const std::string& name);
+	Component() = delete;
+	Component(GameObject* parent, const std::string& name);
+
+protected:
+	GameObject* m_parent;
 };
 }
 
