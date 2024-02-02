@@ -7,6 +7,7 @@ namespace Turtle
 struct IActivable
 {
 	IActivable(bool active = true);
+	virtual ~IActivable() = default;
 
 	bool IsActive() const;
 	void SetActive(bool active);

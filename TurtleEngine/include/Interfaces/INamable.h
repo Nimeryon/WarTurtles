@@ -7,6 +7,8 @@ namespace Turtle
 {
 struct INamable
 {
+	virtual ~INamable() = default;
+
 	INamable(const std::string& name);
 	INamable() = delete;
 
