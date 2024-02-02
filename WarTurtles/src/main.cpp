@@ -5,9 +5,9 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
 #include "App.h"
-#include "AudioManager.h"
+#include "Managers/AudioManager.h"
+#include "Managers/SceneManager.h"
 #include "Scene.h"
-#include "SceneManager.h"
 
 class DemoScene : public Turtle::Scene
 {
