@@ -21,12 +21,16 @@ public:
 
 	const std::vector<std::string> GetTags() const;
 	const std::string& GetTagsString() const;
-	bool CompareTags(const std::string& tags) const;
 
 	// Tags separated by ',': Player,Object
-	void AddTags(const std::string& tags);
+	bool CompareTags(const std::string& tags) const;
 	// Tags separated by ',': Player,Object
-	void RemoveTags(const std::string& tags);
+	bool CompareTags(const std::vector<std::string>& tags) const;
+
+	// Tags separated by ',': Player,Object
+	void AddTags(const std::string& tagsToAdd);
+	// Tags separated by ',': Player,Object
+	void RemoveTags(const std::string& tagsToRemove);
 
 	// =====================
 	// Children
@@ -42,7 +46,7 @@ public:
 	// Return all children with tags
 	const std::vector<GameObject*> GetChildrenWithTags(const std::string& tags) const;
 	// return all children
-	const std::vector<GameObject*> GetChildren() const;
+	const std::vector<GameObject*>& GetChildren() const;
 
 	void SetParent(GameObject* object);
 	void AddChild(GameObject* object);

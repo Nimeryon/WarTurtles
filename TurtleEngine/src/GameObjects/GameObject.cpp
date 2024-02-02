@@ -22,18 +22,44 @@ bool Turtle::GameObject::CompareTags(const std::string& tags) const
 {
 	return m_tags == tags;
 }
-
-void Turtle::GameObject::AddTags(const std::string& tags)
+bool Turtle::GameObject::CompareTags(const std::vector<std::string>& tags) const
 {
-	auto newTags = String::Split(tags, ',');
+	return m_tags == String::Concat(tags, ",");
+}
+
+void Turtle::GameObject::AddTags(const std::string& tagsToAdd)
+{
+	auto newTags = String::Split(tagsToAdd, ',');
 	auto tags = GetTags();
 	tags.insert(tags.begin(), newTags.begin(), newTags.end());
 
 	m_tags = String::Concat(tags, ",");
 }
-void Turtle::GameObject::RemoveTags(const std::string& tags)
+void Turtle::GameObject::RemoveTags(const std::string& tagsToRemove)
 {
-	
+	const auto tagsToRemoveList = String::Split(tagsToRemove, ',');
+	const auto tags = GetTags();
+
+	std::vector<std::string> newTags;
+	for (const std::string& tag : tags)
+	{
+		bool needRemove = false;
+		for (const std::string& tagToRemove : tagsToRemoveList)
+		{
+			if (tag == tagToRemove)
+			{
+				needRemove = true;
+				break;
+			}
+		}
+
+		if (!needRemove)
+		{
+			newTags.emplace_back(tag);
+		}
+
+		m_tags = String::Concat(newTags, ",");
+	}
 }
 
 // =====================
@@ -42,28 +68,59 @@ void Turtle::GameObject::RemoveTags(const std::string& tags)
 
 Turtle::GameObject* Turtle::GameObject::GetChild(const int& index) const
 {
-	
+	return m_children[index];
 }
 Turtle::GameObject* Turtle::GameObject::GetChildWidthName(const std::string& name) const
 {
-	
+	for (GameObject* child : m_children)
+	{
+		if (child->GetName() == name)
+		{
+			return child;
+		}
+	}
+
+	return nullptr;
 }
 Turtle::GameObject* Turtle::GameObject::GetChildWithTags(const std::string& tags) const
 {
-	
+	for (GameObject* child : m_children)
+	{
+		if (child->CompareTags(tags))
+		{
+			return child;
+		}
+	}
+
+	return nullptr;
 }
 const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(const std::string& name) const
 {
-	
+	std::vector<GameObject*> gameObjects;
+	for (GameObject* child : m_children)
+	{
+		if (child->GetName() == name)
+		{
+			gameObjects.emplace_back(child);
+		}
+	}
+
+	return gameObjects;
 }
 const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithTags(const std::string& tags) const
 {
-	
+	std::vector<GameObject*> gameObjects;
+	for (GameObject* child : m_children)
+	{
+		if (child->CompareTags(tags))
+		{
+			gameObjects.emplace_back(child);
+		}
+	}
+
+	return gameObjects;
 }
-const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildren() const
-{
-	
-}
+const std::vector<Turtle::GameObject*>& Turtle::GameObject::GetChildren() const { return m_children; }
 
 void Turtle::GameObject::SetParent(GameObject* object)
 {
