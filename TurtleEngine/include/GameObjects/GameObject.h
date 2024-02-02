@@ -5,10 +5,11 @@
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
 #include "Components/Component.h"
+#include "Interfaces/IDrawable.h"
 
 namespace Turtle
 {
-class GameObject : public INamable, public IObject, public IActivable
+class GameObject : public INamable, public IObject, public IActivable, public IDrawable
 {
 public:
 	GameObject() = delete;
