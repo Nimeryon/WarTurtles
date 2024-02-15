@@ -6,27 +6,11 @@
 #include "imgui.h"
 #include "App.h"
 #include "Scene.h"
-#include "Managers/AudioManager.h"
 #include "Managers/SceneManager.h"
+#include "Types/Vector2.h"
 
 class DemoScene : public Turtle::Scene
 {
-	void OnCreate() override
-	{
-		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"creeper.mp3");
-		m_audioManager.LoadSound("music",Turtle::SoundType::Music,"music.mp3");
-		m_audioManager.SetGlobalVolume(Turtle::SoundType::Sound,100.f);
-		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,5.f);
-		m_audioManager.PlaySound("music",true);
-		m_audioManager.PlaySound("creeper");
-
-		m_textureManager.LoadTexture("debug","debug.png");
-		for(const auto& data : m_textureManager.GetTextureData("debug").SpritesData)
-		{
-			std::cout<<data.first<<std::endl;
-		}
-		
-	}
 	void Gui(const Turtle::Time& deltaTime) override
 	{
 		// Stylizing overlay
