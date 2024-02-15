@@ -1,6 +1,7 @@
 // Vector2.h
 #ifndef VECTOR2_H // include guard
 #define VECTOR2_H
+#include <SFML/System/Vector2.hpp>
 
 namespace Turtle
 {
@@ -155,8 +156,8 @@ template <typename Type>
 std::ostream& operator<<(std::ostream& os, const Vector2<Type>& vector);
 
 using Vector2f = Vector2<float>;
-using Vector2d = Vector2<double>;
 using Vector2i = Vector2<int>;
+using Vector2u = Vector2<unsigned>;
 }
 
 #include "Vector2.hxx"
