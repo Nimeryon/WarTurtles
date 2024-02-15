@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "App.h"
+
+#include <imgui.h>
+
 #include "Managers/SceneManager.h"
 
 Turtle::App::App(Window& window, const Time& logicTime) :
