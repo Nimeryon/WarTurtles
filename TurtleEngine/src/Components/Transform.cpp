@@ -5,6 +5,19 @@ Turtle::Transform::Transform(GameObject* parent) :
 	Component(parent, "Transform"), m_position(Vector2f(0, 0)), m_rotation(0.0f), m_scale(Vector2f(1, 1))
 {}
 
+Turtle::Vector2f Turtle::Transform::GetGlobalPosition() const
+{
+    return GetPosition();
+}
+float Turtle::Transform::GetGlobalRotation() const
+{
+    return GetRotation();
+}
+Turtle::Vector2f Turtle::Transform::GetGlobalScale() const
+{
+    return GetScale();
+}
+
 Turtle::Vector2f Turtle::Transform::GetPosition() const { return m_position; }
 float Turtle::Transform::GetRotation() const { return m_rotation; }
 Turtle::Vector2f Turtle::Transform::GetScale() const { return m_scale; }

@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include "App.h"
 #include "Scene.h"
+#include "Components/Transform.h"
 #include "Managers/SceneManager.h"
 #include "Types/Vector2.h"
 
@@ -29,6 +30,20 @@ class DemoScene : public Turtle::Scene
         ImGui::Begin("FPS Overlay", 0, imFlags);
         ImGui::Text(std::format("{} FPS", floorf(1.f / deltaTime.asSeconds())).c_str());
         ImGui::End();
+	}
+
+    void Draw(Turtle::Window& window) override
+	{
+        sf::RectangleShape rect;
+        rect.setSize({ 50, 50 });
+        rect.setFillColor(sf::Color::Cyan);
+
+        Turtle::Transform transform(nullptr);
+        transform.Move({ 200, 20 });
+        transform.Rotate(35);
+        transform.RotateAround({ 0, 0 }, -45);
+
+        window.draw(rect, transform.GetTransformMatrix());
 	}
 };
 

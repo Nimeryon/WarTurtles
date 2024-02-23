@@ -3,10 +3,14 @@
 
 Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, const std::string& tags) :
 	INamable(name),
-	m_tags(tags),
-	m_needTransformUpdate(true)
+	m_tags(tags)
 {
 	SetParent(parent);
+}
+
+Turtle::GameObject::~GameObject()
+{
+	
 }
 
 // =====================
@@ -178,3 +182,6 @@ void Turtle::GameObject::RemoveFromParent()
 // Components
 // =====================
 
+Turtle::Transform* Turtle::GameObject::GetTransform() const { return m_transform; }
+
+const std::vector<Turtle::Component*>& Turtle::GameObject::GetComponents() const { return m_components; }

@@ -43,8 +43,8 @@ class DemoScene : public Turtle::Scene
 
         // Creating overlay
         ImGui::Begin("FPS Overlay", 0, imFlags);
-        ImGui::Text(std::format("{} FPS", floorf(1.f / deltaTime.asSeconds())).c_str());
-        ImGui::End();
+		ImGui::Text(std::format("{} FPS", floorf(1.f / deltaTime.asSeconds())).c_str());
+		ImGui::End();
 	}
 };
 
