@@ -3,14 +3,20 @@
 
 Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, const std::string& tags) :
 	INamable(name),
-	m_tags(tags)
+	m_tags(tags),
+	m_transform(AddComponent<Transform>())
 {
 	SetParent(parent);
 }
 
 Turtle::GameObject::~GameObject()
 {
-	
+	for (Component* component : m_components)
+	{
+		delete component;
+		component = nullptr;
+	}
+	m_components.clear();
 }
 
 // =====================
