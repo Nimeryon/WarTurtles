@@ -57,7 +57,7 @@ public:
 	// Components
 	// =====================
 
-
+	void GetTransform();
 
 protected:
 	// tags separated by ','
