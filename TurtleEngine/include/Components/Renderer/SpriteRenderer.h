@@ -3,30 +3,26 @@
 
 #include "Managers/TextureManager.h"
 #include <SFML/Graphics.hpp>
-
 #include "Components/Component.h"
-#include "Interfaces/IDrawable.h"
 
 namespace Turtle
 {
-    class SpriteRenderer final : public Component, public IDrawable
+    class SpriteRenderer final : public Component
     {
     public:
-        // Constructor
-        SpriteRenderer(GameObject* parent, const TextureManager& textureManager, const TextureTag& textureTag);
+        explicit SpriteRenderer(GameObject* parent,const std::string& name = "SpriteRenderer");
 
-        // Set the sprite's texture rectangle
-        void SetTextureRect(const SpriteTag& spriteTag);
-
-        // Set the sprite's color
+        void InitTexture(const TextureManager* textureManager, const TextureTag& textureTag,const SpriteTag& spriteTag = "");
+        
         void SetColor(const sf::Color& color);
-
-        // Draw function from IDrawable interface
-        virtual void Draw(sf::RenderWindow& window) override;
+        
+        void Draw(sf::RenderWindow& window) override;
 
     private:
+        void SetTextureRect(const SpriteTag& spriteTag);
+        
         sf::Sprite m_sprite;
-        const TextureManager& m_textureManager;
+        const TextureManager* m_textureManager;
         TextureTag m_textureTag;
     };
 } // namespace Turtle

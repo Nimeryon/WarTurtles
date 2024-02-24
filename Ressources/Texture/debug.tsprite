@@ -1,6 +1,15 @@
 {
     "Sprites": [
     {
+        "Name": "debug",
+	"X": 0,
+        "Y": 0,
+        "SizeX": 20,
+        "SizeY": 20,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
         "Name": "Green",
         "Y": 0,
         "SizeX": 10,
