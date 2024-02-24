@@ -5,15 +5,21 @@
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
 #include "Components/Component.h"
-#include "Interfaces/IDrawable.h"
 
 namespace Turtle
 {
-class GameObject : public INamable, public IObject, public IActivable, public IDrawable
+	class Transform;
+}
+
+namespace Turtle
+{
+class GameObject : public INamable, public IObject, public IActivable
 {
 public:
 	GameObject() = delete;
 	GameObject(const std::string& name, GameObject* parent = nullptr, const std::string& tags = "");
+
+	~GameObject() override;
 
 	// =====================
 	// Tags
@@ -56,19 +62,35 @@ public:
 	// =====================
 	// Components
 	// =====================
+	
+	Transform* GetTransform() const;
 
-	void GetTransform();
+	const std::vector<Component*>& GetComponents() const;
+
+	template<typename Type>
+	Type* GetComponent() const;
+	template<typename Type>
+	Type* GetOrAddComponent();
+
+	template<typename Type>
+	Type* AddComponent();
+	template<typename Type>
+	void RemoveComponent();
 
 protected:
 	// tags separated by ','
 	std::string m_tags;
-	GameObject* m_parent;
-	std::vector<GameObject*> m_children;
-	std::vector<Component*> m_components;
 
-private:
-	bool m_needTransformUpdate;
+	// Objects
+	std::vector<GameObject*> m_children;
+	GameObject* m_parent;
+
+	// Components
+	std::vector<Component*> m_components;
+	Transform* m_transform;
 };
 }
+
+#include "GameObject.hxx"
 
 #endif /* GAME_OBJECT_H */
