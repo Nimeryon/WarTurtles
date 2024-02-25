@@ -2,9 +2,11 @@
 
 #include "Managers/TextureManager.h"
 
+#include <iostream>
+
 const Turtle::SpriteData Turtle::SpriteData::defaultSpriteData{0, 0, 0, 0, false, false};
 const Turtle::TextureData Turtle::TextureData::defaultTextureData{nullptr,std::unordered_map<SpriteTag,SpriteData>{}};
-
+const Turtle::AnimationData Turtle::AnimationData::defaultAnimationData{std::vector<SpriteTag>{}};
 Turtle::TextureManager::TextureManager(const std::string& folderPath) :
     m_folderPath(folderPath)
 {}
@@ -26,7 +28,8 @@ bool Turtle::TextureManager::LoadTexture(const TextureTag& textureTag, const std
         {
             std::string tspritePath =  texturePath.substr(0, lastDotPosition);
             tspritePath += ".tsprite";
-            TextureData textureData{std::move(texture),ReadTSpriteFile(tspritePath)};
+            TextureData textureData{std::move(texture)};
+            ReadTSpriteFile(tspritePath,textureData.SpritesData,textureData.AnimationsData);
             m_texturesData.emplace(textureTag, std::move(textureData));
             return true;
         }
@@ -75,10 +78,8 @@ const Turtle::SpriteData& Turtle::TextureManager::GetSpriteData(const TextureTag
 }
 
 
-std::unordered_map<Turtle::SpriteTag, Turtle::SpriteData> Turtle::TextureManager::ReadTSpriteFile(const std::string& tspritePath) const
+std::unordered_map<Turtle::SpriteTag, Turtle::SpriteData> Turtle::TextureManager::ReadTSpriteFile(const std::string& tspritePath,std::unordered_map<SpriteTag,SpriteData>& spritesData,std::unordered_map<AnimationTag,AnimationData>& animationsData) const
 {
-    std::unordered_map<SpriteTag,SpriteData> spritesData{};
-    
     std::ifstream jsonFile(m_folderPath+tspritePath);
     if (!jsonFile.is_open())
     {
@@ -101,6 +102,18 @@ std::unordered_map<Turtle::SpriteTag, Turtle::SpriteData> Turtle::TextureManager
         };
         spritesData.emplace(name,spriteData);
     }
+    for (const auto& anim : jsonData["Animations"])
+    {
+        SpriteTag name = anim.value("Name", "Sprite" + std::to_string(spritesData.size()));
+        auto sequence = anim.value<std::vector<SpriteTag>>("Sequence",AnimationData::defaultAnimationData.frames);
+        if(sequence.size() == 0){
+            std::cout << "[Warning] Anim " << name << " is empty" << std::endl;
+            continue;
+        }
+        AnimationData animationData{ sequence};
+        animationsData.emplace(name,animationData);
+    }
+    
 
     return spritesData;
 }
