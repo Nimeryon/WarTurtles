@@ -1,6 +1,5 @@
 #include "GameObjects/GameObject.h"
 #include "Utils/String.h"
-
 Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, const std::string& tags) :
 	INamable(name),
 	m_tags(tags),
@@ -17,6 +16,87 @@ Turtle::GameObject::~GameObject()
 		component = nullptr;
 	}
 	m_components.clear();
+}
+
+void Turtle::GameObject::OnCreate()
+{
+	IObject::OnCreate();
+	for (Component* component : m_components)
+	{
+		component->OnCreate();
+	}
+}
+
+void Turtle::GameObject::OnDestroyed()
+{
+	IObject::OnDestroyed();
+	for (Component* component : m_components)
+	{
+		component->OnDestroyed();
+	}
+}
+
+void Turtle::GameObject::OnEnabled()
+{
+	IObject::OnEnabled();
+	for (Component* component : m_components)
+	{
+		component->OnEnabled();
+	}
+}
+
+void Turtle::GameObject::OnDisabled()
+{
+	IObject::OnDisabled();
+	for (Component* component : m_components)
+	{
+		component->OnDisabled();
+	}
+}
+
+void Turtle::GameObject::ProcessInputs()
+{
+	IObject::ProcessInputs();
+	for (Component* component : m_components)
+	{
+		component->ProcessInputs();
+	}
+}
+
+void Turtle::GameObject::Update(const Time& deltaTime)
+{
+	IObject::Update(deltaTime);
+	for (Component* component : m_components)
+	{
+		component->Update(deltaTime);
+	}
+}
+
+void Turtle::GameObject::FixedUpdate(const Time& fixedTime)
+{
+	IObject::FixedUpdate(fixedTime);
+	for (Component* component : m_components)
+	{
+		component->FixedUpdate(fixedTime);
+	}
+}
+
+void Turtle::GameObject::Draw(Window& window)
+{
+	IObject::Draw(window);
+	for (Component* component : m_components)
+	{
+		component->Draw(window);
+	}
+}
+
+void Turtle::GameObject::Gui(const Time& deltaTime)
+{
+	IObject::Gui(deltaTime);
+	for (Component* component : m_components)
+	{
+		component->Gui(deltaTime);
+	}
 }
 
 // =====================

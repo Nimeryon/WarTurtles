@@ -10,7 +10,7 @@ Type* Turtle::GameObject::GetComponent() const
 
 	for (Component* component : m_components)
 	{
-		if (Type* castComponent = dynamic_cast<Type>(component))
+		if (Type* castComponent = dynamic_cast<Type*>(component))
 		{
 			return castComponent;
 		}
@@ -33,7 +33,7 @@ Type* Turtle::GameObject::GetOrAddComponent()
 template <typename Type>
 Type* Turtle::GameObject::AddComponent()
 {
-	static_assert(std::is_base_of_v<Component, Type>);
+	//static_assert(std::is_base_of_v<Component, Type>);
 
 	Type* component = GetComponent<Type>();
 	if (component)
@@ -41,7 +41,7 @@ Type* Turtle::GameObject::AddComponent()
 		return component;
 	}
 
-	component = std::make_unique<Type>(this);
+	component = new Type(this);//std::make_unique<Type>();
 	m_components.emplace_back(component);
 	return component;
 }

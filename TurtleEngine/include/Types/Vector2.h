@@ -2,6 +2,7 @@
 #ifndef VECTOR2_H // include guard
 #define VECTOR2_H
 #include <SFML/System/Vector2.hpp>
+#include <string>
 
 namespace Turtle
 {

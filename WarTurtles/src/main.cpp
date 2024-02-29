@@ -8,9 +8,14 @@
 #include "Managers/AudioManager.h"
 #include "Managers/SceneManager.h"
 #include "Scene.h"
+#include "Components/Renderer/ShapeRenderer.h"
+#include "Components/Renderer/SpriteRenderer.h"
+#include "Components/Renderer/TextRenderer.h"
+#include "GameObjects/GameObject.h"
 
-class DemoScene : public Turtle::Scene
+class DemoScene final : public Turtle::Scene
 {
+public:
 	void OnCreate() override
 	{
 		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"creeper.mp3");
@@ -19,12 +24,35 @@ class DemoScene : public Turtle::Scene
 		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,5.f);
 		m_audioManager.PlaySound("music",true);
 		m_audioManager.PlaySound("creeper");
-
 		m_textureManager.LoadTexture("debug","debug.png");
-		for(const auto& data : m_textureManager.GetTextureData("debug").SpritesData)
-		{
-			std::cout<<data.first<<std::endl;
-		}
+		m_fontManager.LoadFont("font","default.ttf");
+		
+		testSprite = new Turtle::GameObject("Test");
+		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteRenderer>();
+		sprite_renderer->InitTexture(&m_textureManager,"debug","Purple");
+		testSprite->GetTransform()->SetPosition({10,10});
+		testSprite->GetTransform()->SetScale({10,10});
+
+		testFont = new Turtle::GameObject("Test2");
+		const auto text_renderer = testSprite->AddComponent<Turtle::TextRenderer>();
+		text_renderer->SetFont(m_fontManager.GetFont("font").get());
+		text_renderer->SetText("Hello world");
+		text_renderer->SetCharacterSize(1);
+		text_renderer->SetColor(sf::Color::White);
+		testFont->GetTransform()->SetPosition({10,10});
+
+		
+		testShape = new Turtle::GameObject("Test3");
+		const auto shape_renderer = testShape->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
+		shape_renderer->SetShape(sf::CircleShape(10,10));
+		shape_renderer->SetColor(sf::Color::Red);
+		testShape->GetTransform()->SetPosition({10,10});
+	}
+	void Draw(Turtle::Window& window) override
+	{
+		testSprite->Draw(window);
+		testFont->Draw(window);
+		testShape->Draw(window);
 		
 	}
 	void Gui(const Turtle::Time& deltaTime) override
@@ -46,6 +74,10 @@ class DemoScene : public Turtle::Scene
 		ImGui::Text(std::format("{} FPS", floorf(1.f / deltaTime.asSeconds())).c_str());
 		ImGui::End();
 	}
+private:
+	Turtle::GameObject* testSprite;
+	Turtle::GameObject* testFont;
+	Turtle::GameObject* testShape;
 };
 
 int main()

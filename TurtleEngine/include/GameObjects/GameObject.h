@@ -5,6 +5,8 @@
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
 #include "Components/Component.h"
+#include "Components/Transform.h"
+
 
 namespace Turtle
 {
@@ -21,6 +23,20 @@ public:
 
 	~GameObject() override;
 
+	// =====================
+	// IObject implementation
+	// =====================
+	
+	void OnCreate()override;
+	void OnDestroyed()override;
+	void OnEnabled()override;
+	void OnDisabled()override;
+	void ProcessInputs()override;
+	void Update(const Time& deltaTime)override;
+	void FixedUpdate(const Time& fixedTime)override;
+	void Draw(Window& window)override;
+	void Gui(const Time& deltaTime)override;
+	
 	// =====================
 	// Tags
 	// =====================
@@ -83,7 +99,7 @@ protected:
 
 	// Objects
 	std::vector<GameObject*> m_children;
-	GameObject* m_parent;
+	GameObject* m_parent = nullptr;
 
 	// Components
 	std::vector<Component*> m_components;
