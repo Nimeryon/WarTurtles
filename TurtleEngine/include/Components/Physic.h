@@ -12,11 +12,7 @@ namespace Turtle
 		Physic() = delete;
 		Physic(GameObject* parent, const std::string& name,Vector2f initialVelocity, Vector2f initialAcceleration, float mass = 1, float friction = 0.2, float bounciness = 0.1);
 
-		void FixedUpdate(const Time& fixedTime) override;
-		void OnActivate() override;
-		void OnDeactivate() override;
-		void OnEnabled() override;
-		void OnDisabled() override;
+		void FixedUpdate(const Turtle::Time& fixedTime) override;
 
 		Vector2f GetLocalGravity();
 		Vector2f GetAllForces();

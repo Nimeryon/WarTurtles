@@ -6,7 +6,8 @@ Turtle::Physic::Physic(GameObject* parent, const std::string& name, Vector2f ini
 	m_acceleration(initialAcceleration),
 	m_mass(mass), 
 	m_friction(friction),
-	m_bounciness(bounciness)
+	m_bounciness(bounciness),
+	m_localGravity(Vector2f::zero)
 {
 }
 

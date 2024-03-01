@@ -4,6 +4,7 @@
 #include "Managers/AudioManager.h"
 #include "Managers/TextureManager.h"
 #include "Managers/FontManager.h"
+#include "Managers/PhysicManager.h"
 #include "Interfaces/IObject.h"
 
 namespace Turtle
@@ -13,11 +14,13 @@ class Scene : public IObject
 	const AudioManager& GetAudioManager() const;
 	const TextureManager& GetTextureManager() const;
 	const FontManager& GetFontManager() const;
+	const PhysicManager& GetPhysicManager() const;
 
 protected:
 	AudioManager m_audioManager;
 	TextureManager m_textureManager;
 	FontManager m_fontManager;
+	PhysicManager m_physicManager;
 };
 }
 
