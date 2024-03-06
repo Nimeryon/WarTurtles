@@ -4,26 +4,80 @@
 Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, const std::string& tags) :
 	INamable(name),
 	m_tags(tags),
-	m_transform(AddComponent<Transform>())
+	m_transform(nullptr),
+	m_parent(nullptr)
 {
+	m_transform = AddComponent<Transform>();
 	SetParent(parent);
 }
 
-Turtle::GameObject::~GameObject()
+// =====================
+// Object Properties
+// =====================
+
+void Turtle::GameObject::OnCreate()
 {
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		delete component;
-		component = nullptr;
+		if (component->IsActive())
+			component->OnCreate();
 	}
-	m_components.clear();
+}
+void Turtle::GameObject::OnDestroyed()
+{
+	for (auto& component : m_components)
+	{
+		if (component->IsActive())
+			component->OnDestroyed();
+	}
+}
+
+void Turtle::GameObject::ProcessInputs()
+{
+	for (auto& component : m_components)
+	{
+		if (component->IsActive())
+			component->ProcessInputs();
+	}
+}
+void Turtle::GameObject::Update(const Time& deltaTime)
+{
+	for (auto& component : m_components)
+	{
+		if (component->IsActive())
+			component->Update(deltaTime);
+	}
+}
+void Turtle::GameObject::FixedUpdate(const Time& fixedTime)
+{
+	for (auto& component : m_components)
+	{
+		if (component->IsActive())
+			component->FixedUpdate(fixedTime);
+	}
+}
+void Turtle::GameObject::Draw(Window& window)
+{
+	for (auto& component : m_components)
+	{
+		if (component->IsActive())
+			component->Draw(window);
+	}
+}
+void Turtle::GameObject::Gui(const Time& deltaTime)
+{
+	for (auto& component : m_components)
+	{
+		if (component->IsActive())
+			component->Gui(deltaTime);
+	}
 }
 
 // =====================
 // Tags
 // =====================
 
-const std::vector<std::string> Turtle::GameObject::GetTags() const
+std::vector<std::string> Turtle::GameObject::GetTags() const
 {
 	return String::Split(m_tags, ',');
 }
@@ -104,7 +158,7 @@ Turtle::GameObject* Turtle::GameObject::GetChildWithTags(const std::string& tags
 
 	return nullptr;
 }
-const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(const std::string& name) const
+std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(const std::string& name) const
 {
 	std::vector<GameObject*> gameObjects;
 	for (GameObject* child : m_children)
@@ -117,7 +171,7 @@ const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(c
 
 	return gameObjects;
 }
-const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithTags(const std::string& tags) const
+std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithTags(const std::string& tags) const
 {
 	std::vector<GameObject*> gameObjects;
 	for (GameObject* child : m_children)
@@ -190,4 +244,4 @@ void Turtle::GameObject::RemoveFromParent()
 
 Turtle::Transform* Turtle::GameObject::GetTransform() const { return m_transform; }
 
-const std::vector<Turtle::Component*>& Turtle::GameObject::GetComponents() const { return m_components; }
+const std::vector<std::unique_ptr<Turtle::Component>>& Turtle::GameObject::GetComponents() const { return m_components; }

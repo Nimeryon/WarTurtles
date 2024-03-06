@@ -12,7 +12,7 @@ namespace Turtle
 	class PhysicManager final
 	{
 	public:
-		explicit PhysicManager(Vector2f globalGravity);
+		explicit PhysicManager(Vector2f globalGravity = {0, -9.81f});
 
 		void ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Time& fixedTime);
 		Vector2f GetGlobalGravity() const;

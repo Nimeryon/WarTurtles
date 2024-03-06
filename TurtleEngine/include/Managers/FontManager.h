@@ -18,6 +18,8 @@ namespace Turtle
         FontManager(FontManager&) = delete;
         ~FontManager() = default;
 
+        static const FontManager& Instance();
+
         bool LoadFont(const FontTag& fontTag, const std::string& fontPath);
         bool UnloadFont(const FontTag& fontTag);
         const FontPtr& GetFont(const FontTag& fontTag) const;

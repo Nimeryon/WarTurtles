@@ -12,6 +12,9 @@ class Transform : public Component
 public:
     Transform(GameObject* parent);
 
+    // Don't do anything when setActive to avoid deactivating this component
+    void SetActive(bool active) override;
+
     // Global getters
     Vector2f GetGlobalPosition() const;
     float GetGlobalRotation() const;
@@ -31,8 +34,6 @@ public:
     void Rotate(float angle);
     void Scale(const Vector2f& factors);
 
-    void RotateAround(const Vector2f& point, float angle);
-
     Vector2f Up() const; // Return up vector of this transform
     Vector2f Right() const; // Return right vector of this transform
 
@@ -48,10 +49,12 @@ public:
     Transform& operator*=(const Transform& other);
     Transform operator*(const Transform& other) const;
 
-protected:
+private:
     Vector2f m_position;
     float m_rotation;
     Vector2f m_scale;
+
+    bool m_needTransformUpdate;
 };
 } // namespace Turtle
 
