@@ -8,24 +8,31 @@
 
 namespace Turtle
 {
-	class Transform;
-}
+class Transform;
 
-namespace Turtle
-{
 class GameObject : public INamable, public IObject, public IActivable
 {
 public:
-	GameObject() = delete;
-	GameObject(const std::string& name, GameObject* parent = nullptr, const std::string& tags = "");
+	explicit GameObject(const std::string& name = "Empty Object", GameObject* parent = nullptr, const std::string& tags = "");
 
-	~GameObject() override;
+	// =====================
+	// Object Properties
+	// =====================
+
+	void OnCreate() override;
+	void OnDestroyed() override;
+
+	void ProcessInputs() override;
+	void Update(const Time& deltaTime) override;
+	void FixedUpdate(const Time& fixedTime) override;
+	void Draw(Window& window) override;
+	void Gui(const Time& deltaTime) override;
 
 	// =====================
 	// Tags
 	// =====================
 
-	const std::vector<std::string> GetTags() const;
+	std::vector<std::string> GetTags() const;
 	const std::string& GetTagsString() const;
 
 	// Tags separated by ',': Player,Object
@@ -48,9 +55,9 @@ public:
 	// Return first child with tags
 	GameObject* GetChildWithTags(const std::string& tags) const;
 	// Return all children with name
-	const std::vector<GameObject*> GetChildrenWithName(const std::string& name) const;
+	std::vector<GameObject*> GetChildrenWithName(const std::string& name) const;
 	// Return all children with tags
-	const std::vector<GameObject*> GetChildrenWithTags(const std::string& tags) const;
+	std::vector<GameObject*> GetChildrenWithTags(const std::string& tags) const;
 	// return all children
 	const std::vector<GameObject*>& GetChildren() const;
 
@@ -65,7 +72,7 @@ public:
 	
 	Transform* GetTransform() const;
 
-	const std::vector<Component*>& GetComponents() const;
+	const std::vector<std::unique_ptr<Component>>& GetComponents() const;
 
 	template<typename Type>
 	Type* GetComponent() const;
@@ -80,14 +87,15 @@ public:
 protected:
 	// tags separated by ','
 	std::string m_tags;
+	int m_zIndex;
+
+	// Components
+	std::vector<std::unique_ptr<Component>> m_components;
+	Transform* m_transform;
 
 	// Objects
 	std::vector<GameObject*> m_children;
 	GameObject* m_parent;
-
-	// Components
-	std::vector<Component*> m_components;
-	Transform* m_transform;
 };
 }
 

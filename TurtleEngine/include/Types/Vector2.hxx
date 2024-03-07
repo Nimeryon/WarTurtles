@@ -1,3 +1,6 @@
+// Vector2.hxx
+#ifndef VECTOR2_HXX // include guard
+#define VECTOR2_HXX
 #include <iostream>
 #include <algorithm>
 
@@ -317,3 +320,5 @@ std::ostream& operator<<(std::ostream& os, const Vector2<Type>& vector)
     return os;
 }
 }
+
+#endif /* VECTOR2_HXX */

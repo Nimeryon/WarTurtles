@@ -44,6 +44,8 @@ namespace Turtle
         TextureManager(const std::string& folderPath = "../../Ressources/Texture/");
         TextureManager(TextureManager&) = delete;
         ~TextureManager() = default;
+
+        static const TextureManager& Instance();
     
         bool LoadTexture(const TextureTag& textureTag, const std::string& texturePath);
         bool UnloadTexture(const TextureTag& textureTag);

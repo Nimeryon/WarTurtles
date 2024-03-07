@@ -34,6 +34,8 @@ public:
     AudioManager(const std::string& folderPath = "../../Ressources/Audio/");
     AudioManager(AudioManager&) = delete;
     ~AudioManager() = default;
+
+    static const AudioManager& Instance();
     
     bool LoadSound(const SoundEffectTag& soundEffectName, const SoundType& type, const std::string& path);
     bool UnloadSound(const SoundEffectTag& soundEffectName);

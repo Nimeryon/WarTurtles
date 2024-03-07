@@ -15,11 +15,6 @@ struct IObject
 	// Called once when object destroyed
 	virtual void OnDestroyed() {}
 
-	// Called every time object is enabled
-	virtual void OnEnabled() {}
-	// Called every time object is disabled
-	virtual void OnDisabled() {}
-
 	// Called every frame in first
 	virtual void ProcessInputs() {}
 	// Called every frame

@@ -1,9 +1,17 @@
 // Transform.cpp
 #include "Components/Transform.h"
 
+#include "GameObjects/GameObject.h"
+
 Turtle::Transform::Transform(GameObject* parent) :
-	Component(parent, "Transform"), m_position(Vector2f(0, 0)), m_rotation(0.0f), m_scale(Vector2f(1, 1))
+	Component(parent, "Transform"), m_position(Vector2f(0, 0)), m_rotation(0.0f), m_scale(Vector2f(1, 1)),
+	m_needTransformUpdate(true)
 {}
+
+void Turtle::Transform::SetActive(bool active)
+{
+    return;
+}
 
 Turtle::Vector2f Turtle::Transform::GetGlobalPosition() const
 {
@@ -22,39 +30,42 @@ Turtle::Vector2f Turtle::Transform::GetPosition() const { return m_position; }
 float Turtle::Transform::GetRotation() const { return m_rotation; }
 Turtle::Vector2f Turtle::Transform::GetScale() const { return m_scale; }
 
-void Turtle::Transform::SetPosition(const Vector2f& position) {	m_position = position; }
-void Turtle::Transform::SetRotation(float rotation) { m_rotation = rotation; }
-void Turtle::Transform::SetScale(const Vector2f& scale) { m_scale = scale; }
-
-void Turtle::Transform::Move(const Vector2f& offset) { m_position += offset; }
-void Turtle::Transform::Rotate(float angle) { m_rotation += angle; }
-void Turtle::Transform::Scale(const Vector2f& factors) { m_scale *= factors; }
-
-void Turtle::Transform::RotateAround(const Vector2f& point, float angle)
+void Turtle::Transform::SetPosition(const Vector2f& position)
 {
-    // Translate the point to the origin
-    const Vector2f translatedPoint = point - m_position;
+	m_position = position;
+    m_needTransformUpdate = true;
+}
+void Turtle::Transform::SetRotation(float rotation)
+{
+	m_rotation = rotation;
+    m_needTransformUpdate = true;
+}
+void Turtle::Transform::SetScale(const Vector2f& scale)
+{
+	m_scale = scale;
+    m_needTransformUpdate = true;
+}
 
-    // Rotate the translated point
-    const float angleInRadians = angle * (M_PI / 180.0f); // Convert degrees to radians
-    const float cosTheta = std::cos(angleInRadians);
-	const float sinTheta = std::sin(angleInRadians);
-
-    const float newX = cosTheta * translatedPoint.x - sinTheta * translatedPoint.y;
-    const float newY = sinTheta * translatedPoint.x + cosTheta * translatedPoint.y;
-
-    // Translate the rotated point back to the original position
-    m_position.x += newX;
-    m_position.y += newY;
-
-    // Update the rotation of the Transform
-    m_rotation += angle;
+void Turtle::Transform::Move(const Vector2f& offset)
+{
+	m_position += offset;
+    m_needTransformUpdate = true;
+}
+void Turtle::Transform::Rotate(float angle)
+{
+	m_rotation += angle;
+    m_needTransformUpdate = true;
+}
+void Turtle::Transform::Scale(const Vector2f& factors)
+{
+	m_scale *= factors;
+    m_needTransformUpdate = true;
 }
 
 Turtle::Vector2f Turtle::Transform::Right() const
 {
     // Calculate the right vector based on the rotation angle
-    const float angleInRadians = m_rotation * (M_PI / 180.0f); // Convert degrees to radians
+    const auto angleInRadians = static_cast<float>(m_rotation * (M_PI / 180.0f)); // Convert degrees to radians
     const float cosTheta = std::cos(angleInRadians);
     const float sinTheta = std::sin(angleInRadians);
 
@@ -90,12 +101,14 @@ Turtle::TransformMatrix Turtle::Transform::GetInverseTransformMatrix() const
 }
 
 void Turtle::Transform::Compose(const Transform& other, bool inWorldSpace) {
-    if (inWorldSpace) {
+    if (inWorldSpace)
+    {
         // If in world space, transform the other object to world space
         // and then combine it with this object's transformation
         *this *= other;
     }
-    else {
+    else
+    {
         // If in relative space, combine the other object's transformation
         // with this object's transformation directly
         m_position += other.GetPosition();
@@ -122,6 +135,7 @@ Turtle::Transform& Turtle::Transform::operator*=(const Transform& other)
     m_rotation += other.GetRotation();
     m_scale *= other.GetScale();
 
+    m_needTransformUpdate = true;
     return *this;
 }
 
