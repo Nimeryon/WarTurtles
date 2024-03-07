@@ -15,6 +15,7 @@ namespace Turtle
 		explicit PhysicManager(Vector2f globalGravity);
 
 		void ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Time& fixedTime);
+		void ResolveCollisionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, Vector2f& normal, float value);
 		Vector2f GetGlobalGravity() const;
 
 		void SetGlobalGravity(Vector2f newGravity);

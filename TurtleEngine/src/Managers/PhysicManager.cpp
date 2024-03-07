@@ -6,13 +6,19 @@ Turtle::PhysicManager::PhysicManager(Vector2f globalGravity) : m_globalGravity(g
 
 void Turtle::PhysicManager::ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Turtle::Time& fixedTime)
 {
-	Vector2f position = ObjectTransformComponent.GetPosition();
-
 	ObjectPhysicComponent.m_acceleration = ( m_globalGravity + ObjectPhysicComponent.GetAllForces() ) / ObjectPhysicComponent.m_mass;
-	position += ObjectPhysicComponent.m_velocity * fixedTime.asSeconds();
+	ObjectTransformComponent.Move(ObjectPhysicComponent.m_velocity * fixedTime.asSeconds());
 	ObjectPhysicComponent.m_velocity += ObjectPhysicComponent.m_acceleration * fixedTime.asSeconds();
+}
 
-	ObjectTransformComponent.SetPosition(position);
+void Turtle::PhysicManager::ResolveCollisionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, Vector2f& normal, float value)
+{
+	if (ObjectPhysicComponent.m_bounciness > 0) {
+		//Get the out vector ( current velocity reflected with normal ) 
+	}
+	else {
+		ObjectTransformComponent.Move(normal * value);
+	}
 }
 
 Turtle::Vector2f Turtle::PhysicManager::GetGlobalGravity() const

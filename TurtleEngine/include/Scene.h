@@ -15,6 +15,7 @@ class Scene : public IObject
 	const TextureManager& GetTextureManager() const;
 	const FontManager& GetFontManager() const;
 	const PhysicManager& GetPhysicManager() const;
+	void test();
 
 protected:
 	AudioManager m_audioManager;
