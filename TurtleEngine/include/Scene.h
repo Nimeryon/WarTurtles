@@ -21,6 +21,7 @@ public:
 	const TextureManager& GetTextureManager() const;
 	const FontManager& GetFontManager() const;
 	const PhysicManager& GetPhysicManager() const;
+	void test();
 
 	// =====================
 	// Object Properties
