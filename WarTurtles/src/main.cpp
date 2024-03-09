@@ -9,6 +9,7 @@
 #include "Managers/SceneManager.h"
 #include "Scene.h"
 #include "Components/Renderer/ShapeRenderer.h"
+#include "Components/Renderer/SpriteAnimationRenderer.h"
 #include "Components/Renderer/SpriteRenderer.h"
 #include "Components/Renderer/TextRenderer.h"
 #include "GameObjects/GameObject.h"
@@ -24,14 +25,15 @@ public:
 		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,5.f);
 		m_audioManager.PlaySound("music",true);
 		m_audioManager.PlaySound("creeper");
-		m_textureManager.LoadTexture("debug","debug.png");
+		m_textureManager.LoadTexture("turtle","turtle.png");
 		m_fontManager.LoadFont("font","default.ttf");
 		
 		testSprite = new Turtle::GameObject("Test");
-		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteRenderer>();
-		sprite_renderer->InitTexture(&m_textureManager,"debug","Purple");
+		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteAnimationRenderer>();
+		sprite_renderer->InitAnimation(&m_textureManager,"turtle","Idle");
+		sprite_renderer->SetAnimationSpeed(50);
 		testSprite->GetTransform()->SetPosition({10,10});
-		testSprite->GetTransform()->SetScale({10,10});
+		testSprite->GetTransform()->SetScale({0.5f,0.5f});
 
 		testFont = new Turtle::GameObject("Test2");
 		const auto text_renderer = testSprite->AddComponent<Turtle::TextRenderer>();
@@ -47,6 +49,10 @@ public:
 		shape_renderer->SetShape(sf::CircleShape(10,10));
 		shape_renderer->SetColor(sf::Color::Red);
 		testShape->GetTransform()->SetPosition({10,10});
+	}
+	void Update(const Turtle::Time& deltaTime) override
+	{
+		testSprite->Update(deltaTime);
 	}
 	void Draw(Turtle::Window& window) override
 	{

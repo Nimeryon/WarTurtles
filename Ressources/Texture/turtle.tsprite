@@ -1,0 +1,158 @@
+{
+    "Sprites": [
+    {
+        "Name": "die1",
+	    "X": 0,
+        "Y": 0,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+     {
+        "Name": "die2",
+	    "X": 700,
+        "Y": 0,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+     {
+        "Name": "die3",
+	    "X": 1400,
+        "Y": 0,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+     {
+        "Name": "die4",
+	    "X": 2100,
+        "Y": 0,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+     {
+        "Name": "die5",
+	    "X": 2800,
+        "Y": 0,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+     {
+        "Name": "die6",
+	    "X": 3500,
+        "Y": 0,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle1",
+	    "X": 0,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle2",
+	    "X": 700,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle3",
+	    "X": 1400,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle4",
+	    "X": 2100,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle5",
+	    "X": 2800,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle6",
+	    "X": 3500,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle7",
+	    "X": 4200,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle8",
+	    "X": 4900,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle9",
+	    "X": 5600,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "idle10",
+	    "X": 6300,
+        "Y": 2100,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    }
+  ],
+    "Animations": [
+    {
+        "Name": "Die",
+        "Sequence":["die1","die2","die3","die4","die5","die6"]
+    },
+    {
+        "Name": "Idle",
+        "Sequence":["idle1","idle2","idle3","idle4","idle5","idle6","idle7","idle8","idle9","idle10"]
+    }
+]
+}

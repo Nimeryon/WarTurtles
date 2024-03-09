@@ -6,7 +6,7 @@
 namespace Turtle
 {
     SpriteAnimationRenderer::SpriteAnimationRenderer(GameObject* parent, const std::string& name) 
-        : Component(parent, name), m_textureManager(nullptr), m_currentFrame(0), m_frameDuration(0.1f), m_elapsedTime(0)
+        : Component(parent, name), m_textureManager(nullptr), m_currentFrame(0), m_frameDuration(100), m_elapsedTime(0)
     {}
 
     void SpriteAnimationRenderer::InitAnimation(const TextureManager* textureManager, const TextureTag& textureTag, const AnimationTag& animationTag)
@@ -14,9 +14,21 @@ namespace Turtle
         m_textureManager = textureManager;
         m_textureTag = textureTag;
         m_animationTag = animationTag;
-        m_animationFrames = textureManager->GetTextureData(textureTag).AnimationsData[animationTag].frames;
+        m_animationFrames = textureManager->GetTextureData(textureTag).AnimationsData.find(animationTag)->second.frames;
         m_currentFrame = 0;
         SetTextureRect(m_animationFrames[0]);
+    }
+
+    void SpriteAnimationRenderer::SetAnimation(const AnimationTag& animationTag, float speed)
+    {
+        m_animationTag = animationTag;
+        m_currentFrame = 0;
+        m_frameDuration = speed;
+    }
+
+    void SpriteAnimationRenderer::SetAnimationSpeed(float speed)
+    {
+        m_frameDuration = speed;
     }
 
     void SpriteAnimationRenderer::SetTextureRect(const SpriteTag& spriteTag)
@@ -35,7 +47,7 @@ namespace Turtle
 
     void SpriteAnimationRenderer::Update(const Time& deltaTime)
     {
-        m_elapsedTime += deltaTime;
+        m_elapsedTime += deltaTime.asMilliseconds();
         if (m_elapsedTime >= m_frameDuration)
         {
             m_currentFrame = (m_currentFrame + 1) % m_animationFrames.size();

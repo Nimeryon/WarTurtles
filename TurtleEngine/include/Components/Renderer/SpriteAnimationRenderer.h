@@ -13,8 +13,9 @@ namespace Turtle
     public:
         explicit SpriteAnimationRenderer(GameObject* parent, const std::string& name = "SpriteAnimationRenderer");
 
-        void InitAnimation(const TextureManager* textureManager, const TextureTag& textureTag, const AnimationTag& animationTag);
-        
+        void InitAnimation(const TextureManager* textureManager, const TextureTag& textureTag,const AnimationTag& animationTag);
+        void SetAnimation(const AnimationTag& animationTag,float speed);
+        void SetAnimationSpeed(float speed);
         void SetColor(const sf::Color& color);
         
         void Update(const Time& deltaTime) override;
@@ -28,7 +29,7 @@ namespace Turtle
         TextureTag m_textureTag;
         AnimationTag m_animationTag;
         std::vector<SpriteTag> m_animationFrames;
-        float m_currentFrame;
+        unsigned m_currentFrame;
         float m_frameDuration;
         float m_elapsedTime;
     };
