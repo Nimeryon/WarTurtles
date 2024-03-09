@@ -55,6 +55,51 @@
         "RevertedY": false
     },
     {
+        "Name": "confuse1",
+	    "X": 0,
+        "Y": 700,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "confuse2",
+	    "X": 700,
+        "Y": 700,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "confuse3",
+	    "X": 1400,
+        "Y": 700,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "hit1",
+	    "X": 0,
+        "Y": 1400,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "hit2",
+	    "X": 700,
+        "Y": 1400,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
         "Name": "idle1",
 	    "X": 0,
         "Y": 2100,
@@ -143,16 +188,254 @@
         "SizeY": 700,
         "RevertedX": false,
         "RevertedY": false
-    }
-  ],
+    },
+    {
+        "Name": "jump1",
+	    "X": 0,
+        "Y": 2800,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "jump2",
+	    "X": 700,
+        "Y": 2800,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "jump3",
+	    "X": 1400,
+        "Y": 2800,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "jump4",
+	    "X": 2100,
+        "Y": 2800,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "jump5",
+	    "X": 2800,
+        "Y": 2800,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "shoot1",
+	    "X": 2100,
+        "Y": 3500,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "shoot2",
+	    "X": 2800,
+        "Y": 3500,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "shoot3",
+	    "X": 3500,
+        "Y": 3500,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk1",
+	    "X": 0,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk2",
+	    "X": 700,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk3",
+	    "X": 1400,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk4",
+	    "X": 2100,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk5",
+	    "X": 2800,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk6",
+	    "X": 3500,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk7",
+	    "X": 4200,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk8",
+	    "X": 4900,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk9",
+	    "X": 5600,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "walk10",
+	    "X": 6300,
+        "Y": 4200,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "throw1",
+	    "X": 0,
+        "Y": 4900,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "throw2",
+	    "X": 700,
+        "Y": 4900,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "throw3",
+	    "X": 1400,
+        "Y": 4900,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "throw4",
+	    "X": 2100,
+        "Y": 4900,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    },
+    {
+        "Name": "throw5",
+	    "X": 2800,
+        "Y": 4900,
+        "SizeX": 700,
+        "SizeY": 700,
+        "RevertedX": false,
+        "RevertedY": false
+    }],
     "Animations": [
     {
         "Name": "Die",
         "Sequence":["die1","die2","die3","die4","die5","die6"]
+        "Speed":50
+    },
+    {
+        "Name": "Confuse",
+        "Sequence":["confuse1","confuse2","confuse3"]
+        "Speed":50
+    },
+    {
+        "Name": "Hit",
+        "Sequence":["hit1","hit2"]
+        "Speed":50
     },
     {
         "Name": "Idle",
         "Sequence":["idle1","idle2","idle3","idle4","idle5","idle6","idle7","idle8","idle9","idle10"]
+        "Speed":50
+    },
+    {
+        "Name": "Jump",
+        "Sequence":["jump1","jump2","jump3","jump4","jump5"]
+        "Speed":50
+    },
+    {
+        "Name": "Shoot",
+        "Sequence":["shoot1","shoot2","shoot3"]
+        "Speed":50
+    },
+    {
+        "Name": "Walk",
+        "Sequence":["walk1","walk2","walk3","walk4","walk5","walk6","walk7","walk8","walk9","walk10"]
+        "Speed":50
+    },
+    {
+        "Name": "Throw",
+        "Sequence":["throw1","throw2","throw3","throw4","throw5"]
+        "Speed":50
     }
 ]
 }
