@@ -1,8 +1,15 @@
 ﻿#include "Managers/FontManager.h"
 #include <fstream>
 
+#include "Managers/SceneManager.h"
+
 
 Turtle::FontManager::FontManager(const std::string& folderPath) : m_folderPath(folderPath) {}
+
+const Turtle::FontManager& Turtle::FontManager::Instance()
+{
+    return SceneManager::Instance().GetCurrentScene()->GetFontManager();
+}
 
 bool Turtle::FontManager::LoadFont(const FontTag& fontTag, const std::string& fontPath)
 {
@@ -42,5 +49,6 @@ const Turtle::FontPtr& Turtle::FontManager::GetFont(const FontTag& fontTag) cons
     {
         return it->second;
     }
+
     return nullptr;
 }

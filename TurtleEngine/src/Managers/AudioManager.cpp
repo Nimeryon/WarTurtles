@@ -1,10 +1,17 @@
 ﻿#include "Managers/AudioManager.h"
 
+#include "Managers/SceneManager.h"
+
 Turtle::AudioManager::AudioManager(const std::string& folderPath) :
     m_musicVolume(100.f),
     m_soundVolume(100.f),
     m_audioFolderPath(folderPath)
 {}
+
+const Turtle::AudioManager& Turtle::AudioManager::Instance()
+{
+    return SceneManager::Instance().GetCurrentScene()->GetAudioManager();
+}
 
 bool Turtle::AudioManager::LoadSound(const SoundEffectTag& soundEffectName, const SoundType& type, const std::string& path)
 {

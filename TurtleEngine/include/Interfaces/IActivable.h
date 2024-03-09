@@ -9,8 +9,8 @@ struct IActivable
 	IActivable(bool active = true);
 	virtual ~IActivable() = default;
 
-	bool IsActive() const;
-	void SetActive(bool active);
+	virtual bool IsActive() const;
+	virtual void SetActive(bool active);
 
 	virtual void OnActivate() {}
 	virtual void OnDeactivate() {}

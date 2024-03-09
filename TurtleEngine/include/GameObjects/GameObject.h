@@ -5,43 +5,49 @@
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
 #include "Components/Component.h"
-#include "Components/Transform.h"
-
-
-namespace Turtle
-{
-	class Transform;
-}
+#include "Types/Vector2.h"
 
 namespace Turtle
 {
+class Transform;
+
 class GameObject : public INamable, public IObject, public IActivable
 {
 public:
-	GameObject() = delete;
-	GameObject(const std::string& name, GameObject* parent = nullptr, const std::string& tags = "");
+	explicit GameObject(const std::string& name = "Empty Object", GameObject* parent = nullptr);
 
-	~GameObject() override;
+	static GameObject* Create(const std::string& name = "Empty Object");
+	static GameObject* Create(GameObject* parent, const std::string& name = "Empty Object");
+	static GameObject* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+	static GameObject* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+
+	static void Destroy(GameObject* object);
+
+	// Returns first Object with name
+	static GameObject* Find(const std::string& name);
+	// Returns all Object with name
+	static std::vector<GameObject*> Finds(const std::string& name);
 
 	// =====================
-	// IObject implementation
+	// Object Properties
 	// =====================
-	
-	void OnCreate()override;
-	void OnDestroyed()override;
-	void OnEnabled()override;
-	void OnDisabled()override;
-	void ProcessInputs()override;
-	void Update(const Time& deltaTime)override;
-	void FixedUpdate(const Time& fixedTime)override;
-	void Draw(Window& window)override;
-	void Gui(const Time& deltaTime)override;
-	
+
+	void Destroy();
+
+	void OnCreate() override;
+	void OnDestroyed() override;
+
+	void ProcessInputs() override;
+	void Update(const Time& deltaTime) override;
+	void FixedUpdate(const Time& fixedTime) override;
+	void Draw(Window& window) override;
+	void Gui(const Time& deltaTime) override;
+
 	// =====================
 	// Tags
 	// =====================
 
-	const std::vector<std::string> GetTags() const;
+	std::vector<std::string> GetTags() const;
 	const std::string& GetTagsString() const;
 
 	// Tags separated by ',': Player,Object
@@ -64,9 +70,9 @@ public:
 	// Return first child with tags
 	GameObject* GetChildWithTags(const std::string& tags) const;
 	// Return all children with name
-	const std::vector<GameObject*> GetChildrenWithName(const std::string& name) const;
+	std::vector<GameObject*> GetChildrenWithName(const std::string& name) const;
 	// Return all children with tags
-	const std::vector<GameObject*> GetChildrenWithTags(const std::string& tags) const;
+	std::vector<GameObject*> GetChildrenWithTags(const std::string& tags) const;
 	// return all children
 	const std::vector<GameObject*>& GetChildren() const;
 
@@ -81,7 +87,7 @@ public:
 	
 	Transform* GetTransform() const;
 
-	const std::vector<Component*>& GetComponents() const;
+	const std::vector<std::unique_ptr<Component>>& GetComponents() const;
 
 	template<typename Type>
 	Type* GetComponent() const;
@@ -96,14 +102,15 @@ public:
 protected:
 	// tags separated by ','
 	std::string m_tags;
+	int m_zIndex;
+
+	// Components
+	std::vector<std::unique_ptr<Component>> m_components;
+	Transform* m_transform;
 
 	// Objects
 	std::vector<GameObject*> m_children;
-	GameObject* m_parent = nullptr;
-
-	// Components
-	std::vector<Component*> m_components;
-	Transform* m_transform;
+	GameObject* m_parent;
 };
 }
 

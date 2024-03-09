@@ -10,6 +10,8 @@ Turtle::SceneManager::SceneManager() :
 	m_insertedSceneID(0)
 {}
 
+Turtle::Scene* Turtle::SceneManager::GetCurrentScene() const { return m_currentScene; }
+
 unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene)
 {
 	const auto& inserted = m_scenes.emplace(m_insertedSceneID, std::move(scene)).first;
@@ -44,15 +46,9 @@ void Turtle::SceneManager::SetScene(unsigned int sceneID)
 	const auto it = m_scenes.find(sceneID);
 	if (it != m_scenes.end())
 	{
-		if (m_currentScene)
-		{
-			m_currentScene->OnDisabled();
-		}
-
 		// Utilisation de std::move de manière plus explicite
 		m_currentScene = it->second.get();
 		m_currentSceneID = sceneID;
-		m_currentScene->OnEnabled();
 	}
 }
 void Turtle::SceneManager::NextScene()

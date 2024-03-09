@@ -18,6 +18,8 @@ using ScenePtr = std::unique_ptr<Scene>;
 class SceneManager : public Singleton<SceneManager>
 {
 public:
+	Scene* GetCurrentScene() const;
+
 	unsigned int AddScene(ScenePtr scene, bool setScene = false);
 	void RemoveScene(unsigned int sceneID);
 	void SetScene(unsigned int sceneID);

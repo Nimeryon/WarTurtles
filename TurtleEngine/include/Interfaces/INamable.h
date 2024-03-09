@@ -12,8 +12,8 @@ struct INamable
 	INamable(const std::string& name);
 	INamable() = delete;
 
-	const std::string& GetName() const;
-	void SetName(const std::string& name);
+	virtual const std::string& GetName() const;
+	virtual void SetName(const std::string& name);
 
 protected:
 	std::string m_name;

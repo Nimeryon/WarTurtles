@@ -1,101 +1,113 @@
 #include "GameObjects/GameObject.h"
+
+#include "Managers/SceneManager.h"
 #include "Utils/String.h"
-Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, const std::string& tags) :
+
+Turtle::GameObject::GameObject(const std::string& name, GameObject* parent) :
 	INamable(name),
-	m_tags(tags),
-	m_transform(AddComponent<Transform>())
+	m_transform(nullptr),
+	m_parent(nullptr)
 {
+	m_transform = AddComponent<Transform>();
 	SetParent(parent);
 }
 
-Turtle::GameObject::~GameObject()
+Turtle::GameObject* Turtle::GameObject::Create(const std::string& name)
 {
-	for (Component* component : m_components)
-	{
-		delete component;
-		component = nullptr;
-	}
-	m_components.clear();
+	return SceneManager::Instance().GetCurrentScene()->Create(name);
+}
+Turtle::GameObject* Turtle::GameObject::Create(GameObject* parent, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(parent, name);
+}
+Turtle::GameObject* Turtle::GameObject::Create(const Vector2f& position, float rotation, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(position, rotation, name);
+}
+Turtle::GameObject* Turtle::GameObject::Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(parent, position, rotation, name);
+}
+
+void Turtle::GameObject::Destroy(GameObject* object)
+{
+	SceneManager::Instance().GetCurrentScene()->Destroy(object);
+}
+
+Turtle::GameObject* Turtle::GameObject::Find(const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Find(name);
+}
+
+std::vector<Turtle::GameObject*> Turtle::GameObject::Finds(const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Finds(name);
+}
+
+// =====================
+// Object Properties
+// =====================
+
+void Turtle::GameObject::Destroy()
+{
+	Destroy(this);
 }
 
 void Turtle::GameObject::OnCreate()
 {
-	IObject::OnCreate();
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->OnCreate();
+		if (component->IsActive())
+			component->OnCreate();
 	}
 }
-
 void Turtle::GameObject::OnDestroyed()
 {
-	IObject::OnDestroyed();
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->OnDestroyed();
-	}
-}
-
-void Turtle::GameObject::OnEnabled()
-{
-	IObject::OnEnabled();
-	for (Component* component : m_components)
-	{
-		component->OnEnabled();
-	}
-}
-
-void Turtle::GameObject::OnDisabled()
-{
-	IObject::OnDisabled();
-	for (Component* component : m_components)
-	{
-		component->OnDisabled();
+		if (component->IsActive())
+			component->OnDestroyed();
 	}
 }
 
 void Turtle::GameObject::ProcessInputs()
 {
-	IObject::ProcessInputs();
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->ProcessInputs();
+		if (component->IsActive())
+			component->ProcessInputs();
 	}
 }
-
 void Turtle::GameObject::Update(const Time& deltaTime)
 {
-	IObject::Update(deltaTime);
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->Update(deltaTime);
+		if (component->IsActive())
+			component->Update(deltaTime);
 	}
 }
-
 void Turtle::GameObject::FixedUpdate(const Time& fixedTime)
 {
-	IObject::FixedUpdate(fixedTime);
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->FixedUpdate(fixedTime);
+		if (component->IsActive())
+			component->FixedUpdate(fixedTime);
 	}
 }
-
 void Turtle::GameObject::Draw(Window& window)
 {
-	IObject::Draw(window);
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->Draw(window);
+		if (component->IsActive())
+			component->Draw(window);
 	}
 }
-
 void Turtle::GameObject::Gui(const Time& deltaTime)
 {
-	IObject::Gui(deltaTime);
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		component->Gui(deltaTime);
+		if (component->IsActive())
+			component->Gui(deltaTime);
 	}
 }
 
@@ -103,7 +115,7 @@ void Turtle::GameObject::Gui(const Time& deltaTime)
 // Tags
 // =====================
 
-const std::vector<std::string> Turtle::GameObject::GetTags() const
+std::vector<std::string> Turtle::GameObject::GetTags() const
 {
 	return String::Split(m_tags, ',');
 }
@@ -184,7 +196,7 @@ Turtle::GameObject* Turtle::GameObject::GetChildWithTags(const std::string& tags
 
 	return nullptr;
 }
-const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(const std::string& name) const
+std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(const std::string& name) const
 {
 	std::vector<GameObject*> gameObjects;
 	for (GameObject* child : m_children)
@@ -197,7 +209,7 @@ const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithName(c
 
 	return gameObjects;
 }
-const std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithTags(const std::string& tags) const
+std::vector<Turtle::GameObject*> Turtle::GameObject::GetChildrenWithTags(const std::string& tags) const
 {
 	std::vector<GameObject*> gameObjects;
 	for (GameObject* child : m_children)
@@ -270,4 +282,4 @@ void Turtle::GameObject::RemoveFromParent()
 
 Turtle::Transform* Turtle::GameObject::GetTransform() const { return m_transform; }
 
-const std::vector<Turtle::Component*>& Turtle::GameObject::GetComponents() const { return m_components; }
+const std::vector<std::unique_ptr<Turtle::Component>>& Turtle::GameObject::GetComponents() const { return m_components; }

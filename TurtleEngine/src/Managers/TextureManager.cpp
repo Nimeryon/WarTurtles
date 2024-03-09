@@ -4,12 +4,19 @@
 
 #include <iostream>
 
+#include "Managers/SceneManager.h"
+
 const Turtle::SpriteData Turtle::SpriteData::defaultSpriteData{0, 0, 0, 0, false, false};
 const Turtle::TextureData Turtle::TextureData::defaultTextureData{nullptr,std::unordered_map<SpriteTag,SpriteData>{}};
 const Turtle::AnimationData Turtle::AnimationData::defaultAnimationData{std::vector<SpriteTag>{}};
 Turtle::TextureManager::TextureManager(const std::string& folderPath) :
     m_folderPath(folderPath)
 {}
+
+const Turtle::TextureManager& Turtle::TextureManager::Instance()
+{
+    return SceneManager::Instance().GetCurrentScene()->GetTextureManager();
+}
 
 bool Turtle::TextureManager::LoadTexture(const TextureTag& textureTag, const std::string& texturePath)
 {

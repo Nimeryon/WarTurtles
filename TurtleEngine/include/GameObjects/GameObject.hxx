@@ -1,16 +1,20 @@
 // GameObject.hxx
 #ifndef GAME_OBJECT_HXX // include guard
 #define GAME_OBJECT_HXX
+#include <stdexcept>
+
 #include "GameObject.h"
+#include "Components/Transform.h"
+#include "Managers/SceneManager.h"
 
 template <typename Type>
 Type* Turtle::GameObject::GetComponent() const
 {
 	static_assert(std::is_base_of_v<Component, Type>);
 
-	for (Component* component : m_components)
+	for (auto& component : m_components)
 	{
-		if (Type* castComponent = dynamic_cast<Type*>(component))
+		if (Type* castComponent = dynamic_cast<Type*>(component.get()))
 		{
 			return castComponent;
 		}
@@ -33,7 +37,7 @@ Type* Turtle::GameObject::GetOrAddComponent()
 template <typename Type>
 Type* Turtle::GameObject::AddComponent()
 {
-	//static_assert(std::is_base_of_v<Component, Type>);
+	static_assert(std::is_base_of_v<Component, Type>);
 
 	Type* component = GetComponent<Type>();
 	if (component)
@@ -41,25 +45,28 @@ Type* Turtle::GameObject::AddComponent()
 		return component;
 	}
 
-	component = new Type(this);//std::make_unique<Type>();
-	m_components.emplace_back(component);
-	return component;
+	std::unique_ptr<Type> newComponent = std::make_unique<Type>(this);
+	Type* newComponentPtr = newComponent.get();
+	m_components.emplace_back(std::move(newComponent));
+
+	return newComponentPtr;
 }
 template <typename Type>
 void Turtle::GameObject::RemoveComponent()
 {
 	static_assert(std::is_base_of_v<Component, Type>);
-	if (std::is_base_of_v<Transform, Type>)
+	if (std::is_same_v<Transform, Type>)
 	{
-		throw "Can't delete Transform component";
+		throw std::runtime_error("Can't delete Transform component");
 	}
 
-	Type* component = GetComponent<Type>();
-	auto& it = std::find(m_components.begin(), m_components.end(), component);
-	if (it != m_components.end())
+	for (auto it = m_components.begin(); it != m_components.end(); ++it)
 	{
-		delete component;
-		m_components.erase(it);
+		if (dynamic_cast<Type*>(it->get()))
+		{
+			m_components.erase(it);
+			break;
+		}
 	}
 }
 
