@@ -429,7 +429,7 @@
     },
     {
         "Name": "Walk",
-        "Sequence":["walk1","walk2","walk3","walk4","walk5","walk6","walk7","walk8","walk9"],
+        "Sequence":["walk1","walk2","walk3","walk4","walk5","walk6","walk7","walk8","walk9","walk10","walk9","walk8","walk7","walk6","walk5","walk4","walk3","walk2"],
         "Speed":50
     },
     {

@@ -19,16 +19,14 @@ class DemoScene final : public Turtle::Scene
 public:
 	void OnCreate() override
 	{
-		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"creeper.mp3");
 		m_audioManager.LoadSound("music",Turtle::SoundType::Music,"music.mp3");
 		m_textureManager.LoadTexture("turtle","turtle.png");
 
+		m_audioManager.PlaySound("music",true);
 		
 		Turtle::GameObject* testSprite = Create("Test");
 		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteAnimationRenderer>();
-		const auto physic = testSprite->AddComponent<Turtle::Physic>();
-		sprite_renderer->InitAnimation("turtle","Throw");
-		testSprite->GetTransform()->SetPosition({10,10});
+		sprite_renderer->InitAnimation("turtle","Idle");
 		testSprite->GetTransform()->SetScale({0.3f,0.3f});
 		
 	}
