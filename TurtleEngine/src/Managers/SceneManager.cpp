@@ -2,7 +2,6 @@
 
 #include "Utils/Time.h"
 #include "Utils/Window.h"
-#include "Scene.h"
 
 Turtle::SceneManager::SceneManager() :
 	m_currentScene(nullptr),

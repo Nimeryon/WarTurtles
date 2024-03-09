@@ -3,11 +3,11 @@
 #define PHYSICMANAGER_H
 #include "Types/Vector2.h"
 #include "Utils/Time.h"
-#include "GameObjects/GameObject.h"
 #include "Components/Physic.h"
 
 namespace Turtle
 {
+	class Transform;
 	class PhysicManager final
 	{
 	public:
