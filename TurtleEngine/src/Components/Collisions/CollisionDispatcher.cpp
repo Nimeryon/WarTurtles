@@ -7,12 +7,12 @@
 
 namespace Turtle
 {
-	class BoxCollisionComponent : public ICollisionComponent
+	class PolygonCollisionComponent : public ICollisionComponent
 	{
 	public:
-		BoxCollisionComponent() = delete;
-		BoxCollisionComponent(GameObject* parent, const std::string& name, BoxShape& boxCollision);
-		BoxCollisionComponent(GameObject* parent, const std::string& name, Vector2f& location, float width, float height);
+		PolygonCollisionComponent() = delete;
+		PolygonCollisionComponent(GameObject* parent, const std::string& name, BoxShape& boxCollision);
+		PolygonCollisionComponent(GameObject* parent, const std::string& name, Vector2f& location, float width, float height);
 	};
 }
 #endif // !BOXCOLLISIONCOMPONENT_H

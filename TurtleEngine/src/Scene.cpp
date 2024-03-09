@@ -19,8 +19,8 @@ const Turtle::PhysicManager& Turtle::Scene::GetPhysicManager() const { return m_
 
 void Turtle::Scene::test()
 {
-	//CollisionDispatcher<ICollisionComponent> dispatcher;
-	//dispatcher.add<CircleCollisionComponent, CircleCollisionComponent, collisionBetweenCircles>();
+	CollisionDispatcher<ICollisionComponent> dispatcher;
+	dispatcher.add<CircleCollisionComponent, CircleCollisionComponent, collisionBetweenCircles>();
 }
 
 // =====================

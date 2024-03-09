@@ -5,7 +5,7 @@
 #include <functional>
 #include <map>
 #include "Components/Collisions/ICollisionComponent.h"
-#include "Components/Collisions/BoxCollisionComponent.h"
+#include "Components/Collisions/PolygonCollisionComponent.h"
 #include "Components/Collisions/CircleCollisionComponent.h"
 
 
@@ -26,9 +26,9 @@ bool collisionBetweenCircles(CircleCollisionComponent& lhs, CircleCollisionCompo
 	return true;
 }
 
-bool collisionBetweenBoxes(BoxCollisionComponent& lhs, BoxCollisionComponent& rhs, Vector2f& normal, float& depth) {
-	BoxShape lhsBox = lhs.GetShape();
-	BoxShape rhsBox = lhs.GetShape();
+bool collisionBetweenBoxes(PolygonCollisionComponent& lhs, PolygonCollisionComponent& rhs, Vector2f& normal, float& depth) {
+	PolygonShape lhsBox = lhs.GetShape();
+	PolygonShape rhsBox = lhs.GetShape();
 	depth = FLT_MAX;
 
 	for (int i = 0; i < lhsBox.TransformedVertices.size(); ++i) {
@@ -39,8 +39,8 @@ bool collisionBetweenBoxes(BoxCollisionComponent& lhs, BoxCollisionComponent& rh
 		Vector2f curNormal = Vector2f::Perpendicular(edge);
 
 		float minLhs, maxLhs, minRhs, maxRhs;
-		if (!BoxShape::ProjectTransformedVertices(lhsBox, curNormal, minLhs, maxLhs)
-			|| !BoxShape::ProjectTransformedVertices(rhsBox, curNormal, minRhs, maxRhs)) {
+		if (!PolygonShape::ProjectTransformedVertices(lhsBox, curNormal, minLhs, maxLhs)
+			|| !PolygonShape::ProjectTransformedVertices(rhsBox, curNormal, minRhs, maxRhs)) {
 			return false;
 		}
 
@@ -62,8 +62,8 @@ bool collisionBetweenBoxes(BoxCollisionComponent& lhs, BoxCollisionComponent& rh
 		Vector2f curNormal = Vector2f::Perpendicular(edge);
 
 		float minLhs, maxLhs, minRhs, maxRhs;
-		if (!BoxShape::ProjectTransformedVertices(lhsBox, curNormal, minLhs, maxLhs)
-			|| !BoxShape::ProjectTransformedVertices(rhsBox, curNormal, minRhs, maxRhs)) {
+		if (!PolygonShape::ProjectTransformedVertices(lhsBox, curNormal, minLhs, maxLhs)
+			|| !PolygonShape::ProjectTransformedVertices(rhsBox, curNormal, minRhs, maxRhs)) {
 			return false;
 		}
 
@@ -89,8 +89,8 @@ bool collisionBetweenBoxes(BoxCollisionComponent& lhs, BoxCollisionComponent& rh
 	return true;
 }
 
-bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, BoxCollisionComponent& boxComp, Vector2f& normal, float& depth) {
-	BoxShape box = boxComp.GetShape();
+bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, PolygonCollisionComponent& boxComp, Vector2f& normal, float& depth) {
+	PolygonShape box = boxComp.GetShape();
 	CircleShape circle = circleComp.GetShape();
 	depth = FLT_MAX;
 
@@ -102,7 +102,7 @@ bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, BoxColli
 		Vector2f curNormal = Vector2f::Perpendicular(edge);
 
 		float minCircle, maxCircle, minBox, maxBox;
-		if (!BoxShape::ProjectTransformedVertices(box, curNormal, minBox, maxBox))
+		if (!PolygonShape::ProjectTransformedVertices(box, curNormal, minBox, maxBox))
 			return false;
 		
 		CircleShape::ProjectCircle(circle, curNormal, minCircle, maxCircle);
@@ -118,10 +118,10 @@ bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, BoxColli
 	}
 
 	Vector2f nearestPoint;
-	BoxShape::FindNearestPointTo(circle.Center, box, nearestPoint);
+	PolygonShape::FindNearestPointTo(circle.Center, box, nearestPoint);
 	Vector2f axis = nearestPoint - circle.Center;
 	float minCircle, maxCircle, minBox, maxBox;
-	if (!BoxShape::ProjectTransformedVertices(box, axis, minBox, maxBox))
+	if (!PolygonShape::ProjectTransformedVertices(box, axis, minBox, maxBox))
 		return false;
 
 	CircleShape::ProjectCircle(circle, axis, minCircle, maxCircle);
@@ -145,9 +145,11 @@ bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, BoxColli
 	return true;
 }
 
-bool collisionBetweenBoxAndCircle(BoxCollisionComponent& boxComp, CircleCollisionComponent& circleComp, Vector2f& normal, float& depth) {
-	collisionBetweenCircleAndBox(circleComp, boxComp, normal, depth);
+bool collisionBetweenBoxAndCircle(PolygonCollisionComponent& boxComp, CircleCollisionComponent& circleComp, Vector2f& normal, float& depth) {
+
+	bool collide = collisionBetweenCircleAndBox(circleComp, boxComp, normal, depth);
 	normal = -normal;
+	return collide;
 }
 
 template<typename LeftICollision, typename RightICollision = LeftICollision>
@@ -163,7 +165,7 @@ public:
 		struct trampoline_s {
 			static bool trampoline(LeftICollision& lhs, RightICollision& rhs, Vector2f& normal, float& depth)
 			{
-				return std::invoke(Func, static_cast<LCollision&>(lhs), static_cast<RCollision&>(rhs), Vector2f& normal, float& depth);
+				return std::invoke(Func, static_cast<LCollision&>(lhs), static_cast<RCollision&>(rhs), normal, depth);
 			}
 		};
 
