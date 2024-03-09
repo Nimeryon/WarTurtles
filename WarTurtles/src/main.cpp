@@ -14,6 +14,10 @@
 #include "Components/Renderer/TextRenderer.h"
 #include "GameObjects/GameObject.h"
 
+void Test()
+{
+	std::cout<< "Test" << std::endl;
+}
 class DemoScene final : public Turtle::Scene
 {
 public:
@@ -28,6 +32,8 @@ public:
 		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteAnimationRenderer>();
 		sprite_renderer->InitAnimation("turtle","Idle");
 		testSprite->GetTransform()->SetScale({0.3f,0.3f});
+
+		Turtle::App::GetInputManager()->AddCallback(Test,Turtle::EventType::Jump);
 		
 	}
 	void Gui(const Turtle::Time& deltaTime) override
