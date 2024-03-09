@@ -13,7 +13,7 @@ namespace Turtle
     public:
         explicit SpriteAnimationRenderer(GameObject* parent, const std::string& name = "SpriteAnimationRenderer");
 
-        void InitAnimation(const TextureManager* textureManager, const TextureTag& textureTag,const AnimationTag& animationTag);
+        void InitAnimation(const TextureTag& textureTag,const AnimationTag& animationTag);
         void SetAnimation(const AnimationTag& animationTag,float speed);
         void SetAnimationSpeed(float speed);
         void SetColor(const sf::Color& color);

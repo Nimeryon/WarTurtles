@@ -117,7 +117,7 @@ std::unordered_map<Turtle::SpriteTag, Turtle::SpriteData> Turtle::TextureManager
             std::cout << "[Warning] Anim " << name << " is empty" << std::endl;
             continue;
         }
-        AnimationData animationData{ sequence};
+        AnimationData animationData{ sequence,anim.value<float>("Speed",50),};
         animationsData.emplace(name,animationData);
     }
     

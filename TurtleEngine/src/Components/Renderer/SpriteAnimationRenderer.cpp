@@ -9,12 +9,13 @@ namespace Turtle
         : Component(parent, name), m_textureManager(nullptr), m_currentFrame(0), m_frameDuration(100), m_elapsedTime(0)
     {}
 
-    void SpriteAnimationRenderer::InitAnimation(const TextureManager* textureManager, const TextureTag& textureTag, const AnimationTag& animationTag)
+    void SpriteAnimationRenderer::InitAnimation(const TextureTag& textureTag, const AnimationTag& animationTag)
     {
-        m_textureManager = textureManager;
+        m_textureManager = &SceneManager::Instance().GetCurrentScene()->GetTextureManager();
         m_textureTag = textureTag;
         m_animationTag = animationTag;
-        m_animationFrames = textureManager->GetTextureData(textureTag).AnimationsData.find(animationTag)->second.frames;
+        m_animationFrames = m_textureManager->GetTextureData(textureTag).AnimationsData.find(animationTag)->second.frames;
+        m_frameDuration = m_textureManager->GetTextureData(textureTag).AnimationsData.find(animationTag)->second.speed;
         m_currentFrame = 0;
         SetTextureRect(m_animationFrames[0]);
     }
@@ -22,6 +23,7 @@ namespace Turtle
     void SpriteAnimationRenderer::SetAnimation(const AnimationTag& animationTag, float speed)
     {
         m_animationTag = animationTag;
+        m_frameDuration = m_textureManager->GetTextureData(m_textureTag).AnimationsData.find(animationTag)->second.speed;
         m_currentFrame = 0;
         m_frameDuration = speed;
     }
