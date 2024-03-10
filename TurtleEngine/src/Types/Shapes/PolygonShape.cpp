@@ -7,28 +7,19 @@ Turtle::PolygonShape::PolygonShape() :
 }
 
 Turtle::PolygonShape::PolygonShape(Turtle::Vector2f& position, float rotation, std::vector<Turtle::Vector2f> vertices) :
-	Position(position), Rotation(rotation), Vertices(vertices), TransformedVertices(vertices)
+	Position(position), Rotation(rotation), Vertices(vertices)
 {
+	
 }
 
-void Turtle::PolygonShape::UpdateShapeFromTransform(Transform& transform)
-{
-	Vector2f newLocation = transform.GetGlobalPosition();
-	//TO DO : rotation
-	for (auto& vertice : TransformedVertices) {
-		vertice += newLocation - Position;
-	}
-	Position = newLocation;
-}
-
-Turtle::Vector2f Turtle::PolygonShape::GetCenter()
+Turtle::Vector2f Turtle::PolygonShape::GetCenter(const Transform& transform)
 {
 	Vector2f center = Vector2f::zero;
-
-	for (auto curVertice : TransformedVertices)
-		center += curVertice;
-
-	center /= TransformedVertices.size();
+	for (auto& vertice : Vertices) {
+		center += vertice;
+	}
+	center /= Vertices.size();
+	center = transform.TransformPoint(center);
 	return center;
 }
 
@@ -71,6 +62,15 @@ bool Turtle::PolygonShape::FindNearestPointTo(const Vector2f& location, const Po
 	}
 
 	return true;
+}
+
+std::vector<Turtle::Vector2f> Turtle::PolygonShape::GetTransformVertices(const Transform& transform)
+{
+	std::vector<Vector2f> transformedVertices = Vertices;
+	for (auto& vertice : transformedVertices) {
+		vertice = transform.TransformPoint(vertice);
+	}
+	return transformedVertices;
 }
 
 void Turtle::PolygonShape::CreateVertices()

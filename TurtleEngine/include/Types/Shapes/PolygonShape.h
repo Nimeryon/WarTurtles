@@ -11,16 +11,16 @@ public:
 	PolygonShape();
 	PolygonShape(Vector2f& position, float rotation, std::vector<Vector2f> Vertices);
 
-	void UpdateShapeFromTransform(Transform& transform) override;
-	Vector2f GetCenter();
+	Vector2f GetCenter(const Transform& transform);
 
 	Vector2f Position;
 	float Rotation;
 	std::vector<Vector2f> Vertices;
-	std::vector<Vector2f> TransformedVertices;
 
 	static bool ProjectTransformedVertices(const PolygonShape& polygon, const Vector2f& axis, float& min, float& max);
 	static bool FindNearestPointTo(const Vector2f& location, const PolygonShape& polygon, Vector2f& nearestPoint);
+
+	std::vector<Vector2f> GetTransformVertices(const Transform& transform);
 
 private:
 	virtual void CreateVertices();
