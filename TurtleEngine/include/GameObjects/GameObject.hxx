@@ -5,6 +5,7 @@
 
 #include "GameObject.h"
 #include "Components/Transform.h"
+#include "Managers/SceneManager.h"
 
 template <typename Type>
 Type* Turtle::GameObject::GetComponent() const
@@ -45,8 +46,10 @@ Type* Turtle::GameObject::AddComponent()
 	}
 
 	std::unique_ptr<Type> newComponent = std::make_unique<Type>(this);
+	Type* newComponentPtr = newComponent.get();
 	m_components.emplace_back(std::move(newComponent));
-	return static_cast<Type*>(m_components[m_components.size() - 1].get());
+
+	return newComponentPtr;
 }
 template <typename Type>
 void Turtle::GameObject::RemoveComponent()

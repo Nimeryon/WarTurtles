@@ -1,9 +1,10 @@
 #include "GameObjects/GameObject.h"
+
+#include "Managers/SceneManager.h"
 #include "Utils/String.h"
 
-Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, const std::string& tags) :
+Turtle::GameObject::GameObject(const std::string& name, GameObject* parent) :
 	INamable(name),
-	m_tags(tags),
 	m_transform(nullptr),
 	m_parent(nullptr)
 {
@@ -11,9 +12,46 @@ Turtle::GameObject::GameObject(const std::string& name, GameObject* parent, cons
 	SetParent(parent);
 }
 
+Turtle::GameObject* Turtle::GameObject::Create(const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(name);
+}
+Turtle::GameObject* Turtle::GameObject::Create(GameObject* parent, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(parent, name);
+}
+Turtle::GameObject* Turtle::GameObject::Create(const Vector2f& position, float rotation, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(position, rotation, name);
+}
+Turtle::GameObject* Turtle::GameObject::Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create(parent, position, rotation, name);
+}
+
+void Turtle::GameObject::Destroy(GameObject* object)
+{
+	SceneManager::Instance().GetCurrentScene()->Destroy(object);
+}
+
+Turtle::GameObject* Turtle::GameObject::Find(const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Find(name);
+}
+
+std::vector<Turtle::GameObject*> Turtle::GameObject::Finds(const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Finds(name);
+}
+
 // =====================
 // Object Properties
 // =====================
+
+void Turtle::GameObject::Destroy()
+{
+	Destroy(this);
+}
 
 void Turtle::GameObject::OnCreate()
 {

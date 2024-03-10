@@ -40,6 +40,13 @@ public:
 	// Game Objects
 	// =====================
 
+	GameObject* Create(const std::string& name = "Empty Object");
+	GameObject* Create(GameObject* parent, const std::string& name = "Empty Object");
+	GameObject* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+	GameObject* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+
+	void Destroy(GameObject* object);
+
 	// Returns first Object with name
 	GameObject* Find(const std::string& name);
 	// Returns all Object with name

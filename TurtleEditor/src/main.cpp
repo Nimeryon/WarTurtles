@@ -20,6 +20,11 @@ public:
         m_rect.setFillColor(sf::Color::Cyan);
     }
 
+    void FixedUpdate(const Turtle::Time& fixedTime) override
+    {
+        m_parent->GetTransform()->Rotate(1);
+    }
+
     void Draw(Turtle::Window& window) override
     {
         window.draw(m_rect, m_parent->GetTransform()->GetTransformMatrix());
@@ -34,8 +39,9 @@ class DemoScene : public Turtle::Scene
 public:
     void OnCreate() override
     {
-        object.AddComponent<TestComponent>();
-        object.GetTransform()->Move({ 200, 200 });
+        auto object = Create("Test 1");
+        object->AddComponent<TestComponent>();
+        object->GetTransform()->Move({ 200, 200 });
     }
 
 	void Gui(const Turtle::Time& deltaTime) override
@@ -57,19 +63,6 @@ public:
         ImGui::Text(std::format("{} FPS", floorf(1.f / deltaTime.asSeconds())).c_str());
         ImGui::End();
 	}
-
-    void FixedUpdate(const Turtle::Time& fixedTime) override
-    {
-        object.GetTransform()->Rotate(1);
-    }
-
-    void Draw(Turtle::Window& window) override
-	{
-        object.Draw(window);
-	}
-
-protected:
-	Turtle::GameObject object;
 };
 
 int main()

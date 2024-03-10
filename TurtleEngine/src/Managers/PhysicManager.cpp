@@ -1,10 +1,16 @@
 #include "Managers/PhysicManager.h"
+#include "Managers/SceneManager.h"
 
-Turtle::PhysicManager::PhysicManager(Vector2f globalGravity) : m_globalGravity(globalGravity)
+Turtle::PhysicManager::PhysicManager(Vector2f globalGravity) :
+	m_globalGravity(globalGravity)
+{}
+
+const Turtle::PhysicManager& Turtle::PhysicManager::Instance()
 {
+	return SceneManager::Instance().GetCurrentScene()->GetPhysicManager();
 }
 
-void Turtle::PhysicManager::ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Turtle::Time& fixedTime)
+void Turtle::PhysicManager::ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Turtle::Time& fixedTime) const
 {
 	ObjectPhysicComponent.m_acceleration = ( m_globalGravity + ObjectPhysicComponent.GetAllForces() ) / ObjectPhysicComponent.m_mass;
 	ObjectTransformComponent.Move(ObjectPhysicComponent.m_velocity * fixedTime.asSeconds());

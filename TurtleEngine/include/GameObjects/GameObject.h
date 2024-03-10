@@ -5,6 +5,7 @@
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
 #include "Components/Component.h"
+#include "Types/Vector2.h"
 
 namespace Turtle
 {
@@ -13,11 +14,25 @@ class Transform;
 class GameObject : public INamable, public IObject, public IActivable
 {
 public:
-	explicit GameObject(const std::string& name = "Empty Object", GameObject* parent = nullptr, const std::string& tags = "");
+	explicit GameObject(const std::string& name = "Empty Object", GameObject* parent = nullptr);
+
+	static GameObject* Create(const std::string& name = "Empty Object");
+	static GameObject* Create(GameObject* parent, const std::string& name = "Empty Object");
+	static GameObject* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+	static GameObject* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+
+	static void Destroy(GameObject* object);
+
+	// Returns first Object with name
+	static GameObject* Find(const std::string& name);
+	// Returns all Object with name
+	static std::vector<GameObject*> Finds(const std::string& name);
 
 	// =====================
 	// Object Properties
 	// =====================
+
+	void Destroy();
 
 	void OnCreate() override;
 	void OnDestroyed() override;

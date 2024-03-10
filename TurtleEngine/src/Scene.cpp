@@ -89,6 +89,59 @@ void Turtle::Scene::Gui(const Time& deltaTime)
 // Game Objects
 // =====================
 
+Turtle::GameObject* Turtle::Scene::Create(const std::string& name)
+{
+	std::unique_ptr<GameObject> object = std::make_unique<GameObject>(name);
+	GameObject* objectPtr = object.get();
+	m_objects.emplace_back(std::move(object));
+
+	objectPtr->OnCreate();
+	return objectPtr;
+}
+Turtle::GameObject* Turtle::Scene::Create(GameObject* parent, const std::string& name)
+{
+	std::unique_ptr<GameObject> object = std::make_unique<GameObject>(name, parent);
+	GameObject* objectPtr = object.get();
+	m_objects.emplace_back(std::move(object));
+
+	objectPtr->OnCreate();
+	return objectPtr;
+}
+Turtle::GameObject* Turtle::Scene::Create(const Vector2f& position, float rotation, const std::string& name)
+{
+	GameObject* object = Create(name);
+	object->GetTransform()->SetPosition(position);
+	object->GetTransform()->SetRotation(rotation);
+
+	return object;
+}
+
+Turtle::GameObject* Turtle::Scene::Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name)
+{
+	GameObject* object = Create(parent, name);
+	object->GetTransform()->SetPosition(position);
+	object->GetTransform()->SetRotation(rotation);
+
+	return object;
+}
+
+void Turtle::Scene::Destroy(GameObject* object)
+{
+	if (object == nullptr)
+		return;
+
+	const auto& it = std::find_if(
+		m_objects.begin(),
+		m_objects.end(),
+		[object](const std::unique_ptr<GameObject>& _object) { return object == _object.get(); }
+	);
+	if (it != m_objects.end())
+	{
+		object->OnDestroyed();
+		m_objects.erase(it);
+	}
+}
+
 Turtle::GameObject* Turtle::Scene::Find(const std::string& name)
 {
 	if (m_findCacheObject && m_findCacheObject->GetName() == name)
