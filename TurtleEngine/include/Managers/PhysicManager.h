@@ -3,11 +3,13 @@
 #define PHYSICMANAGER_H
 #include "Types/Vector2.h"
 #include "Utils/Time.h"
-#include "GameObjects/GameObject.h"
 #include "Components/Physic.h"
 
 namespace Turtle
 {
+	class GameObject;
+	class Transform;
+
 	class PhysicManager final
 	{
 	public:
@@ -16,7 +18,7 @@ namespace Turtle
 		~PhysicManager() = default;
 
 		void ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Time& fixedTime) const;
-		void ResolveCollisionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, Vector2f& normal, float value);
+		void ResolveCollisionFor(GameObject& ObjectA, GameObject& ObjectB, Vector2f& normal, float value);
 		static const PhysicManager& Instance();
 
 		Vector2f GetGlobalGravity() const;

@@ -7,6 +7,9 @@
 #include "App.h"
 #include "Scene.h"
 #include "Components/Transform.h"
+#include "Components/Physic.h"
+#include "Components/Collisions/CircleCollisionComponent.h"
+#include "Components/Collisions/PolygonCollisionComponent.h"
 #include "Managers/SceneManager.h"
 #include "Types/Vector2.h"
 #include "GameObjects/GameObject.h"
@@ -42,6 +45,25 @@ public:
         auto object = Create("Test 1");
         object->AddComponent<TestComponent>();
         object->GetTransform()->Move({ 200, 200 });
+
+        auto circle1 = Create("Circle 1");
+        circle1->AddComponent<Turtle::Physic>();
+        circle1->GetComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 0.5f,-0.5f }, Turtle::Vector2f::zero, 1, 0, 0.5f);
+        circle1->AddComponent<Turtle::CircleCollisionComponent>();
+        Turtle::Vector2f testvec{ 200,500 };
+        circle1->GetComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters(testvec, 50.f);
+
+        circle1->GetTransform()->Move({ 200, 500 });
+
+        auto circle2 = Create("Circle 2");
+        circle2->AddComponent<Turtle::Physic>();
+        circle2->GetComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -0.5f,-0.5f }, Turtle::Vector2f::zero, 1, 0, 0.5f);
+        circle2->AddComponent<Turtle::PolygonCollisionComponent>();
+        testvec = Turtle::Vector2f{ 600,500 };
+        circle2->GetComponent<Turtle::PolygonCollisionComponent>()->InitCollisionParameters(testvec,0.f,100.f,100.f);
+        circle2->GetTransform()->Move({ 600, 500 });
+
+        Scene::OnCreate();
     }
 
 	void Gui(const Turtle::Time& deltaTime) override

@@ -11,11 +11,15 @@ namespace Turtle
 	{
 	public:
 		CircleCollisionComponent() = delete;
+		explicit CircleCollisionComponent(GameObject* parent, const std::string& name = "Collision Component (Circle)");
 		CircleCollisionComponent(GameObject* parent, const std::string& name, CircleShape& circleCollision);
 		CircleCollisionComponent(GameObject* parent, const std::string& name, Vector2f& center, float radius);
 
 		void UpdateCollisionTransform(Transform& transform) override;
 		const CircleShape& GetShape() const override;
+
+		void InitCollisionParameters(Vector2f& center, float radius);
+		void InitCollisionParameters(CircleShape& circleCollision);
 
 	private:
 		CircleShape CollisionCircle;

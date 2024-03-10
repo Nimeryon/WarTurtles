@@ -1,6 +1,11 @@
 #include "Components/Collisions/PolygonCollisionComponent.h"
 #include "Types/Shapes/BoxShape.h"
 
+Turtle::PolygonCollisionComponent::PolygonCollisionComponent(GameObject* parent, const std::string& name) : ICollisionComponent(parent, name)
+{
+	SetActive(false);
+}
+
 Turtle::PolygonCollisionComponent::PolygonCollisionComponent(GameObject* parent, const std::string& name, PolygonShape& polygonCollision) : ICollisionComponent(parent,name), CollisionPolygon(polygonCollision)
 {
 }
@@ -17,4 +22,16 @@ void Turtle::PolygonCollisionComponent::UpdateCollisionTransform(Transform& tran
 const Turtle::PolygonShape& Turtle::PolygonCollisionComponent::GetShape() const
 {
 	return CollisionPolygon;
+}
+
+void Turtle::PolygonCollisionComponent::InitCollisionParameters(PolygonShape& polygonCollision)
+{
+	CollisionPolygon = polygonCollision;
+	SetActive(true);
+}
+
+void Turtle::PolygonCollisionComponent::InitCollisionParameters(Vector2f& location, float rotation, float width, float height)
+{
+	CollisionPolygon = BoxShape{ location,rotation,width,height };
+	SetActive(true);
 }

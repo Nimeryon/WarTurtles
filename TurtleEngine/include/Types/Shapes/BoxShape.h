@@ -8,7 +8,7 @@ namespace Turtle
 {
 class BoxShape : public PolygonShape {
 public:
-	BoxShape() = delete;
+	BoxShape();
 	BoxShape(Vector2f& position, float rotation, float width, float height);
 
 	float Width;

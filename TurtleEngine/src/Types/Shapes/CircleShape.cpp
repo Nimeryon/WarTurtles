@@ -1,5 +1,9 @@
 #include "Types/Shapes/CircleShape.h"
 
+Turtle::CircleShape::CircleShape() : Center(Vector2f::zero), Radius(0.f)
+{
+}
+
 Turtle::CircleShape::CircleShape(Vector2f& center, float radius) : Center(center), Radius(radius)
 {
 }

@@ -7,9 +7,12 @@
 #include "Managers/FontManager.h"
 #include "Managers/PhysicManager.h"
 #include "Interfaces/IObject.h"
+#include "Components/Collisions/CollisionDispatcher.h"
 
 namespace Turtle
 {
+class ICollisionComponent;
+
 class Scene : public IObject
 {
 public:
@@ -21,7 +24,6 @@ public:
 	const TextureManager& GetTextureManager() const;
 	const FontManager& GetFontManager() const;
 	const PhysicManager& GetPhysicManager() const;
-	void test();
 
 	// =====================
 	// Object Properties
@@ -57,6 +59,7 @@ protected:
 	TextureManager m_textureManager;
 	FontManager m_fontManager;
 	PhysicManager m_physicManager;
+	CollisionDispatcher<ICollisionComponent> m_collisionDispatcher;
 
 private:
 	std::vector<std::unique_ptr<GameObject>> m_objects;

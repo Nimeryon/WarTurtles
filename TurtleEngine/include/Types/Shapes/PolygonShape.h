@@ -8,7 +8,7 @@ namespace Turtle
 {
 class PolygonShape : public IShape {
 public:
-	PolygonShape() = delete;
+	PolygonShape();
 	PolygonShape(Vector2f& position, float rotation, std::vector<Vector2f> Vertices);
 
 	void UpdateShapeFromTransform(Transform& transform) override;

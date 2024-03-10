@@ -1,5 +1,9 @@
 #include "Types/Shapes/BoxShape.h"
 
+Turtle::BoxShape::BoxShape() : Width(0.f), Height(0.f)
+{
+}
+
 Turtle::BoxShape::BoxShape(Vector2f& position, float rotation, float width, float height) : PolygonShape(position, rotation,std::vector<Vector2f>()), Width(width), Height(height)
 {
 	CreateVertices();
@@ -7,7 +11,7 @@ Turtle::BoxShape::BoxShape(Vector2f& position, float rotation, float width, floa
 
 void Turtle::BoxShape::CreateVertices()
 {
-	Vertices.empty();
+	Vertices.clear();
 	float top = Height / 2.f;
 	float bottom = top - Height;
 	float left = -Width / 2.f;

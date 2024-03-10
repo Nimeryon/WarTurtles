@@ -1,6 +1,5 @@
 #include "Scene.h"
-#include "Components/Collisions/CollisionDispatcher.h"
-
+#include "Components/Collisions/CollisionCallBacks.h"
 #include "Managers/SceneManager.h"
 
 Turtle::Scene::Scene() :
@@ -17,12 +16,6 @@ const Turtle::TextureManager& Turtle::Scene::GetTextureManager() const { return 
 const Turtle::FontManager& Turtle::Scene::GetFontManager() const { return m_fontManager; }
 const Turtle::PhysicManager& Turtle::Scene::GetPhysicManager() const { return m_physicManager; }
 
-void Turtle::Scene::test()
-{
-	CollisionDispatcher<ICollisionComponent> dispatcher;
-	dispatcher.add<CircleCollisionComponent, CircleCollisionComponent, collisionBetweenCircles>();
-}
-
 // =====================
 // Object Properties
 // =====================
@@ -34,6 +27,11 @@ void Turtle::Scene::OnCreate()
 		if (object->IsActive())
 			object->OnCreate();
 	}
+
+	m_collisionDispatcher.add<CircleCollisionComponent, CircleCollisionComponent, collisionBetweenCircles>();
+	m_collisionDispatcher.add<PolygonCollisionComponent, PolygonCollisionComponent, collisionBetweenPolygons>();
+	m_collisionDispatcher.add<CircleCollisionComponent, PolygonCollisionComponent, collisionBetweenCircleAndPolygon>();
+	m_collisionDispatcher.add<PolygonCollisionComponent, CircleCollisionComponent, collisionBetweenPolygonAndCircle>();
 }
 void Turtle::Scene::OnDestroyed()
 {
@@ -64,9 +62,26 @@ void Turtle::Scene::FixedUpdate(const Time& fixedTime)
 {
 	for (auto& object : m_objects)
 	{
-		if (object->IsActive())
+		if (object->IsActive()) {
 			object->FixedUpdate(fixedTime);
+			Physic* objectPhysicComponent = object.get()->GetComponent<Physic>();
+			ICollisionComponent* objectCollisionComponent = object.get()->GetComponent<ICollisionComponent>();
+			if (objectPhysicComponent) {
+				m_physicManager.ComputeNewPositionFor(*objectPhysicComponent, *object.get()->GetTransform(), fixedTime);
+				//TO MODIFY : for now, check all objects for collision
+				for (auto& otherObject : m_objects) {
+					if (otherObject != object) {
+						Vector2f normal;
+						float depth;
+						ICollisionComponent* otherObjectCollisionComponent = otherObject.get()->GetComponent<ICollisionComponent>();
+						if (otherObjectCollisionComponent && m_collisionDispatcher(*objectCollisionComponent, *otherObjectCollisionComponent, normal, depth))
+							m_physicManager.ResolveCollisionFor(*object.get(), *otherObject.get(),normal,depth);
+					}
+				}
+			}
+		}
 	}
+
 }
 void Turtle::Scene::Draw(Window& window)
 {

@@ -8,7 +8,7 @@ namespace Turtle
 {
 class CircleShape : public IShape {
 public:
-	CircleShape() = delete;
+	CircleShape();
 	CircleShape(Vector2f& center, float radius);
 
 	void UpdateShapeFromTransform(Transform& transform) override;

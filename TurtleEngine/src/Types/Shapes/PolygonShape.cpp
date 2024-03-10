@@ -1,6 +1,13 @@
 #include "Types/Shapes/PolygonShape.h"
 
-Turtle::PolygonShape::PolygonShape(Turtle::Vector2f& position, float rotation, std::vector<Turtle::Vector2f> vertices) : 
+Turtle::PolygonShape::PolygonShape() :
+	Position(Vector2f::zero),
+	Rotation(0.f),
+	NeedToUpdateTransformedVertices(false)
+{
+}
+
+Turtle::PolygonShape::PolygonShape(Turtle::Vector2f& position, float rotation, std::vector<Turtle::Vector2f> vertices) :
 	Position(position),Rotation(rotation),Vertices(vertices), NeedToUpdateTransformedVertices(true)
 {
 	
