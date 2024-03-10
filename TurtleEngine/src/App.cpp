@@ -5,12 +5,20 @@
 
 #include "Managers/SceneManager.h"
 
+std::unique_ptr<Turtle::InputManager> Turtle::App::m_inputManager = nullptr;
+
 Turtle::App::App(Window& window, const Time& logicTime) :
 	m_window(window),
 	m_logicTime(logicTime)
 {
+	m_inputManager = std::make_unique<InputManager>(window);
 	m_clock.restart();
 	ImGui::SFML::Init(m_window);
+}
+
+Turtle::InputManager* Turtle::App::GetInputManager()
+{
+	return m_inputManager.get();
 }
 
 void Turtle::App::Run()
@@ -19,7 +27,7 @@ void Turtle::App::Run()
 	{
 		Time deltaTime = { m_clock.restart() };
 
-		_ProcessInputs();
+		m_inputManager->HandleEvents();
 		_Update(deltaTime);
 		_FixedUpdate(deltaTime);
 		_Draw(deltaTime);

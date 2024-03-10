@@ -8,23 +8,32 @@
 #include "Managers/AudioManager.h"
 #include "Managers/SceneManager.h"
 #include "Scene.h"
+#include "Components/Renderer/ShapeRenderer.h"
+#include "Components/Renderer/SpriteAnimationRenderer.h"
+#include "Components/Renderer/SpriteRenderer.h"
+#include "Components/Renderer/TextRenderer.h"
+#include "GameObjects/GameObject.h"
 
-class DemoScene : public Turtle::Scene
+void Test()
 {
+	std::cout<< "Test" << std::endl;
+}
+class DemoScene final : public Turtle::Scene
+{
+public:
 	void OnCreate() override
 	{
-		m_audioManager.LoadSound("creeper",Turtle::SoundType::Sound,"creeper.mp3");
 		m_audioManager.LoadSound("music",Turtle::SoundType::Music,"music.mp3");
-		m_audioManager.SetGlobalVolume(Turtle::SoundType::Sound,100.f);
-		m_audioManager.SetGlobalVolume(Turtle::SoundType::Music,5.f);
-		m_audioManager.PlaySound("music",true);
-		m_audioManager.PlaySound("creeper");
+		m_textureManager.LoadTexture("turtle","turtle.png");
 
-		m_textureManager.LoadTexture("debug","debug.png");
-		for(const auto& data : m_textureManager.GetTextureData("debug").SpritesData)
-		{
-			std::cout<<data.first<<std::endl;
-		}
+		m_audioManager.PlaySound("music",true);
+		
+		Turtle::GameObject* testSprite = Create("Test");
+		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteAnimationRenderer>();
+		sprite_renderer->InitAnimation("turtle","Idle");
+		testSprite->GetTransform()->SetScale({0.3f,0.3f});
+
+		Turtle::App::GetInputManager()->AddCallback(Test,Turtle::EventType::Jump);
 		
 	}
 	void Gui(const Turtle::Time& deltaTime) override

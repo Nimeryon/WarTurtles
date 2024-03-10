@@ -3,7 +3,6 @@
 #include "Utils/Time.h"
 #include "Utils/Window.h"
 #include "Scene.h"
-
 Turtle::SceneManager::SceneManager() :
 	m_currentScene(nullptr),
 	m_currentSceneID(0),
@@ -15,11 +14,11 @@ Turtle::Scene* Turtle::SceneManager::GetCurrentScene() const { return m_currentS
 unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene)
 {
 	const auto& inserted = m_scenes.emplace(m_insertedSceneID, std::move(scene)).first;
-	inserted->second->OnCreate();
 
 	if (setScene)
 	{
 		SetScene(m_insertedSceneID);
+		inserted->second->OnCreate();
 	}
 
 	m_insertedSceneID++;
@@ -49,6 +48,7 @@ void Turtle::SceneManager::SetScene(unsigned int sceneID)
 		// Utilisation de std::move de manière plus explicite
 		m_currentScene = it->second.get();
 		m_currentSceneID = sceneID;
+		m_currentScene->OnCreate();
 	}
 }
 void Turtle::SceneManager::NextScene()

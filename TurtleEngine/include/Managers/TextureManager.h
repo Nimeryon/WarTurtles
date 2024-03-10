@@ -27,6 +27,7 @@ namespace Turtle
         static const AnimationData defaultAnimationData;
         
         std::vector<SpriteTag> frames;
+        float speed;
     };
     
     struct TextureData

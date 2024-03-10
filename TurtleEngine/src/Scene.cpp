@@ -4,7 +4,8 @@
 
 Turtle::Scene::Scene() :
 	m_findCacheObject(nullptr)
-{}
+{
+}
 
 const Turtle::Scene* Turtle::Scene::Current()
 {

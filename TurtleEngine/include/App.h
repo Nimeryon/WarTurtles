@@ -1,6 +1,7 @@
 // App.h
 #ifndef APP_H // include guard
 #define APP_H
+#include "Managers/InputManager.h"
 #include "Utils/Clock.h"
 #include "Utils/Time.h"
 #include "Utils/Window.h"
@@ -11,12 +12,12 @@ class App
 {
 public:
     App(Window& window, const Time& logicTime = Seconds(1.f / 60.f));
-
+    static InputManager* GetInputManager();
     void Run();
 
 private:
     Window& m_window;
-
+    static std::unique_ptr<InputManager> m_inputManager;
     Clock m_clock;
     Time m_logicTime;
     Time m_currentLogicTime;
