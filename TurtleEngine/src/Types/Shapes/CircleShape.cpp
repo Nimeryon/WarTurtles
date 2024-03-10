@@ -10,7 +10,8 @@ Turtle::CircleShape::CircleShape(Vector2f& center, float radius) : Center(center
 
 void Turtle::CircleShape::UpdateShapeFromTransform(Transform& transform)
 {
-	//TO DO
+	Vector2f newLocation = transform.GetGlobalPosition();
+	Center = newLocation;
 }
 
 void Turtle::CircleShape::ProjectCircle(const CircleShape& circle, const Vector2f& axis, float& min, float& max)

@@ -13,7 +13,7 @@ namespace Turtle
 	class PhysicManager final
 	{
 	public:
-		PhysicManager(Vector2f globalGravity = {0, -9.81f});
+		PhysicManager(Vector2f globalGravity = {0, 9.81f});
 		PhysicManager(PhysicManager&) = delete;
 		~PhysicManager() = default;
 

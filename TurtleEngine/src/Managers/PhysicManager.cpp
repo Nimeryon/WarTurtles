@@ -13,7 +13,7 @@ const Turtle::PhysicManager& Turtle::PhysicManager::Instance()
 
 void Turtle::PhysicManager::ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Time& fixedTime) const
 {
-	ObjectPhysicComponent.m_acceleration = ( m_globalGravity + ObjectPhysicComponent.GetAllForces() ) / ObjectPhysicComponent.m_mass;
+	ObjectPhysicComponent.m_acceleration += ( m_globalGravity + ObjectPhysicComponent.GetAllForces() ) / ObjectPhysicComponent.m_mass;
 	ObjectTransformComponent.Move(ObjectPhysicComponent.m_velocity * fixedTime.asSeconds());
 	ObjectPhysicComponent.m_velocity += ObjectPhysicComponent.m_acceleration * fixedTime.asSeconds();
 }

@@ -18,7 +18,7 @@ unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene)
 	if (setScene)
 	{
 		SetScene(m_insertedSceneID);
-		inserted->second->OnCreate();
+		//inserted->second->OnCreate(); already done in SetScene
 	}
 
 	m_insertedSceneID++;

@@ -15,6 +15,8 @@ namespace Turtle
 		ICollisionComponent(GameObject* parent, const std::string& name);
 		virtual ~ICollisionComponent();
 
+		void FixedUpdate(const Time& fixedTime) override;
+
 		virtual void UpdateCollisionTransform(Transform& transform) = 0;
 
 		virtual const IShape& GetShape() const = 0;

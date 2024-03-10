@@ -22,4 +22,5 @@ void Turtle::BoxShape::CreateVertices()
 	Vertices.push_back(Vector2f(right, bottom));
 	Vertices.push_back(Vector2f(left, bottom));
 
+	TransformedVertices = Vertices;
 }

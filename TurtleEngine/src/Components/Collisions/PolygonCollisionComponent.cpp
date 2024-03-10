@@ -16,7 +16,7 @@ Turtle::PolygonCollisionComponent::PolygonCollisionComponent(GameObject* parent,
 
 void Turtle::PolygonCollisionComponent::UpdateCollisionTransform(Transform& transform)
 {
-	//TO DO
+	CollisionPolygon.UpdateShapeFromTransform(transform);
 }
 
 const Turtle::PolygonShape& Turtle::PolygonCollisionComponent::GetShape() const

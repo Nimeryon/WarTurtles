@@ -18,7 +18,6 @@ public:
 	float Rotation;
 	std::vector<Vector2f> Vertices;
 	std::vector<Vector2f> TransformedVertices;
-	bool NeedToUpdateTransformedVertices;
 
 	static bool ProjectTransformedVertices(const PolygonShape& polygon, const Vector2f& axis, float& min, float& max);
 	static bool FindNearestPointTo(const Vector2f& location, const PolygonShape& polygon, Vector2f& nearestPoint);

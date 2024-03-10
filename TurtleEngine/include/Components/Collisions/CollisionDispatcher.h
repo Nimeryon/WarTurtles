@@ -25,11 +25,9 @@ public:
 		};
 
 		key_t key(typeid(LCollision).name(), typeid(RCollision).name());
-		key_t inverseKey(typeid(RCollision).name(), typeid(LCollision).name());
 		if (m_map.contains(key))
 			throw std::runtime_error("This collision callback is already in the map");
 		
-
 		m_map.insert({ key, &trampoline_s::trampoline });
 	}
 

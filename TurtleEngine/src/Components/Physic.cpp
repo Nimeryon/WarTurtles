@@ -33,7 +33,7 @@ Turtle::Vector2f Turtle::Physic::GetLocalGravity()
 
 Turtle::Vector2f Turtle::Physic::GetAllForces()
 {
-	return m_localGravity - m_acceleration * m_friction;
+	return m_localGravity ;
 }
 
 void Turtle::Physic::InitPhysicParameters(Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float friction, float restitution)

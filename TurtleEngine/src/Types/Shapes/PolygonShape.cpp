@@ -2,21 +2,23 @@
 
 Turtle::PolygonShape::PolygonShape() :
 	Position(Vector2f::zero),
-	Rotation(0.f),
-	NeedToUpdateTransformedVertices(false)
+	Rotation(0.f)
 {
 }
 
 Turtle::PolygonShape::PolygonShape(Turtle::Vector2f& position, float rotation, std::vector<Turtle::Vector2f> vertices) :
-	Position(position),Rotation(rotation),Vertices(vertices), NeedToUpdateTransformedVertices(true)
+	Position(position), Rotation(rotation), Vertices(vertices), TransformedVertices(vertices)
 {
-	
 }
 
 void Turtle::PolygonShape::UpdateShapeFromTransform(Transform& transform)
 {
-	//TO DO
-	NeedToUpdateTransformedVertices = true;
+	Vector2f newLocation = transform.GetGlobalPosition();
+	//TO DO : rotation
+	for (auto& vertice : TransformedVertices) {
+		vertice += newLocation - Position;
+	}
+	Position = newLocation;
 }
 
 Turtle::Vector2f Turtle::PolygonShape::GetCenter()

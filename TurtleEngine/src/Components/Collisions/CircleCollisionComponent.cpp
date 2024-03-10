@@ -15,9 +15,8 @@ Turtle::CircleCollisionComponent::CircleCollisionComponent(GameObject* parent, c
 
 void Turtle::CircleCollisionComponent::UpdateCollisionTransform(Transform& transform)
 {
-	//TO DO
+	CollisionCircle.UpdateShapeFromTransform(transform);
 }
-
 
 const Turtle::CircleShape& Turtle::CircleCollisionComponent::GetShape() const
 {
