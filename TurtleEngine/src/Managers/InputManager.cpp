@@ -59,7 +59,9 @@ void Turtle::InputManager::HandleEvents() {
                 Notify(EventType::Validate);
             }
         }
+
         ImGui::SFML::ProcessEvent(m_window, event);
     }
 
+    SceneManager::Instance().ProcessInputs();
 }

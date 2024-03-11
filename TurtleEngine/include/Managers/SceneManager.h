@@ -12,6 +12,7 @@
 namespace Turtle
 {
 class Scene;
+class App;
 	
 using ScenePtr = std::unique_ptr<Scene>;
 	
@@ -48,6 +49,11 @@ private:
     Scene* m_currentScene;
 	unsigned int m_currentSceneID;
     unsigned int m_insertedSceneID;
+
+	void _HandleObjectCreation();
+	void _HandleObjectDestroy();
+
+	friend App;
 };
 }
 

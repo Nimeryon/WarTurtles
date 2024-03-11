@@ -27,10 +27,14 @@ void Turtle::App::Run()
 	{
 		Time deltaTime = { m_clock.restart() };
 
+		SceneManager::Instance()._HandleObjectCreation();
+
 		m_inputManager->HandleEvents();
 		_Update(deltaTime);
 		_FixedUpdate(deltaTime);
 		_Draw(deltaTime);
+
+		SceneManager::Instance()._HandleObjectDestroy();
 	}
 
 	ImGui::SFML::Shutdown();

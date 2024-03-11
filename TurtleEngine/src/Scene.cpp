@@ -2,7 +2,9 @@
 #include "Managers/SceneManager.h"
 
 Turtle::Scene::Scene() :
-	m_findCacheObject(nullptr)
+	m_findCacheObject(nullptr),
+	m_needObjectCreate(false),
+	m_needObjectDestroy(false)
 {}
 
 const Turtle::Scene* Turtle::Scene::Current()
@@ -95,18 +97,22 @@ void Turtle::Scene::Gui(Window& window, const Time& deltaTime)
 
 Turtle::GameObject* Turtle::Scene::Create(const std::string& name)
 {
+	m_needObjectCreate = true;
+
 	std::unique_ptr<GameObject> object = std::make_unique<GameObject>(name);
 	GameObject* objectPtr = object.get();
-	m_objects.emplace_back(std::move(object));
+	m_objectsToCreate.emplace_back(std::move(object));
 
 	objectPtr->OnCreate();
 	return objectPtr;
 }
 Turtle::GameObject* Turtle::Scene::Create(GameObject* parent, const std::string& name)
 {
+	m_needObjectCreate = true;
+
 	std::unique_ptr<GameObject> object = std::make_unique<GameObject>(name, parent);
 	GameObject* objectPtr = object.get();
-	m_objects.emplace_back(std::move(object));
+	m_objectsToCreate.emplace_back(std::move(object));
 
 	objectPtr->OnCreate();
 	return objectPtr;
@@ -133,16 +139,8 @@ void Turtle::Scene::Destroy(GameObject* object)
 	if (object == nullptr)
 		return;
 
-	const auto& it = std::find_if(
-		m_objects.begin(),
-		m_objects.end(),
-		[object](const std::unique_ptr<GameObject>& _object) { return object == _object.get(); }
-	);
-	if (it != m_objects.end())
-	{
-		object->OnDestroyed();
-		m_objects.erase(it);
-	}
+	m_needObjectDestroy = true;
+	m_objectsToDestroy.emplace_back(object);
 }
 
 Turtle::GameObject* Turtle::Scene::Find(const std::string& name)
@@ -182,4 +180,41 @@ std::vector<Turtle::GameObject*> Turtle::Scene::Finds(const std::string& name)
 	}
 
 	return objects;
+}
+
+void Turtle::Scene::_HandleObjectCreation()
+{
+	if (!m_needObjectCreate)
+		return;
+
+	for (auto& object : m_objectsToCreate)
+	{
+		object.get()->OnCreate();
+		m_objects.emplace_back(std::move(object));
+	}
+
+	m_needObjectCreate = false;
+	m_objectsToCreate.clear();
+}
+void Turtle::Scene::_HandleObjectDestroy()
+{
+	if (!m_needObjectDestroy)
+		return;
+
+	for (auto& object : m_objectsToDestroy)
+	{
+		object->OnDestroyed();
+		const auto& it = std::find_if(
+			m_objects.begin(),
+			m_objects.end(),
+			[object](const std::unique_ptr<GameObject>& _object) { return object == _object.get(); }
+		);
+		if (it != m_objects.end())
+		{
+			m_objects.erase(it);
+		}
+	}
+
+	m_needObjectDestroy = false;
+	m_objectsToDestroy.clear();
 }

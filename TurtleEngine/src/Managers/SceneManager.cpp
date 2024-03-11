@@ -3,6 +3,8 @@
 #include "Utils/Time.h"
 #include "Utils/Window.h"
 #include "Scene.h"
+#include "App.h"
+
 Turtle::SceneManager::SceneManager() :
 	m_currentScene(nullptr),
 	m_currentSceneID(0),
@@ -103,5 +105,20 @@ void Turtle::SceneManager::Gui(Window& window, const Time& dt) const
 	if (m_currentScene)
 	{
 		m_currentScene->Gui(window, dt);
+	}
+}
+
+void Turtle::SceneManager::_HandleObjectCreation()
+{
+	if (m_currentScene)
+	{
+		m_currentScene->_HandleObjectCreation();
+	}
+}
+void Turtle::SceneManager::_HandleObjectDestroy()
+{
+	if (m_currentScene)
+	{
+		m_currentScene->_HandleObjectDestroy();
 	}
 }

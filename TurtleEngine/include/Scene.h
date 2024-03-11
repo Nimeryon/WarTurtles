@@ -10,6 +10,8 @@
 
 namespace Turtle
 {
+class SceneManager;
+
 class Scene : public IObject
 {
 public:
@@ -60,7 +62,17 @@ protected:
 
 private:
 	std::vector<std::unique_ptr<GameObject>> m_objects;
+	std::vector<std::unique_ptr<GameObject>> m_objectsToCreate;
+	std::vector<GameObject*> m_objectsToDestroy;
+	bool m_needObjectCreate;
+	bool m_needObjectDestroy;
+
 	GameObject* m_findCacheObject;
+
+	void _HandleObjectCreation();
+	void _HandleObjectDestroy();
+
+	friend SceneManager;
 };
 }
 
