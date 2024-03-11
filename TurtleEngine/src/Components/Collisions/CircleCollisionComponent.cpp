@@ -41,6 +41,12 @@ void Turtle::CircleCollisionComponent::SetRadius(float radius)
 	m_debugShape.setRadius(m_radius);
 }
 
+Turtle::Vector2f Turtle::CircleCollisionComponent::GetContactPoint(const Vector2f& centerOfCollidingObject) const
+{
+	Vector2f center = GetCenter();
+	return center + Vector2f::Normalize(centerOfCollidingObject - center) * GetRadius();
+}
+
 void Turtle::CircleCollisionComponent::ProjectCircle(const CircleCollisionComponent& circle, const Vector2f& axis, float& min, float& max)
 {
 	Vector2f direction = Vector2f::Normalize(axis);

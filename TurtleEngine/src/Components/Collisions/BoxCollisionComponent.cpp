@@ -42,6 +42,7 @@ void Turtle::BoxCollisionComponent::SetHeight(float height)
 void Turtle::BoxCollisionComponent::DebugDraw(Window& window)
 {
 	window.draw(m_debugShape, m_parent->GetTransform()->GetTransformMatrix());
+	
 }
 
 void Turtle::BoxCollisionComponent::_UpdateVertice()

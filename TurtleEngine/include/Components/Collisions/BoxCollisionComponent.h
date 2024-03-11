@@ -12,7 +12,7 @@ namespace Turtle
 	{
 	public:
 		BoxCollisionComponent() = delete;
-		explicit BoxCollisionComponent(GameObject* parent, const std::string& name = "Collision Component (Circle)");
+		explicit BoxCollisionComponent(GameObject* parent, const std::string& name = "Collision Component (Box)");
 
 		void InitCollisionParameters(float width, float height);
 

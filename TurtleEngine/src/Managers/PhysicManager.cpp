@@ -41,8 +41,13 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 {
 	Physic* ObjectAPhysicComponent = ObjectA.GetComponent<Physic>();
 	Physic* ObjectBPhysicComponent = ObjectB.GetComponent<Physic>();
+	Transform* ObjectATransformComponent = ObjectA.GetTransform();
+	Transform* ObjectBTransformComponent = ObjectB.GetTransform();
 
 	if (ObjectBPhysicComponent) { // ObjectB can be just a wall
+		ObjectATransformComponent->Move(-normal * value);
+		ObjectBTransformComponent->Move(normal * value);
+
 		Vector2f relativeVelocity = ObjectBPhysicComponent->m_velocity - ObjectAPhysicComponent->m_velocity;
 		float minRestitution = std::min(ObjectAPhysicComponent->Restitution, ObjectBPhysicComponent->Restitution);
 		float resultingForce = -(minRestitution + 1.f) * Vector2f::Dot(relativeVelocity, normal);
@@ -52,6 +57,7 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 		ObjectBPhysicComponent->m_velocity += normal * (resultingForce / ObjectBPhysicComponent->m_mass);
 	}
 	else {
+		ObjectATransformComponent->Move(-normal * value);
 		Vector2f relativeVelocity = - ObjectAPhysicComponent->m_velocity;
 		float minRestitution = ObjectAPhysicComponent->Restitution;
 		float resultingForce = -(minRestitution + 1.f) * Vector2f::Dot(relativeVelocity, normal);

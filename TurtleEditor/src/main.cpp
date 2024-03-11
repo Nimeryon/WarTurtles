@@ -69,6 +69,21 @@ public:
 
         box2->GetTransform()->Move({ 600, 200 });*/
 
+        // Ground
+        auto ground = Create("Ground");
+        auto* groundCollisionComp = ground->AddComponent<Turtle::BoxCollisionComponent>();
+        groundCollisionComp->InitCollisionParameters(500.f, 50.f);
+        groundCollisionComp->SetName("Ground");
+
+        auto* groundRenderer = ground->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
+        sf::RectangleShape groundShape;
+        groundShape.setSize({ 500, 50 });
+        groundShape.setFillColor(sf::Color::Blue);
+        groundRenderer->SetShape(groundShape);
+        groundRenderer->SetColor(sf::Color::Blue);
+
+        ground->GetTransform()->Move({ 200, 400 });
+
         Scene::OnCreate();
     }
 
