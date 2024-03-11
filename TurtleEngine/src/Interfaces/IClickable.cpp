@@ -15,9 +15,9 @@ namespace Turtle
         callbacks.push_back(callback);
     }
 
-    void Clickable::CheckClick(const sf::Vector2f& clickPosition) const
+    void Clickable::CheckClick(const Vector2i& clickPosition) const
     {
-        if (shape->getGlobalBounds().contains(clickPosition))
+        if (shape->getGlobalBounds().contains({ static_cast<float>(clickPosition.x), static_cast<float>(clickPosition.y) }))
         {
             for (const auto& callback : callbacks)
             {
