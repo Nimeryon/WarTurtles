@@ -8,6 +8,7 @@
 #include "Managers/AudioManager.h"
 #include "Managers/SceneManager.h"
 #include "Scene.h"
+#include "Components/Renderer/PolygonRenderer.h"
 #include "Components/Renderer/ShapeRenderer.h"
 #include "Components/Renderer/SpriteAnimationRenderer.h"
 #include "Components/Renderer/SpriteRenderer.h"
@@ -32,6 +33,16 @@ public:
 		const auto sprite_renderer = testSprite->AddComponent<Turtle::SpriteAnimationRenderer>();
 		sprite_renderer->InitAnimation("turtle","Idle");
 		testSprite->GetTransform()->SetScale({0.3f,0.3f});
+
+		Turtle::GameObject* myObject = Create("Test2");
+		Turtle::PolygonRenderer* polygonRenderer = myObject->AddComponent<Turtle::PolygonRenderer>();
+		std::vector<sf::Vector2f> vertices = {
+			sf::Vector2f(0.f, 0.f),
+			sf::Vector2f(100.f, 0.f),
+			sf::Vector2f(50.f, 100.f)
+		};
+		polygonRenderer->SetVertices(vertices);
+		polygonRenderer->SetColor(sf::Color::Green);
 
 		Turtle::App::GetInputManager()->AddCallback(Test,Turtle::EventType::Jump);
 		
