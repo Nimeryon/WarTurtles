@@ -1,4 +1,5 @@
-﻿#ifndef INPUT_MANAGER_H
+﻿// InputManager.h
+#ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 
 #include <SFML/Graphics.hpp>
@@ -13,7 +14,8 @@ namespace Turtle
         Right,
         Validate,
         Shoot,
-        Inventory
+        Inventory,
+        Click
     };
 
     class InputManager final {
@@ -25,11 +27,15 @@ namespace Turtle
         
         void AddCallback(std::function<void()> callback, EventType eventType);
         void RemoveCallback(std::function<void()> callback, EventType eventType);
+        void AddClickCallback(std::function<void(sf::Vector2f)> callback);
+        void RemoveClickCallback(std::function<void(sf::Vector2f)> callback);
         void HandleEvents();
 
     private:
         void Notify(EventType eventType);
+        void NotifyClick(sf::Vector2f clickPosition);
         std::unordered_map<EventType, std::vector<std::function<void()>>> callbacks;
+        std::vector<std::function<void(sf::Vector2f)>> clickCallbacks;
         sf::RenderWindow& m_window;
     };
 }
