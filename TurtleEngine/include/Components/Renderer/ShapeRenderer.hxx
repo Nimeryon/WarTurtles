@@ -9,7 +9,7 @@ namespace Turtle
 }
 
 template <typename ShapeType>
-Turtle::ShapeRenderer<ShapeType>::ShapeRenderer(GameObject* parent, const std::string& name) : Component(parent, name) {}
+Turtle::ShapeRenderer<ShapeType>::ShapeRenderer(GameObject* parent, const std::string& name) : Component(parent, name),Clickable(&m_shape) {}
 
 template <typename ShapeType>
 void Turtle::ShapeRenderer<ShapeType>::SetShape(const ShapeType& shape)
@@ -22,6 +22,12 @@ void Turtle::ShapeRenderer<ShapeType>::SetColor(const sf::Color& color)
 {
     // Assuming that the shape type has a setFillColor method
     m_shape.setFillColor(color);
+}
+
+template <typename ShapeType>
+void Turtle::ShapeRenderer<ShapeType>::SetOrigin(const Vector2f& origin)
+{
+    m_shape.setOrigin(origin.x,origin.y);
 }
 
 template <typename ShapeType>
