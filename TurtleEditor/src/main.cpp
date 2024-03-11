@@ -34,7 +34,7 @@ private:
     sf::RectangleShape m_rect;
 };
 
-class DemoScene : public Turtle::Scene
+class MenuScene : public Turtle::Scene
 {
 public:
     void OnCreate() override
@@ -70,7 +70,7 @@ int main()
     // Create default window
     Turtle::Window window(Turtle::VideoMode(720, 480), "Turtle Editor");
     Turtle::App game(window);
-    Turtle::SceneManager::Instance().AddScene(std::make_unique<DemoScene>(), true);
+    Turtle::SceneManager::Instance().AddScene(std::make_unique<MenuScene>(), true);
 
     game.Run();
 
