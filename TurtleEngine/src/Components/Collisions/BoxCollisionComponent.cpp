@@ -46,8 +46,13 @@ void Turtle::BoxCollisionComponent::DebugDraw(Window& window)
 
 void Turtle::BoxCollisionComponent::_UpdateVertice()
 {
-	m_vertice[0] = (Vector2f(0, 0));
-	m_vertice[1] = (Vector2f(0, m_height));
-	m_vertice[2] = (Vector2f(m_width, m_height));
-	m_vertice[3] = (Vector2f(m_width, 0));
+	float left = -m_width / 2.f;
+	float right = left + m_width;
+	float bottom = -m_height / 2.f;
+	float top = bottom + m_height;
+
+	m_vertice[0] = (Vector2f(left, top));
+	m_vertice[1] = (Vector2f(right, top));
+	m_vertice[2] = (Vector2f(right, bottom));
+	m_vertice[3] = (Vector2f(left, bottom));
 }

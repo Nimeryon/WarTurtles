@@ -38,10 +38,8 @@ bool collisionBetweenPolygons(PolygonCollisionComponent& lhs, PolygonCollisionCo
 		curNormal.Normalize();
 
 		float minLhs, maxLhs, minRhs, maxRhs;
-		if (!PolygonCollisionComponent::ProjectTransformedVertices(lhs, curNormal, minLhs, maxLhs)
-			|| !PolygonCollisionComponent::ProjectTransformedVertices(rhs, curNormal, minRhs, maxRhs)) {
-			return false;
-		}
+		PolygonCollisionComponent::ProjectTransformedVertices(lhs, curNormal, minLhs, maxLhs);
+		PolygonCollisionComponent::ProjectTransformedVertices(rhs, curNormal, minRhs, maxRhs);
 
 		if (minLhs >= maxRhs || minRhs >= maxLhs)
 			return false;
@@ -63,10 +61,8 @@ bool collisionBetweenPolygons(PolygonCollisionComponent& lhs, PolygonCollisionCo
 		curNormal.Normalize();
 
 		float minLhs, maxLhs, minRhs, maxRhs;
-		if (!PolygonCollisionComponent::ProjectTransformedVertices(lhs, curNormal, minLhs, maxLhs)
-			|| !PolygonCollisionComponent::ProjectTransformedVertices(rhs, curNormal, minRhs, maxRhs)) {
-			return false;
-		}
+		PolygonCollisionComponent::ProjectTransformedVertices(lhs, curNormal, minLhs, maxLhs);
+		PolygonCollisionComponent::ProjectTransformedVertices(rhs, curNormal, minRhs, maxRhs);
 
 		if (minLhs >= maxRhs || minRhs >= maxLhs)
 			return false;
@@ -105,13 +101,13 @@ bool collisionBetweenCircleAndPolygon(CircleCollisionComponent& circleComp, Poly
 		curNormal.Normalize();
 
 		float minCircle, maxCircle, minBox, maxBox;
-		if (!PolygonCollisionComponent::ProjectTransformedVertices(boxComp, curNormal, minBox, maxBox))
-			return false;
-
+		PolygonCollisionComponent::ProjectTransformedVertices(boxComp, curNormal, minBox, maxBox);
 		CircleCollisionComponent::ProjectCircle(circleComp, curNormal, minCircle, maxCircle);
 
 		if (minCircle >= maxBox || minBox >= maxCircle)
+		{
 			return false;
+		}
 
 		float curDepth = std::min(maxBox - minCircle, maxCircle - minBox);
 		if (curDepth < depth) {
@@ -124,10 +120,9 @@ bool collisionBetweenCircleAndPolygon(CircleCollisionComponent& circleComp, Poly
 	PolygonCollisionComponent::FindNearestPointTo(circleComp.GetCenter(), boxComp, nearestPoint);
 	Vector2f axis = nearestPoint - circleComp.GetCenter();
 	axis.Normalize();
-	float minCircle, maxCircle, minBox, maxBox;
-	if (!PolygonCollisionComponent::ProjectTransformedVertices(boxComp, axis, minBox, maxBox))
-		return false;
 
+	float minCircle, maxCircle, minBox, maxBox;
+	PolygonCollisionComponent::ProjectTransformedVertices(boxComp, axis, minBox, maxBox);
 	CircleCollisionComponent::ProjectCircle(circleComp, axis, minCircle, maxCircle);
 
 	if (minCircle >= maxBox || minBox >= maxCircle)
@@ -171,4 +166,4 @@ bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, BoxColli
 	return collisionBetweenCircleAndPolygon(circleComp, boxComp, normal, depth);
 }
 }
-#endif // !COLLISIONCALLBACKS_H
+#endif // COLLISIONCALLBACKS_H

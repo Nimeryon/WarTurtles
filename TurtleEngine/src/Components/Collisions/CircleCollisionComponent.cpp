@@ -28,7 +28,7 @@ Turtle::Vector2f Turtle::CircleCollisionComponent::GetCenter() const
 {
 	return m_parent->GetTransform()->TransformPoint(GetPosition());
 }
-float Turtle::CircleCollisionComponent::GetRadius() const { return 0.0f; }
+float Turtle::CircleCollisionComponent::GetRadius() const { return m_radius; }
 
 void Turtle::CircleCollisionComponent::SetPosition(const Vector2f& position) 
 { 
@@ -44,8 +44,10 @@ void Turtle::CircleCollisionComponent::SetRadius(float radius)
 void Turtle::CircleCollisionComponent::ProjectCircle(const CircleCollisionComponent& circle, const Vector2f& axis, float& min, float& max)
 {
 	Vector2f direction = Vector2f::Normalize(axis);
-	Vector2f point1 = circle.GetCenter() + direction * circle.GetRadius();
-	Vector2f point2 = circle.GetCenter() - direction * circle.GetRadius();
+	Vector2f directionAndRadius = direction * circle.GetRadius();
+
+	Vector2f point1 = circle.GetCenter() + directionAndRadius;
+	Vector2f point2 = circle.GetCenter() - directionAndRadius;
 
 	min = Vector2f::Dot(point1, axis);
 	max = Vector2f::Dot(point2, axis);

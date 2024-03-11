@@ -21,9 +21,23 @@ class DemoScene : public Turtle::Scene
 public:
     void OnCreate() override
     {
+        // Box 1
+        auto box1 = Create("Box 1");
+        box1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
+        box1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
+        
+        auto* boxRenderer = box1->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
+        sf::RectangleShape rectangleShape;
+        rectangleShape.setSize({ 100, 100 });
+        rectangleShape.setFillColor(sf::Color::Blue);
+        boxRenderer->SetShape(rectangleShape);
+        boxRenderer->SetColor(sf::Color::Blue);
+
+        box1->GetTransform()->Move({ 600, 200 });
+
         // Circle 1
         auto circle1 = Create("Circle 1");
-        circle1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f, -100.f }, Turtle::Vector2f::zero, 5, 0, 0.5f);
+        circle1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f, -100.f }, Turtle::Vector2f::zero, 10, 0, 0.5f);
         circle1->AddComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters({}, 50.f);
 
         auto* shapeRenderer = circle1->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
@@ -43,17 +57,6 @@ public:
         shapeRenderer->SetColor(sf::Color::Cyan);
 
         circle2->GetTransform()->Move({ 600, 200 });*/
-
-        // Box 1
-        auto box1 = Create("Box 1");
-        box1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
-        box1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f,100.f);
-        
-        auto* boxRenderer = box1->AddComponent<Turtle::PolygonRenderer>();
-        boxRenderer->SetVertice(box1->GetComponent<Turtle::BoxCollisionComponent>()->GetVertice());
-        boxRenderer->SetColor(sf::Color::White);
-
-        box1->GetTransform()->Move({ 600, 200 });
 
         // Box 2
         /*auto box2 = Create("Box 2");
