@@ -45,5 +45,5 @@ private:
 	std::map<key_t, callable> m_map;
 };
 }
-#endif // !COLLISIONDISPATCHER_H
+#endif // COLLISIONDISPATCHER_H
 

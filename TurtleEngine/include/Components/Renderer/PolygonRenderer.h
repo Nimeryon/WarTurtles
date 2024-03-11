@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Components/Component.h"
+#include "Types/Vector2.h"
 
 namespace Turtle
 {
@@ -12,9 +13,9 @@ namespace Turtle
     public:
         explicit PolygonRenderer(GameObject* parent, const std::string& name = "PolygonRenderer");
 
-        void SetVertices(const std::vector<sf::Vector2f>& vertices);
+        void SetVertice(const std::vector<Vector2f>& vertice);
         void SetColor(const sf::Color& color);
-        void Draw(sf::RenderWindow& window) override;
+        void Draw(Window& window) override;
 
     private:
         sf::VertexArray m_vertexArray;

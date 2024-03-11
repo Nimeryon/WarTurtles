@@ -9,68 +9,62 @@
 #include "Components/Transform.h"
 #include "Components/Physic.h"
 #include "Components/Collisions/CircleCollisionComponent.h"
-#include "Components/Collisions/PolygonCollisionComponent.h"
+#include "Components/Collisions/BoxCollisionComponent.h"
 #include "Components/Renderer/ShapeRenderer.h"
+#include "Components/Renderer/PolygonRenderer.h"
 #include "Managers/SceneManager.h"
 #include "Types/Vector2.h"
 #include "GameObjects/GameObject.h"
-
-class TestComponent : public Turtle::Component
-{
-public:
-    TestComponent(Turtle::GameObject* parent) : Component(parent, "Test Component")
-    {
-        m_rect.setSize({ 50, 50 });
-        m_rect.setFillColor(sf::Color::Cyan);
-    }
-
-    void FixedUpdate(const Turtle::Time& fixedTime) override
-    {
-        m_parent->GetTransform()->Rotate(1);
-    }
-
-    void Draw(Turtle::Window& window) override
-    {
-        window.draw(m_rect, m_parent->GetTransform()->GetTransformMatrix());
-    }
-
-private:
-    sf::RectangleShape m_rect;
-};
 
 class DemoScene : public Turtle::Scene
 {
 public:
     void OnCreate() override
     {
-        auto object = Create("Test 1");
-        object->AddComponent<TestComponent>();
-        object->GetTransform()->Move({ 200, 200 });
-
+        // Circle 1
         auto circle1 = Create("Circle 1");
-        circle1->AddComponent<Turtle::Physic>();
-        circle1->GetComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f,-100.f }, Turtle::Vector2f::zero, 5, 0, 0.5f);
-        circle1->AddComponent<Turtle::CircleCollisionComponent>();
-        Turtle::Vector2f testvec{ 200,200 };
-        circle1->GetComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters(testvec, 50.f);
-        circle1->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
+        circle1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f, -100.f }, Turtle::Vector2f::zero, 5, 0, 0.5f);
+        circle1->AddComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters({}, 50.f);
+
+        auto* shapeRenderer = circle1->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
         sf::CircleShape circleRender = sf::CircleShape(50.f);
-        circle1->GetComponent<Turtle::ShapeRenderer<sf::CircleShape>>()->SetShape(circleRender);
-        circle1->GetComponent<Turtle::ShapeRenderer<sf::CircleShape>>()->SetColor(sf::Color::Blue);
+        shapeRenderer->SetShape(circleRender);
+        shapeRenderer->SetColor(sf::Color::Blue);
+
         circle1->GetTransform()->Move({ 200, 200 });
 
-        auto circle2 = Create("Circle 2");
-        circle2->AddComponent<Turtle::Physic>();
-        circle2->GetComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f,-150.f }, Turtle::Vector2f::zero, 2, 0, 0.5f);
-        circle2->AddComponent<Turtle::PolygonCollisionComponent>();
-        testvec = Turtle::Vector2f{ 600,200 };
-        circle2->GetComponent<Turtle::PolygonCollisionComponent>()->InitCollisionParameters(testvec,0.f,100.f,100.f);
+        // Circle 2
+        /*auto circle2 = Create("Circle 2");
+        circle2->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -100.f, -100.f }, Turtle::Vector2f::zero, 5, 0, 0.5f);
+        circle2->AddComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters({}, 50.f);
+
+        shapeRenderer = circle2->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
+        shapeRenderer->SetShape(circleRender);
+        shapeRenderer->SetColor(sf::Color::Cyan);
+
+        circle2->GetTransform()->Move({ 600, 200 });*/
+
+        // Box 1
+        auto box1 = Create("Box 1");
+        box1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
+        box1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f,100.f);
         
-        circle2->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
-        sf::RectangleShape renctangleRender = sf::RectangleShape({ 100,100 });
-        circle2->GetComponent<Turtle::ShapeRenderer<sf::RectangleShape>>()->SetShape(renctangleRender);
-        circle2->GetComponent<Turtle::ShapeRenderer<sf::RectangleShape>>()->SetColor(sf::Color::White);
-        circle2->GetTransform()->Move({ 600, 200 });
+        auto* boxRenderer = box1->AddComponent<Turtle::PolygonRenderer>();
+        boxRenderer->SetVertice(box1->GetComponent<Turtle::BoxCollisionComponent>()->GetVertice());
+        boxRenderer->SetColor(sf::Color::White);
+
+        box1->GetTransform()->Move({ 600, 200 });
+
+        // Box 2
+        /*auto box2 = Create("Box 2");
+        box2->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 2, 0, 0.5f);
+        box2->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
+
+        boxRenderer = box2->AddComponent<Turtle::PolygonRenderer>();
+        boxRenderer->SetVertice(box2->GetComponent<Turtle::BoxCollisionComponent>()->GetVertice());
+        boxRenderer->SetColor(sf::Color::Cyan);
+
+        box2->GetTransform()->Move({ 600, 200 });*/
 
         Scene::OnCreate();
     }

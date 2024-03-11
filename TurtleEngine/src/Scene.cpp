@@ -1,11 +1,9 @@
 #include "Scene.h"
-#include "Components/Collisions/CollisionCallBacks.h"
 #include "Managers/SceneManager.h"
 
 Turtle::Scene::Scene() :
 	m_findCacheObject(nullptr)
-{
-}
+{}
 
 const Turtle::Scene* Turtle::Scene::Current()
 {
@@ -28,11 +26,6 @@ void Turtle::Scene::OnCreate()
 		if (object->IsActive())
 			object->OnCreate();
 	}
-
-	m_collisionDispatcher.add<CircleCollisionComponent, CircleCollisionComponent, collisionBetweenCircles>();
-	m_collisionDispatcher.add<PolygonCollisionComponent, PolygonCollisionComponent, collisionBetweenPolygons>();
-	m_collisionDispatcher.add<CircleCollisionComponent, PolygonCollisionComponent, collisionBetweenCircleAndPolygon>();
-	m_collisionDispatcher.add<PolygonCollisionComponent, CircleCollisionComponent, collisionBetweenPolygonAndCircle>();
 }
 void Turtle::Scene::OnDestroyed()
 {
@@ -63,26 +56,13 @@ void Turtle::Scene::FixedUpdate(const Time& fixedTime)
 {
 	for (auto& object : m_objects)
 	{
-		if (object->IsActive()) {
+		if (object->IsActive())
+		{
 			object->FixedUpdate(fixedTime);
-			Physic* objectPhysicComponent = object.get()->GetComponent<Physic>();
-			ICollisionComponent* objectCollisionComponent = object.get()->GetComponent<ICollisionComponent>();
-			if (objectPhysicComponent) {
-				m_physicManager.ComputeNewPositionFor(*objectPhysicComponent, *object.get()->GetTransform(), fixedTime);
-				//TO MODIFY : for now, check all objects for collision
-				for (auto& otherObject : m_objects) {
-					if (otherObject != object) {
-						Vector2f normal;
-						float depth;
-						ICollisionComponent* otherObjectCollisionComponent = otherObject.get()->GetComponent<ICollisionComponent>();
-						if (otherObjectCollisionComponent && m_collisionDispatcher(*objectCollisionComponent, *otherObjectCollisionComponent, normal, depth))
-							m_physicManager.ResolveCollisionFor(*object.get(), *otherObject.get(),normal,depth);
-					}
-				}
-			}
 		}
 	}
 
+	m_physicManager.ResolveCollisions(fixedTime, m_objects);
 }
 void Turtle::Scene::Draw(Window& window)
 {
@@ -90,6 +70,14 @@ void Turtle::Scene::Draw(Window& window)
 	{
 		if (object->IsActive())
 			object->Draw(window);
+	}
+}
+void Turtle::Scene::DebugDraw(Window& window)
+{
+	for (auto& object : m_objects)
+	{
+		if (object->IsActive())
+			object->DebugDraw(window);
 	}
 }
 void Turtle::Scene::Gui(const Time& deltaTime)
@@ -131,7 +119,6 @@ Turtle::GameObject* Turtle::Scene::Create(const Vector2f& position, float rotati
 
 	return object;
 }
-
 Turtle::GameObject* Turtle::Scene::Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name)
 {
 	GameObject* object = Create(parent, name);

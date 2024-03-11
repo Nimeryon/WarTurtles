@@ -70,6 +70,7 @@ void Turtle::App::_Draw(const Time& deltaTime)
 	m_window.clear();
 
 	SceneManager::Instance().Draw(m_window);
+	SceneManager::Instance().DebugDraw(m_window);
 
 	ImGui::SFML::Update(m_window, m_logicTime);
 	SceneManager::Instance().Gui(deltaTime);

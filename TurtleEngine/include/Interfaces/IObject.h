@@ -23,6 +23,8 @@ struct IObject
 	virtual void FixedUpdate(const Time& fixedTime) {}
 	// Called every frame before GUI
 	virtual void Draw(Window& window) {}
+	// Called every frame after draw before GUI if debug true
+	virtual void DebugDraw(Window& window) {}
 	// Called every frame in last
 	virtual void Gui(const Time& deltaTime) {}
 };

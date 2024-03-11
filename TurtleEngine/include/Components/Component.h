@@ -15,6 +15,8 @@ public:
 	Component() = delete;
 	Component(GameObject* parent, const std::string& name);
 
+	virtual ~Component() = default;
+
 protected:
 	GameObject* m_parent;
 };

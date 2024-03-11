@@ -25,7 +25,7 @@ void Turtle::ShapeRenderer<ShapeType>::SetColor(const sf::Color& color)
 }
 
 template <typename ShapeType>
-void Turtle::ShapeRenderer<ShapeType>::Draw(sf::RenderWindow& window)
+void Turtle::ShapeRenderer<ShapeType>::Draw(Window& window)
 {
     const Transform* transform = this->m_parent->GetTransform();
     window.draw(m_shape, transform->GetTransformMatrix());

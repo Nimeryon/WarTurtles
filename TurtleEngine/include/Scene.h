@@ -7,12 +7,9 @@
 #include "Managers/FontManager.h"
 #include "Managers/PhysicManager.h"
 #include "Interfaces/IObject.h"
-#include "Components/Collisions/CollisionDispatcher.h"
 
 namespace Turtle
 {
-class ICollisionComponent;
-
 class Scene : public IObject
 {
 public:
@@ -36,6 +33,7 @@ public:
 	void Update(const Time& deltaTime) override;
 	void FixedUpdate(const Time& fixedTime) override;
 	void Draw(Window& window) override;
+	void DebugDraw(Window& window) override;
 	void Gui(const Time& deltaTime) override;
 
 	// =====================
@@ -59,12 +57,13 @@ protected:
 	TextureManager m_textureManager;
 	FontManager m_fontManager;
 	PhysicManager m_physicManager;
-	CollisionDispatcher<ICollisionComponent> m_collisionDispatcher;
 
 private:
 	std::vector<std::unique_ptr<GameObject>> m_objects;
 	GameObject* m_findCacheObject;
 };
 }
+
+#include "Scene.hxx"
 
 #endif /* SCENE_H */

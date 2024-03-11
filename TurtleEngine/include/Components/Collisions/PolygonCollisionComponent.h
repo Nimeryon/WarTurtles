@@ -2,7 +2,6 @@
 #ifndef POLYGONCOLLISIONCOMPONENT_H
 #define POLYGONCOLLISIONCOMPONENT_H
 #include "Components/Collisions/ICollisionComponent.h"
-#include "Types/Shapes/PolygonShape.h"
 #include "Types/Vector2.h"
 
 namespace Turtle
@@ -12,18 +11,21 @@ namespace Turtle
 	public:
 		PolygonCollisionComponent() = delete;
 		explicit PolygonCollisionComponent(GameObject* parent, const std::string& name = "Collision Component (Polygon)");
-		PolygonCollisionComponent(GameObject* parent, const std::string& name, PolygonShape& polygonCollision);
-		PolygonCollisionComponent(GameObject* parent, const std::string& name, Vector2f& location, float rotation, float width, float height);
 
-		void UpdateCollisionTransform(Transform& transform) override;
-		const PolygonShape& GetShape() const override;
+		void InitCollisionParameters(const std::vector<Vector2f>& vertice);
 
-		void InitCollisionParameters(PolygonShape& polygonCollision);
-		void InitCollisionParameters(Vector2f& location, float rotation, float width, float height);
+		const std::vector<Vector2f>& GetVertice() const;
+		Vector2f GetCenter() const override;
 
-	private:
-		PolygonShape CollisionPolygon;
+		void SetVertice(const std::vector<Vector2f>& vertice);
+
+		std::vector<Vector2f> GetTransformedVertice() const;
+
+		static bool ProjectTransformedVertices(const PolygonCollisionComponent& polygon, const Vector2f& axis, float& min, float& max);
+		static bool FindNearestPointTo(const Vector2f& location, const PolygonCollisionComponent& polygon, Vector2f& nearestPoint);
+
+	protected:
+		std::vector<Vector2f> m_vertice;
 	};
 }
-#endif // !POLYGONCOLLISIONCOMPONENT_H
-
+#endif // POLYGONCOLLISIONCOMPONENT_H

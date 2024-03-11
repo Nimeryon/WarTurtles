@@ -6,7 +6,7 @@
 
 namespace Turtle
 {
-    class TextRenderer final : public Component
+    class TextRenderer : public Component
     {
     public:
         explicit TextRenderer(GameObject* parent, const std::string& name = "TextRenderer");

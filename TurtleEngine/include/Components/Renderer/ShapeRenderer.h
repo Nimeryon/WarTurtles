@@ -8,14 +8,14 @@
 namespace Turtle
 {
     template <typename ShapeType>
-    class ShapeRenderer final : public Component
+    class ShapeRenderer : public Component
     {
     public:
         explicit ShapeRenderer(GameObject* parent, const std::string& name = "ShapeRenderer");
 
         void SetShape(const ShapeType& shape);
         void SetColor(const sf::Color& color);
-        void Draw(sf::RenderWindow& window) override;
+        void Draw(Window& window) override;
 
     private:
         ShapeType m_shape;

@@ -1,8 +1,9 @@
 // CircleCollisionComponent.h
 #ifndef CIRCLECOLLISIONCOMPONENT_H
 #define CIRCLECOLLISIONCOMPONENT_H
+#include <SFML/Graphics.hpp>
+
 #include "Components/Collisions/ICollisionComponent.h"
-#include "Types/Shapes/CircleShape.h"
 #include "Types/Vector2.h"
 
 namespace Turtle
@@ -12,18 +13,25 @@ namespace Turtle
 	public:
 		CircleCollisionComponent() = delete;
 		explicit CircleCollisionComponent(GameObject* parent, const std::string& name = "Collision Component (Circle)");
-		CircleCollisionComponent(GameObject* parent, const std::string& name, CircleShape& circleCollision);
-		CircleCollisionComponent(GameObject* parent, const std::string& name, Vector2f& center, float radius);
 
-		void UpdateCollisionTransform(Transform& transform) override;
-		const CircleShape& GetShape() const override;
+		void InitCollisionParameters(const Vector2f& position, float radius);
 
-		void InitCollisionParameters(Vector2f& center, float radius);
-		void InitCollisionParameters(CircleShape& circleCollision);
+		const Vector2f& GetPosition() const;
+		Vector2f GetCenter() const override;
+		float GetRadius() const;
+
+		void SetPosition(const Vector2f& position);
+		void SetRadius(float radius);
+
+		static void ProjectCircle(const CircleCollisionComponent& circle, const Vector2f& axis, float& min, float& max);
+
+		void DebugDraw(Window& window) override;
 
 	private:
-		CircleShape CollisionCircle;
+		Vector2f m_position;
+		float m_radius;
+
+		sf::CircleShape m_debugShape;
 	};
 }
-#endif // !CIRCLECOLLISIONCOMPONENT_H
-
+#endif // CIRCLECOLLISIONCOMPONENT_H

@@ -34,6 +34,7 @@ public:
 	void Update(const Time& deltaTime) const;
 	void FixedUpdate(const Time& fixedTime) const;
 	void Draw(Window& window) const;
+	void DebugDraw(Window& window) const;
 	void Gui(const Time& deltaTime) const;
 
 	friend class Singleton;
