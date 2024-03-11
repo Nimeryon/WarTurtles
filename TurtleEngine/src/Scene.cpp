@@ -80,12 +80,12 @@ void Turtle::Scene::DebugDraw(Window& window)
 			object->DebugDraw(window);
 	}
 }
-void Turtle::Scene::Gui(const Time& deltaTime)
+void Turtle::Scene::Gui(Window& window, const Time& deltaTime)
 {
 	for (auto& object : m_objects)
 	{
 		if (object->IsActive())
-			object->Gui(deltaTime);
+			object->Gui(window, deltaTime);
 	}
 }
 

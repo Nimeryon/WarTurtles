@@ -110,12 +110,12 @@ void Turtle::GameObject::DebugDraw(Window& window)
 			component->DebugDraw(window);
 	}
 }
-void Turtle::GameObject::Gui(const Time& deltaTime)
+void Turtle::GameObject::Gui(Window& window, const Time& deltaTime)
 {
 	for (auto& component : m_components)
 	{
 		if (component->IsActive())
-			component->Gui(deltaTime);
+			component->Gui(window, deltaTime);
 	}
 }
 

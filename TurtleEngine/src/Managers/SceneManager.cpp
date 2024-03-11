@@ -98,10 +98,10 @@ void Turtle::SceneManager::DebugDraw(Window& window) const
 		m_currentScene->DebugDraw(window);
 	}
 }
-void Turtle::SceneManager::Gui(const Time& dt) const
+void Turtle::SceneManager::Gui(Window& window, const Time& dt) const
 {
 	if (m_currentScene)
 	{
-		m_currentScene->Gui(dt);
+		m_currentScene->Gui(window, dt);
 	}
 }

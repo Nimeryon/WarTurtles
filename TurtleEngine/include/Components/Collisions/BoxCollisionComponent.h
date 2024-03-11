@@ -31,7 +31,7 @@ namespace Turtle
 	private:
 		void _UpdateVertice();
 
-		sf::RectangleShape m_debugShape;
+		sf::VertexArray m_debugShape;
 	};
 }
 
