@@ -25,6 +25,7 @@ namespace Turtle
 		float m_mass;
 		float m_friction; // 0 to 1 : 0 = no friction ( like in space ), 1 = will not be able to move
 		float Restitution;
+		float AngularVelocity;
 		Vector2f m_localGravity; // local gravity, i.e magnet...
 	};
 }

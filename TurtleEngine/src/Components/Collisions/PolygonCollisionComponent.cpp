@@ -27,6 +27,11 @@ Turtle::Vector2f Turtle::PolygonCollisionComponent::GetCenter() const
 	return m_parent->GetTransform()->TransformPoint(center);
 }
 
+float Turtle::PolygonCollisionComponent::CalculateRotationalInertia(float mass)
+{
+	return 0.5f;
+}
+
 void Turtle::PolygonCollisionComponent::SetVertice(const std::vector<Vector2f>& vertice) { m_vertice = vertice; }
 
 std::vector<Turtle::Vector2f> Turtle::PolygonCollisionComponent::GetTransformedVertice() const
@@ -78,4 +83,26 @@ bool Turtle::PolygonCollisionComponent::FindNearestPointTo(const Vector2f& locat
 	}
 
 	return true;
+}
+
+void Turtle::PolygonCollisionComponent::ProjectPointToEdge(const Vector2f& pointToProject, const Vector2f& edgeStart, const Vector2f& edgeEnd, float& squaredDistance, Vector2f& projectedPoint)
+{
+	Vector2f edge = edgeEnd - edgeStart;
+	Vector2f vertexAToCenter = pointToProject - edgeStart;
+
+	float proj = Vector2f::Dot(vertexAToCenter, edge);
+	float distance = proj / edge.Magnitude();
+
+	Vector2f curContactPoint;
+	if (distance <= 0.f) {
+		curContactPoint = edgeStart;
+	}
+	else if (distance >= 1.f) {
+		curContactPoint = edgeEnd;
+	}
+	else {
+		curContactPoint = edgeStart + edge * distance;
+	}
+
+	float SquareDistance = std::pow(Vector2f::Distance(pointToProject, curContactPoint), 2);
 }

@@ -18,13 +18,11 @@ namespace Turtle
 
 		const Vector2f& GetPosition() const;
 		Vector2f GetCenter() const override;
+		float CalculateRotationalInertia(float mass) override;
 		float GetRadius() const;
 
 		void SetPosition(const Vector2f& position);
 		void SetRadius(float radius);
-
-		//To call after collision resolution to calculate torque
-		Vector2f GetContactPoint(const Vector2f& centerOfCollidingObject) const;
 
 		static void ProjectCircle(const CircleCollisionComponent& circle, const Vector2f& axis, float& min, float& max);
 

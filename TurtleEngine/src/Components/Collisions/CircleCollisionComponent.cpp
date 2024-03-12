@@ -28,6 +28,13 @@ Turtle::Vector2f Turtle::CircleCollisionComponent::GetCenter() const
 {
 	return m_parent->GetTransform()->TransformPoint(GetPosition());
 }
+
+float Turtle::CircleCollisionComponent::CalculateRotationalInertia(float mass)
+{
+	float radius = GetRadius();
+	return (1.f / 2.f) * mass * radius * radius;
+}
+
 float Turtle::CircleCollisionComponent::GetRadius() const { return m_radius; }
 
 void Turtle::CircleCollisionComponent::SetPosition(const Vector2f& position) 
@@ -39,12 +46,6 @@ void Turtle::CircleCollisionComponent::SetRadius(float radius)
 { 
 	m_radius = radius;
 	m_debugShape.setRadius(m_radius);
-}
-
-Turtle::Vector2f Turtle::CircleCollisionComponent::GetContactPoint(const Vector2f& centerOfCollidingObject) const
-{
-	Vector2f center = GetCenter();
-	return center + Vector2f::Normalize(centerOfCollidingObject - center) * GetRadius();
 }
 
 void Turtle::CircleCollisionComponent::ProjectCircle(const CircleCollisionComponent& circle, const Vector2f& axis, float& min, float& max)

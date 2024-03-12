@@ -23,6 +23,11 @@ void Turtle::BoxCollisionComponent::InitCollisionParameters(float width, float h
 	SetActive(true);
 }
 
+float Turtle::BoxCollisionComponent::CalculateRotationalInertia(float mass)
+{
+	return m_height * m_width / 12 * (m_width * m_width + m_height * m_height);
+}
+
 float Turtle::BoxCollisionComponent::GetWidth() const { return m_width; }
 float Turtle::BoxCollisionComponent::GetHeight() const { return m_height; }
 

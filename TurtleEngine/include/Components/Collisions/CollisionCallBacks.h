@@ -165,5 +165,144 @@ bool collisionBetweenCircleAndBox(CircleCollisionComponent& circleComp, BoxColli
 {
 	return collisionBetweenCircleAndPolygon(circleComp, boxComp, normal, depth);
 }
+
+//To call after collision resolution to calculate torque
+
+template<typename CollisionComponentA, typename CollisionComponentB>
+std::vector<Vector2f> GetContactPoints(CollisionComponentA& objectA, CollisionComponentB& objectB) {
+	//static_assert(false, "Unkown collision component");
+	return std::vector<Vector2f>();
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<CircleCollisionComponent, CircleCollisionComponent>(CircleCollisionComponent& circleA, CircleCollisionComponent& circleB) {
+
+	std::vector<Vector2f> contactPoints;
+	Vector2f centerA = circleA.GetCenter();
+	Vector2f centerB = circleB.GetCenter();
+	contactPoints.emplace_back(centerA + Vector2f::Normalize(centerB - centerA) * circleA.GetRadius());
+	return contactPoints;
+
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<CircleCollisionComponent, PolygonCollisionComponent>(CircleCollisionComponent& circle, PolygonCollisionComponent& polygon) {
+	std::vector<Vector2f> contactPoints;
+	Vector2f contactPoint;
+	auto transformedVertice = polygon.GetTransformedVertice();
+
+	float minDistSquared = FLT_MAX;
+
+	for (int i = 0; i < transformedVertice.size(); ++i) {
+		Vector2f vertexA = transformedVertice[i];
+		Vector2f vertexB = transformedVertice[(i + 1) % transformedVertice.size()];
+
+		float squaredDistance;
+		Vector2f curContactPoint;
+		PolygonCollisionComponent::ProjectPointToEdge(circle.GetCenter(), vertexA, vertexB, squaredDistance, curContactPoint);
+
+		if (squaredDistance < minDistSquared) {
+			minDistSquared = squaredDistance;
+			contactPoint = curContactPoint;
+		}
+	}
+	contactPoints.emplace_back(contactPoint);
+	return contactPoints;
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<PolygonCollisionComponent, CircleCollisionComponent>(PolygonCollisionComponent& polygon, CircleCollisionComponent& circle) {
+	return GetContactPoints(circle, polygon);
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<PolygonCollisionComponent, PolygonCollisionComponent>(PolygonCollisionComponent& polygonA, PolygonCollisionComponent& polygonB) {
+	auto polygonAVertice = polygonA.GetTransformedVertice();
+	auto polygonBVertice = polygonA.GetTransformedVertice();
+
+	std::vector<Vector2f> contactPoints;
+	Vector2f contactPoint1 = Vector2f::zero;
+	Vector2f contactPoint2 = Vector2f::zero;
+
+	float minDistSquared = FLT_MAX;
+
+	for (int i = 0; i < polygonAVertice.size(); ++i) {
+		Vector2f vertexA = polygonAVertice[i];
+
+		for (int j = 0; j < polygonBVertice.size(); ++j) {
+			Vector2f vertexB1 = polygonBVertice[j];
+			Vector2f vertexB2 = polygonBVertice[(j + 1) % polygonBVertice.size()];
+
+			Vector2f curContactPoint;
+			float squaredDistance;
+			PolygonCollisionComponent::ProjectPointToEdge(vertexA, vertexB1, vertexB2, squaredDistance, curContactPoint);
+
+			if (squaredDistance == minDistSquared) {
+				if (curContactPoint != contactPoint1) {
+					contactPoint2 = curContactPoint;
+				}
+			}
+			else if (squaredDistance < minDistSquared) {
+				minDistSquared = squaredDistance;
+				contactPoint1 = curContactPoint;
+			}
+		}
+	}
+
+	for (int i = 0; i < polygonBVertice.size(); ++i) {
+		Vector2f vertexB = polygonBVertice[i];
+
+		for (int j = 0; j < polygonAVertice.size(); ++j) {
+			Vector2f vertexA1 = polygonAVertice[j];
+			Vector2f vertexA2 = polygonAVertice[(j + 1) % polygonAVertice.size()];
+
+			Vector2f curContactPoint;
+			float squaredDistance;
+			PolygonCollisionComponent::ProjectPointToEdge(vertexB, vertexA1, vertexA2, squaredDistance, curContactPoint);
+
+			if (squaredDistance == minDistSquared) {
+				if (curContactPoint != contactPoint1) {
+					contactPoint2 = curContactPoint;
+				}
+			}
+			else if (squaredDistance < minDistSquared) {
+				minDistSquared = squaredDistance;
+				contactPoint1 = curContactPoint;
+			}
+		}
+	}
+
+	contactPoints.emplace_back(contactPoint1);
+	if (contactPoint2 != Vector2f::zero) {
+		contactPoints.emplace_back(contactPoint2);
+	}
+
+	return contactPoints;
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<BoxCollisionComponent, BoxCollisionComponent>(BoxCollisionComponent& boxA, BoxCollisionComponent& boxB) {
+	return GetContactPoints<PolygonCollisionComponent, PolygonCollisionComponent>(boxA, boxB);
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<BoxCollisionComponent, PolygonCollisionComponent>(BoxCollisionComponent& box, PolygonCollisionComponent& polygon) {
+	return GetContactPoints<PolygonCollisionComponent, PolygonCollisionComponent>(box, polygon);
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<PolygonCollisionComponent, BoxCollisionComponent>(PolygonCollisionComponent& polygon, BoxCollisionComponent& box) {
+	return GetContactPoints<PolygonCollisionComponent, PolygonCollisionComponent>(polygon, box);
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<CircleCollisionComponent, BoxCollisionComponent>(CircleCollisionComponent& circle, BoxCollisionComponent& box) {
+	return GetContactPoints<CircleCollisionComponent, PolygonCollisionComponent>(circle, box);
+}
+
+template<>
+std::vector<Vector2f> GetContactPoints<BoxCollisionComponent, CircleCollisionComponent>(BoxCollisionComponent& box, CircleCollisionComponent& circle) {
+	return GetContactPoints<PolygonCollisionComponent, CircleCollisionComponent>(box, circle);
+}
 }
 #endif // COLLISIONCALLBACKS_H

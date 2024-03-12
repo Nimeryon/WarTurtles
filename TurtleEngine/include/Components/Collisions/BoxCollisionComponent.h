@@ -15,6 +15,7 @@ namespace Turtle
 		explicit BoxCollisionComponent(GameObject* parent, const std::string& name = "Collision Component (Box)");
 
 		void InitCollisionParameters(float width, float height);
+		float CalculateRotationalInertia(float mass) override;
 
 		float GetWidth() const;
 		float GetHeight() const;

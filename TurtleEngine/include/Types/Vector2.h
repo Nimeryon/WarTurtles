@@ -44,6 +44,9 @@ struct Vector2
     // Function to calculate the dot product of two vectors
     static Type Dot(const Vector2& v1, const Vector2& v2);
 
+    // Function to calculate the cross product of two vectors
+    static Type Cross(const Vector2& v1, const Vector2& v2);
+
     // Function to linearly interpolate between two vectors
     static Vector2 Lerp(const Vector2& from, const Vector2& to, Type t);
 

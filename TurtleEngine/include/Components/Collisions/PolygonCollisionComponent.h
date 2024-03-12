@@ -16,6 +16,7 @@ namespace Turtle
 
 		const std::vector<Vector2f>& GetVertice() const;
 		Vector2f GetCenter() const override;
+		virtual float CalculateRotationalInertia(float mass) override;
 
 		void SetVertice(const std::vector<Vector2f>& vertice);
 
@@ -23,6 +24,7 @@ namespace Turtle
 
 		static bool ProjectTransformedVertices(const PolygonCollisionComponent& polygon, const Vector2f& axis, float& min, float& max);
 		static bool FindNearestPointTo(const Vector2f& location, const PolygonCollisionComponent& polygon, Vector2f& nearestPoint);
+		static void ProjectPointToEdge(const Vector2f& pointToProject, const Vector2f& edgeStart, const Vector2f& edgeEnd, float& squaredDistance, Vector2f& projectedPoint);
 
 	protected:
 		std::vector<Vector2f> m_vertice;

@@ -14,6 +14,7 @@ namespace Turtle
 		ICollisionComponent(GameObject* parent, const std::string& name);
 
 		virtual Vector2f GetCenter() const = 0;
+		virtual float CalculateRotationalInertia(float mass) = 0;
 	};
 }
 #endif // ICOLLISIONCOMPONENT_H

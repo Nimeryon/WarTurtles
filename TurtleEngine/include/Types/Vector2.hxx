@@ -59,6 +59,12 @@ Type Vector2<Type>::Dot(const Vector2& v1, const Vector2& v2)
 }
 
 template<typename Type>
+inline Type Vector2<Type>::Cross(const Vector2& v1, const Vector2& v2)
+{
+    return v1.x * v2.y - v1.y * v2.x;
+}
+
+template<typename Type>
 Vector2<Type> Vector2<Type>::Lerp(const Vector2& from, const Vector2& to, Type t)
 {
     t = std::clamp(t, static_cast<Type>(0.0), static_cast<Type>(1.0));
