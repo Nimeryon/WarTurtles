@@ -46,6 +46,7 @@ namespace Turtle
     {
         m_sprite.setColor(color);
     }
+    
 
     void SpriteAnimationRenderer::Update(const Time& deltaTime)
     {

@@ -5,6 +5,7 @@
 #include "Managers/TextureManager.h"
 #include <SFML/Graphics.hpp>
 #include "Components/Component.h"
+#include "Types/Vector2.h"
 
 namespace Turtle
 {
@@ -17,6 +18,8 @@ namespace Turtle
         void SetAnimation(const AnimationTag& animationTag,float speed);
         void SetAnimationSpeed(float speed);
         void SetColor(const sf::Color& color);
+        void SetOrigin(const Vector2f& origin);
+        void SetO(const Vector2f& origin);
         
         void Update(const Time& deltaTime) override;
         void Draw(sf::RenderWindow& window) override;
