@@ -9,6 +9,7 @@ Turtle::CircleCollisionComponent::CircleCollisionComponent(GameObject* parent, c
 	m_debugShape.setFillColor(sf::Color::Transparent);
 	m_debugShape.setOutlineColor(sf::Color::Red);
 	m_debugShape.setOutlineThickness(1);
+	m_debugLineShape.setFillColor(sf::Color::Red);
 	SetActive(false);
 }
 
@@ -18,7 +19,10 @@ void Turtle::CircleCollisionComponent::InitCollisionParameters(const Vector2f& c
 	m_radius = radius;
 
 	m_debugShape.setPosition({ m_position.x, m_position.y });
+	m_debugShape.setOrigin({ m_radius, m_radius });
+	m_debugLineShape.setPosition({ m_position.x, m_position.y });
 	m_debugShape.setRadius(m_radius);
+	m_debugLineShape.setSize({ m_radius, 1 });
 
 	SetActive(true);
 }
@@ -41,11 +45,14 @@ void Turtle::CircleCollisionComponent::SetPosition(const Vector2f& position)
 { 
 	m_position = position;
 	m_debugShape.setPosition({ m_position.x, m_position.y });
+	m_debugLineShape.setPosition({ m_position.x, m_position.y + m_radius });
 }
 void Turtle::CircleCollisionComponent::SetRadius(float radius) 
 { 
 	m_radius = radius;
 	m_debugShape.setRadius(m_radius);
+	m_debugShape.setOrigin({ m_radius, m_radius });
+	m_debugLineShape.setSize({ m_radius, 1 });
 }
 
 void Turtle::CircleCollisionComponent::ProjectCircle(const CircleCollisionComponent& circle, const Vector2f& axis, float& min, float& max)
@@ -67,5 +74,7 @@ void Turtle::CircleCollisionComponent::ProjectCircle(const CircleCollisionCompon
 
 void Turtle::CircleCollisionComponent::DebugDraw(Window& window)
 {
-	window.draw(m_debugShape, m_parent->GetTransform()->GetTransformMatrix());
+	const auto& transformMatrix = m_parent->GetTransform()->GetTransformMatrix();
+	window.draw(m_debugShape, transformMatrix);
+	window.draw(m_debugLineShape, transformMatrix);
 }

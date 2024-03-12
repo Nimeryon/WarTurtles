@@ -34,6 +34,7 @@ namespace Turtle
 		float m_radius;
 
 		sf::CircleShape m_debugShape;
+		sf::RectangleShape m_debugLineShape;
 	};
 }
 #endif // CIRCLECOLLISIONCOMPONENT_H

@@ -5,11 +5,12 @@
 #include <SFML/Graphics.hpp>
 #include "Components/Component.h"
 #include "Types/Vector2.h"
+#include "Interfaces/IClickable.h"
 
 namespace Turtle
 {
     template <typename ShapeType>
-    class ShapeRenderer : public Component
+    class ShapeRenderer : public Component, public Clickable
     {
     public:
         explicit ShapeRenderer(GameObject* parent, const std::string& name = "ShapeRenderer");
@@ -17,6 +18,7 @@ namespace Turtle
         void SetShape(const ShapeType& shape);
         void SetOrigin(const Vector2f& origin);
         void SetColor(const sf::Color& color);
+
         void Draw(Window& window) override;
 
     private:

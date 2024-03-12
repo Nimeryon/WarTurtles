@@ -35,17 +35,10 @@ public:
 		testSprite->GetTransform()->SetScale({0.3f,0.3f});
 
 		Turtle::GameObject* myObject = Create("Test2");
-		Turtle::PolygonRenderer* polygonRenderer = myObject->AddComponent<Turtle::PolygonRenderer>();
-		std::vector<sf::Vector2f> vertices = {
-			sf::Vector2f(0.f, 0.f),
-			sf::Vector2f(100.f, 0.f),
-			sf::Vector2f(50.f, 100.f)
-		};
-		polygonRenderer->SetVertices(vertices);
-		polygonRenderer->SetColor(sf::Color::Green);
-
+		Turtle::ShapeRenderer<sf::RectangleShape>* shape = myObject->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
+		shape->SetShape(sf::RectangleShape({100,10}));
+		shape->OnClick(Test);
 		Turtle::App::GetInputManager()->AddCallback(Test,Turtle::EventType::Jump);
-		
 	}
 	void Gui(const Turtle::Time& deltaTime) override
 	{

@@ -12,6 +12,7 @@
 namespace Turtle
 {
 class Scene;
+class App;
 	
 using ScenePtr = std::unique_ptr<Scene>;
 	
@@ -35,7 +36,7 @@ public:
 	void FixedUpdate(const Time& fixedTime) const;
 	void Draw(Window& window) const;
 	void DebugDraw(Window& window) const;
-	void Gui(const Time& deltaTime) const;
+	void Gui(Window& window, const Time& deltaTime) const;
 
 	friend class Singleton;
 
@@ -48,6 +49,11 @@ private:
     Scene* m_currentScene;
 	unsigned int m_currentSceneID;
     unsigned int m_insertedSceneID;
+
+	void _HandleObjectCreation();
+	void _HandleObjectDestroy();
+
+	friend App;
 };
 }
 

@@ -29,6 +29,7 @@ public:
         auto* boxRenderer = box1->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
         sf::RectangleShape rectangleShape;
         rectangleShape.setSize({ 100, 100 });
+        rectangleShape.setOrigin({ 50, 50 });
         rectangleShape.setFillColor(sf::Color::Blue);
         boxRenderer->SetShape(rectangleShape);
         boxRenderer->SetColor(sf::Color::Blue);
@@ -42,6 +43,7 @@ public:
 
         auto* shapeRenderer = circle1->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
         sf::CircleShape circleRender = sf::CircleShape(50.f);
+        circleRender.setOrigin({ 50, 50 });
         shapeRenderer->SetShape(circleRender);
         shapeRenderer->SetColor(sf::Color::Blue);
 
@@ -78,16 +80,17 @@ public:
         auto* groundRenderer = ground->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
         sf::RectangleShape groundShape;
         groundShape.setSize({ 500, 50 });
+        groundShape.setOrigin({ 250, 25 });
         groundShape.setFillColor(sf::Color::Blue);
         groundRenderer->SetShape(groundShape);
         groundRenderer->SetColor(sf::Color::Blue);
 
-        ground->GetTransform()->Move({ 200, 400 });
+        ground->GetTransform()->Move({ 360, 400 });
 
         Scene::OnCreate();
     }
 
-	void Gui(const Turtle::Time& deltaTime) override
+	void Gui(Turtle::Window& window, const Turtle::Time& deltaTime) override
 	{
 		// Stylizing overlay
         ImGuiWindowFlags imFlags = ImGuiWindowFlags_NoDecoration
@@ -101,9 +104,12 @@ public:
         ImGui::SetNextWindowPos({ 4, 4 });
         ImGui::SetNextWindowBgAlpha(0.5f);
 
+        const auto& mousePos = sf::Mouse::getPosition(window);
+
         // Creating overlay
-        ImGui::Begin("FPS Overlay", 0, imFlags);
+        ImGui::Begin("Debug Overlay", 0, imFlags);
         ImGui::Text(std::format("{} FPS", floorf(1.f / deltaTime.asSeconds())).c_str());
+        ImGui::Text(std::format("Mouse X: {}, Mouse Y: {}", mousePos.x, mousePos.y).c_str());
         ImGui::End();
 	}
 };

@@ -26,7 +26,7 @@ struct IObject
 	// Called every frame after draw before GUI if debug true
 	virtual void DebugDraw(Window& window) {}
 	// Called every frame in last
-	virtual void Gui(const Time& deltaTime) {}
+	virtual void Gui(Window& window, const Time& deltaTime) {}
 };
 }
 

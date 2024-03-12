@@ -10,6 +10,8 @@
 
 namespace Turtle
 {
+class SceneManager;
+
 class Scene : public IObject
 {
 public:
@@ -34,7 +36,7 @@ public:
 	void FixedUpdate(const Time& fixedTime) override;
 	void Draw(Window& window) override;
 	void DebugDraw(Window& window) override;
-	void Gui(const Time& deltaTime) override;
+	void Gui(Window& window, const Time& deltaTime) override;
 
 	// =====================
 	// Game Objects
@@ -60,7 +62,17 @@ protected:
 
 private:
 	std::vector<std::unique_ptr<GameObject>> m_objects;
+	std::vector<std::unique_ptr<GameObject>> m_objectsToCreate;
+	std::vector<GameObject*> m_objectsToDestroy;
+	bool m_needObjectCreate;
+	bool m_needObjectDestroy;
+
 	GameObject* m_findCacheObject;
+
+	void _HandleObjectCreation();
+	void _HandleObjectDestroy();
+
+	friend SceneManager;
 };
 }
 
