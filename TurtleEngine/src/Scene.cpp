@@ -4,7 +4,8 @@
 Turtle::Scene::Scene() :
 	m_findCacheObject(nullptr),
 	m_needObjectCreate(false),
-	m_needObjectDestroy(false)
+	m_needObjectDestroy(false),
+	m_needObjectsSorting(false)
 {}
 
 const Turtle::Scene* Turtle::Scene::Current()
@@ -53,6 +54,11 @@ void Turtle::Scene::Update(const Time& deltaTime)
 		if (object->IsActive())
 			object->Update(deltaTime);
 	}
+
+	for (auto& object : m_objects)
+	{
+		object->TransformUpdate();
+	}
 }
 void Turtle::Scene::FixedUpdate(const Time& fixedTime)
 {
@@ -63,11 +69,24 @@ void Turtle::Scene::FixedUpdate(const Time& fixedTime)
 			object->FixedUpdate(fixedTime);
 		}
 	}
+	
+	for (auto& object : m_objects)
+	{
+		object->TransformUpdate();
+	}
 
 	m_physicManager.ResolveCollisions(fixedTime, m_objects);
 }
 void Turtle::Scene::Draw(Window& window)
 {
+	if (m_needObjectsSorting)
+	{
+		std::sort(m_objects.begin(), m_objects.end(), [](const std::unique_ptr<GameObject>& object1, const std::unique_ptr<GameObject>& object2) { 
+			return object1.get()->GetZIndex() < object2.get()->GetZIndex();
+		});
+		m_needObjectsSorting = false;
+	}
+
 	for (auto& object : m_objects)
 	{
 		if (object->IsActive())
@@ -182,6 +201,11 @@ std::vector<Turtle::GameObject*> Turtle::Scene::Finds(const std::string& name)
 	return objects;
 }
 
+void Turtle::Scene::NeedObjectsSorting()
+{
+	m_needObjectsSorting = true;
+}
+
 void Turtle::Scene::_HandleObjectCreation()
 {
 	if (!m_needObjectCreate)
@@ -195,6 +219,8 @@ void Turtle::Scene::_HandleObjectCreation()
 
 	m_needObjectCreate = false;
 	m_objectsToCreate.clear();
+
+	NeedObjectsSorting();
 }
 void Turtle::Scene::_HandleObjectDestroy()
 {
@@ -217,4 +243,6 @@ void Turtle::Scene::_HandleObjectDestroy()
 
 	m_needObjectDestroy = false;
 	m_objectsToDestroy.clear();
+
+	NeedObjectsSorting();
 }

@@ -6,7 +6,8 @@
 Turtle::GameObject::GameObject(const std::string& name, GameObject* parent) :
 	INamable(name),
 	m_transform(nullptr),
-	m_parent(nullptr)
+	m_parent(nullptr),
+	m_needTransformUpdate(true)
 {
 	m_transform = AddComponent<Transform>();
 	SetParent(parent);
@@ -176,6 +177,8 @@ void Turtle::GameObject::RemoveTags(const std::string& tagsToRemove)
 // Children
 // =====================
 
+Turtle::GameObject* Turtle::GameObject::GetParent() const { return m_parent; }
+
 Turtle::GameObject* Turtle::GameObject::GetChild(const int& index) const
 {
 	return m_children[index];
@@ -291,3 +294,34 @@ void Turtle::GameObject::RemoveFromParent()
 Turtle::Transform* Turtle::GameObject::GetTransform() const { return m_transform; }
 
 const std::vector<std::unique_ptr<Turtle::Component>>& Turtle::GameObject::GetComponents() const { return m_components; }
+
+// Transform update
+
+void Turtle::GameObject::NeedTransformUpdate()
+{
+	m_needTransformUpdate = true;
+}
+void Turtle::GameObject::TransformUpdate()
+{
+	if (m_needTransformUpdate)
+	{
+		m_transform->TransformUpdate();
+
+		for (GameObject* child : m_children)
+		{
+			child->NeedTransformUpdate();
+			child->TransformUpdate();
+		}
+
+		m_needTransformUpdate = false;
+	}
+}
+
+// Z Index
+
+int Turtle::GameObject::GetZIndex() const { return m_zIndex; }
+void Turtle::GameObject::SetZIndex(int zIndex)
+{
+	m_zIndex = zIndex;
+	SceneManager::Instance().GetCurrentScene()->NeedObjectsSorting();
+}

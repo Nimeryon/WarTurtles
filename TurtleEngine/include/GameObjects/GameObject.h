@@ -65,6 +65,8 @@ public:
 	// Children
 	// =====================
 
+	GameObject* GetParent() const;
+
 	GameObject* GetChild(const int& index) const;
 	// Return first child with name
 	GameObject* GetChildWidthName(const std::string& name) const;
@@ -100,14 +102,26 @@ public:
 	template<typename Type>
 	void RemoveComponent();
 
+	// Transform update
+
+	void NeedTransformUpdate();
+	void TransformUpdate();
+
+	// Z Index
+
+	int GetZIndex() const;
+	void SetZIndex(int zIndex);
+
 protected:
 	// tags separated by ','
 	std::string m_tags;
-	int m_zIndex;
 
 	// Components
 	std::vector<std::unique_ptr<Component>> m_components;
 	Transform* m_transform;
+
+	int m_zIndex;
+	bool m_needTransformUpdate;
 
 	// Objects
 	std::vector<GameObject*> m_children;

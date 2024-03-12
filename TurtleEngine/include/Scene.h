@@ -54,6 +54,8 @@ public:
 	// Returns all Object with name
 	std::vector<GameObject*> Finds(const std::string& name);
 
+	void NeedObjectsSorting();
+
 protected:
 	AudioManager m_audioManager;
 	TextureManager m_textureManager;
@@ -66,6 +68,7 @@ private:
 	std::vector<GameObject*> m_objectsToDestroy;
 	bool m_needObjectCreate;
 	bool m_needObjectDestroy;
+	bool m_needObjectsSorting;
 
 	GameObject* m_findCacheObject;
 

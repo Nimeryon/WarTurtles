@@ -12,6 +12,8 @@ class Transform : public Component
 public:
     Transform(GameObject* parent);
 
+    void TransformUpdate();
+
     // Don't do anything when setActive to avoid deactivating this component
     void SetActive(bool active) override;
 
@@ -54,7 +56,9 @@ private:
     float m_rotation;
     Vector2f m_scale;
 
-    bool m_needTransformUpdate;
+    Vector2f m_globalPosition;
+    float m_globalRotation;
+    Vector2f m_globalScale;
 };
 } // namespace Turtle
 
