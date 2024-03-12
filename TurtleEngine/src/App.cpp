@@ -40,6 +40,11 @@ void Turtle::App::Run()
 	ImGui::SFML::Shutdown();
 }
 
+void Turtle::App::Quit()
+{
+	exit(0);
+}
+
 void Turtle::App::_ProcessInputs()
 {
 	sf::Event event;

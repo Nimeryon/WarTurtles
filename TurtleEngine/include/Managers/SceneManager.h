@@ -21,7 +21,7 @@ class SceneManager : public Singleton<SceneManager>
 public:
 	Scene* GetCurrentScene() const;
 
-	unsigned int AddScene(ScenePtr scene, bool setScene = false);
+	unsigned int AddScene(ScenePtr scene, bool setScene = false,int sceneId = -1);
 	void RemoveScene(unsigned int sceneID);
 	void SetScene(unsigned int sceneID);
 	// Set scene with current scene id plus one

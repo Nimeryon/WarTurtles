@@ -7,7 +7,13 @@ namespace Turtle
 {
     Clickable::Clickable(sf::Shape* shape) : shape(shape)
     {
-        App::GetInputManager()->AddClickCallback(std::bind(&Clickable::CheckClick, this, std::placeholders::_1));
+        callback = std::bind(&Clickable::CheckClick, this, std::placeholders::_1);
+        App::GetInputManager()->AddClickCallback(callback);
+    }
+
+    Clickable::~Clickable()
+    {
+        App::GetInputManager()->RemoveClickCallback(callback);
     }
 
     void Clickable::OnClick(std::function<void()> callback)

@@ -55,6 +55,7 @@ void InputManager::Notify(EventType eventType) {
 
 void InputManager::NotifyClick(Vector2i clickPosition) {
     for (auto& clickCallback : clickCallbacks) {
+        if(!clickCallback)continue;
         clickCallback(clickPosition);
     }
 }

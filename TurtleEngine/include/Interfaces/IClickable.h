@@ -13,7 +13,7 @@ namespace Turtle
     {
     public:
         Clickable(sf::Shape* shape);
-        virtual ~Clickable() = default;
+        virtual ~Clickable();
 
         void OnClick(std::function<void()> callback);
 
@@ -21,6 +21,7 @@ namespace Turtle
         void CheckClick(const Vector2i& clickPosition) const;
         sf::Shape* shape;
         std::vector<std::function<void()>> callbacks;
+        std::function<void(Vector2i)> callback;
     };
 } // namespace Turtle
 

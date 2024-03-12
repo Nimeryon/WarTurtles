@@ -30,7 +30,12 @@ void Turtle::ShapeRenderer<ShapeType>::SetColor(const sf::Color& color)
 template <typename ShapeType>
 void Turtle::ShapeRenderer<ShapeType>::Draw(Window& window)
 {
+    
     const Transform* transform = this->m_parent->GetTransform();
-    window.draw(m_shape, transform->GetTransformMatrix());
+    
+    m_shape.setRotation(transform->GetRotation());
+    m_shape.setScale(transform->GetScale().x,transform->GetScale().y);
+    m_shape.setPosition(transform->GetPosition().x,transform->GetPosition().y);
+    window.draw(m_shape);
 }
 #endif

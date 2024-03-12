@@ -1,0 +1,13 @@
+{
+    "Sprites": [
+    {
+        "Name": "background",
+	    "X": 0,
+        "Y": 0,
+        "SizeX": 3000,
+        "SizeY": 2000,
+        "RevertedX": false,
+        "RevertedY": false
+    }],
+    "Animations": []
+}

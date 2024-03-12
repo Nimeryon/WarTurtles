@@ -13,8 +13,12 @@ Turtle::SceneManager::SceneManager() :
 
 Turtle::Scene* Turtle::SceneManager::GetCurrentScene() const { return m_currentScene; }
 
-unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene)
+unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene,int sceneId)
 {
+	if(sceneId != -1)
+	{
+		m_insertedSceneID = sceneId;
+	}
 	const auto& inserted = m_scenes.emplace(m_insertedSceneID, std::move(scene)).first;
 
 	if (setScene)
