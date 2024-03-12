@@ -2,6 +2,7 @@
 #include "Managers/SceneManager.h"
 #include "GameObjects/GameObject.h"
 #include "Components/Collisions/CollisionCallBacks.h"
+#include "Components/Collisions/ContactPointsCollisionCallBacks.h"
 #include "Components/Collisions/ICollisionComponent.h"
 
 Turtle::PhysicManager::PhysicManager(Vector2f globalGravity) :
@@ -9,20 +10,29 @@ Turtle::PhysicManager::PhysicManager(Vector2f globalGravity) :
 {
 	// Same shape
 	m_collisionDispatcher.add<CircleCollisionComponent, CircleCollisionComponent, collisionBetweenCircles>();
+	m_contactPointsCollisionDispatcher.add<CircleCollisionComponent, CircleCollisionComponent, GetContactPointsBetweenCircles>();
 	m_collisionDispatcher.add<PolygonCollisionComponent, PolygonCollisionComponent, collisionBetweenPolygons>();
+	m_contactPointsCollisionDispatcher.add<PolygonCollisionComponent, PolygonCollisionComponent, GetContactPointsBetweenPolygons>();
 	m_collisionDispatcher.add<BoxCollisionComponent, BoxCollisionComponent, collisionBetweenBoxes>();
+	m_contactPointsCollisionDispatcher.add<BoxCollisionComponent, BoxCollisionComponent, GetContactPointsBetweenBoxes>();
 
 	// Circle / Polygon
 	m_collisionDispatcher.add<CircleCollisionComponent, PolygonCollisionComponent, collisionBetweenCircleAndPolygon>();
+	m_contactPointsCollisionDispatcher.add<CircleCollisionComponent, PolygonCollisionComponent, GetContactPointsBetweenCircleAndPolygon>();
 	m_collisionDispatcher.add<PolygonCollisionComponent, CircleCollisionComponent, collisionBetweenPolygonAndCircle>();
+	m_contactPointsCollisionDispatcher.add<PolygonCollisionComponent, CircleCollisionComponent, GetContactPointsBetweenPolygonAndCircle>();
 
 	// Box / Polygon
 	m_collisionDispatcher.add<BoxCollisionComponent, PolygonCollisionComponent, collisionBetweenBoxAndPolygon>();
+	m_contactPointsCollisionDispatcher.add<BoxCollisionComponent, PolygonCollisionComponent, GetContactPointsBetweenBoxAndPolygon>();
 	m_collisionDispatcher.add<PolygonCollisionComponent, BoxCollisionComponent, collisionBetweenPolygonAndBox>();
+	m_contactPointsCollisionDispatcher.add<PolygonCollisionComponent, BoxCollisionComponent, GetContactPointsBetweenPolygonAndBox>();
 
 	// Box / Circle
 	m_collisionDispatcher.add<BoxCollisionComponent, CircleCollisionComponent, collisionBetweenBoxAndCircle>();
+	m_contactPointsCollisionDispatcher.add<BoxCollisionComponent, CircleCollisionComponent, GetContactPointsBetweenBoxAndCircle>();
 	m_collisionDispatcher.add<CircleCollisionComponent, BoxCollisionComponent, collisionBetweenCircleAndBox>();
+	m_contactPointsCollisionDispatcher.add<CircleCollisionComponent, BoxCollisionComponent, GetContactPointsBetweenCircleAndBox>();
 }
 
 const Turtle::PhysicManager& Turtle::PhysicManager::Instance()
@@ -32,12 +42,13 @@ const Turtle::PhysicManager& Turtle::PhysicManager::Instance()
 
 void Turtle::PhysicManager::ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Time& fixedTime) const
 {
-	ObjectPhysicComponent.m_acceleration += ( m_globalGravity + ObjectPhysicComponent.GetAllForces() ) / ObjectPhysicComponent.m_mass;
+	ObjectPhysicComponent.m_acceleration = m_globalGravity + ObjectPhysicComponent.GetAllForces(); // / ObjectPhysicComponent.Mass
 	ObjectTransformComponent.Move(ObjectPhysicComponent.m_velocity * fixedTime.asSeconds());
 	ObjectPhysicComponent.m_velocity += ObjectPhysicComponent.m_acceleration * fixedTime.asSeconds();
+	ObjectTransformComponent.Rotate(ObjectPhysicComponent.AngularVelocity);
 }
 
-void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject& ObjectB, Vector2f& normal, float value) const
+void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject& ObjectB, Vector2f& normal, float value)
 {
 	Physic* ObjectAPhysicComponent = ObjectA.GetComponent<Physic>();
 	Physic* ObjectBPhysicComponent = ObjectB.GetComponent<Physic>();
@@ -50,7 +61,7 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 		ObjectATransformComponent->Move(-normal * value);
 		ObjectBTransformComponent->Move(normal * value);
 
-		auto contactPoints = GetContactPoints(ObjectACollisionComponent, ObjectBCollisionComponent);
+		auto contactPoints = m_contactPointsCollisionDispatcher(*ObjectACollisionComponent, *ObjectBCollisionComponent);
 		std::vector<Vector2f> impulses;
 		std::vector<Vector2f> raList;
 		std::vector<Vector2f> rbList;
@@ -59,9 +70,9 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 		float resultingForce;
 
 		for (int i = 0; i < contactPoints.size(); ++i) {
-			Vector2f ra = contactPoints[i] - ObjectATransformComponent->GetGlobalPosition();
+			Vector2f ra = contactPoints[i] - ObjectACollisionComponent->GetCenter();
 			raList.emplace_back(ra);
-			Vector2f rb = contactPoints[i] - ObjectBTransformComponent->GetGlobalPosition();
+			Vector2f rb = contactPoints[i] - ObjectBCollisionComponent->GetCenter();
 			rbList.emplace_back(rb);
 
 			Vector2f raNormal = Vector2f::Perpendicular(ra);
@@ -95,7 +106,7 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 			impulses.emplace_back(impulse);
 		}
 
-		for (int i = 0; i < contactPoints.size(); ++i) {
+		for (int i = 0; i < impulses.size(); ++i) {
 			Vector2f curImpulse = impulses[i];
 			Vector2f ra = raList[i];
 			Vector2f rb = rbList[i];
@@ -119,7 +130,7 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 	else {
 		ObjectATransformComponent->Move(-normal * value);
 
-		auto contactPoints = GetContactPoints(ObjectACollisionComponent, ObjectBCollisionComponent);
+		auto contactPoints = m_contactPointsCollisionDispatcher(*ObjectACollisionComponent, *ObjectBCollisionComponent);
 		std::vector<Vector2f> impulses;
 		std::vector<Vector2f> raList;
 		std::vector<Vector2f> rbList;
@@ -128,13 +139,10 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 		float resultingForce;
 
 		for (int i = 0; i < contactPoints.size(); ++i) {
-			Vector2f ra = contactPoints[i] - ObjectATransformComponent->GetGlobalPosition();
+			Vector2f ra = contactPoints[i] - ObjectACollisionComponent->GetCenter();
 			raList.emplace_back(ra);
-			Vector2f rb = contactPoints[i] - ObjectBTransformComponent->GetGlobalPosition();
-			rbList.emplace_back(rb);
 
 			Vector2f raNormal = Vector2f::Perpendicular(ra);
-			Vector2f rbNormal = Vector2f::Perpendicular(rb);
 
 			Vector2f angularLinearVelocityA = raNormal * ObjectAPhysicComponent->AngularVelocity;
 
@@ -146,7 +154,6 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 				continue;
 
 			float raNormalDotN = Vector2f::Dot(raNormal, normal);
-			float rbNormalDotN = Vector2f::Dot(rbNormal, normal);
 
 			float denom = 1 / ObjectAPhysicComponent->m_mass +
 				raNormalDotN * raNormalDotN / ObjectACollisionComponent->CalculateRotationalInertia(ObjectAPhysicComponent->m_mass);
@@ -161,10 +168,9 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 			impulses.emplace_back(impulse);
 		}
 
-		for (int i = 0; i < contactPoints.size(); ++i) {
+		for (int i = 0; i < impulses.size(); ++i) {
 			Vector2f curImpulse = impulses[i];
 			Vector2f ra = raList[i];
-			Vector2f rb = rbList[i];
 			ObjectAPhysicComponent->m_velocity -= curImpulse / ObjectAPhysicComponent->m_mass;
 			ObjectAPhysicComponent->AngularVelocity -= Vector2f::Cross(ra, curImpulse) / ObjectACollisionComponent->CalculateRotationalInertia(ObjectAPhysicComponent->m_mass);
 		}

@@ -21,7 +21,7 @@ void Turtle::BoxCollisionComponent::InitCollisionParameters(float width, float h
 
 float Turtle::BoxCollisionComponent::CalculateRotationalInertia(float mass)
 {
-	return m_height * m_width / 12 * (m_width * m_width + m_height * m_height);
+	return (m_width * m_width + m_height * m_height) * mass / 12;
 }
 
 float Turtle::BoxCollisionComponent::GetWidth() const { return m_width; }
@@ -47,8 +47,8 @@ void Turtle::BoxCollisionComponent::_UpdateVertice()
 {
 	float left = -m_width / 2.f;
 	float right = left + m_width;
-	float bottom = -m_height / 2.f;
-	float top = bottom + m_height;
+	float top = -m_height / 2.f;
+	float bottom = top + m_height;
 
 	m_vertice[0] = (Vector2f(left, top));
 	m_vertice[1] = (Vector2f(right, top));

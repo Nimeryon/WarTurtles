@@ -5,6 +5,7 @@
 #include "Utils/Time.h"
 #include "Components/Physic.h"
 #include "Components/Collisions/CollisionDispatcher.h"
+#include "Components/Collisions/ContactPointsCollisionDispatcher.h"
 
 namespace Turtle
 {
@@ -15,14 +16,14 @@ namespace Turtle
 	class PhysicManager final
 	{
 	public:
-		PhysicManager(Vector2f globalGravity = {0, 9.81f});
+		PhysicManager(Vector2f globalGravity = {0, 98.1f});
 		PhysicManager(PhysicManager&) = delete;
 		~PhysicManager() = default;
 
 		static const PhysicManager& Instance();
 
 		void ComputeNewPositionFor(Physic& ObjectPhysicComponent, Transform& ObjectTransformComponent, const Time& fixedTime) const;
-		void ResolveCollisionFor(GameObject& ObjectA, GameObject& ObjectB, Vector2f& normal, float value) const;
+		void ResolveCollisionFor(GameObject& ObjectA, GameObject& ObjectB, Vector2f& normal, float value);
 		void ResolveCollisions(const Time& fixedTime, std::vector<std::unique_ptr<GameObject>>& objects);
 
 		Vector2f GetGlobalGravity() const;
@@ -32,6 +33,7 @@ namespace Turtle
 	private:
 		Vector2f m_globalGravity;
 		CollisionDispatcher<ICollisionComponent> m_collisionDispatcher;
+		ContactPointsCollisionDispatcher<ICollisionComponent> m_contactPointsCollisionDispatcher;
 	};
 }
 #endif // PHYSICMANAGER_H

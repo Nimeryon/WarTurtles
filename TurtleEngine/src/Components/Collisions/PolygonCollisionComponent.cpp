@@ -91,18 +91,18 @@ void Turtle::PolygonCollisionComponent::ProjectPointToEdge(const Vector2f& point
 	Vector2f vertexAToCenter = pointToProject - edgeStart;
 
 	float proj = Vector2f::Dot(vertexAToCenter, edge);
-	float distance = proj / edge.Magnitude();
+	float distance = proj / edge.SqrMagnitude();
 
-	Vector2f curContactPoint;
 	if (distance <= 0.f) {
-		curContactPoint = edgeStart;
+		projectedPoint = edgeStart;
 	}
 	else if (distance >= 1.f) {
-		curContactPoint = edgeEnd;
+		projectedPoint = edgeEnd;
 	}
 	else {
-		curContactPoint = edgeStart + edge * distance;
+		projectedPoint = edgeStart + edge * distance;
 	}
 
-	float SquareDistance = std::pow(Vector2f::Distance(pointToProject, curContactPoint), 2);
+	Vector2f temp = pointToProject - projectedPoint;
+	squaredDistance = temp.SqrMagnitude();
 }

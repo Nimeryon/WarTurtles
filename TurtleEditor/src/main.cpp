@@ -23,7 +23,7 @@ public:
     {
         // Box 1
         auto box1 = Create("Box 1");
-        box1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
+        box1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.f, 0.5f, 0.f);
         box1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
         
         auto* boxRenderer = box1->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
@@ -37,8 +37,9 @@ public:
         box1->GetTransform()->Move({ 600, 200 });
 
         // Circle 1
+        
         auto circle1 = Create("Circle 1");
-        circle1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f, -100.f }, Turtle::Vector2f::zero, 10, 0, 0.5f);
+        circle1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f, -100.f }, Turtle::Vector2f::zero, 3.f, 0.f, 0.5f, 0.f);
         circle1->AddComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters({}, 50.f);
 
         auto* shapeRenderer = circle1->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
@@ -48,6 +49,7 @@ public:
         shapeRenderer->SetColor(sf::Color::Blue);
 
         circle1->GetTransform()->Move({ 200, 200 });
+        
 
         // Circle 2
         /*auto circle2 = Create("Circle 2");
