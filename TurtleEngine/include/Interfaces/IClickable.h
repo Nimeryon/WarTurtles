@@ -5,6 +5,8 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 
+#include "Types/Vector2.h"
+
 namespace Turtle
 {
     class Clickable
@@ -16,7 +18,7 @@ namespace Turtle
         void OnClick(std::function<void()> callback);
 
     private:
-        void CheckClick(const sf::Vector2f& clickPosition) const;
+        void CheckClick(const Vector2i& clickPosition) const;
         sf::Shape* shape;
         std::vector<std::function<void()>> callbacks;
     };

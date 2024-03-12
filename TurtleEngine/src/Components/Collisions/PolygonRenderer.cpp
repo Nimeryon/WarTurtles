@@ -11,16 +11,16 @@ namespace Turtle
 {
     PolygonRenderer::PolygonRenderer(GameObject* parent, const std::string& name) : Component(parent, name)
     {
-        m_vertexArray.setPrimitiveType(sf::Triangles);
+        m_vertexArray.setPrimitiveType(sf::TriangleStrip);
     }
 
-    void PolygonRenderer::SetVertices(const std::vector<sf::Vector2f>& vertices)
+    void PolygonRenderer::SetVertice(const std::vector<Vector2f>& vertice)
     {
         m_vertexArray.clear();
         
-        for (const sf::Vector2f& vertex : vertices)
+        for (const Vector2f& vertex : vertice)
         {
-            m_vertexArray.append(sf::Vertex(vertex));
+            m_vertexArray.append(sf::Vertex({ vertex.x, vertex.y }));
         }
     }
 
@@ -32,7 +32,7 @@ namespace Turtle
         }
     }
 
-    void PolygonRenderer::Draw(sf::RenderWindow& window)
+    void PolygonRenderer::Draw(Window& window)
     {
         const Transform* transform = m_parent->GetTransform();
         window.draw(m_vertexArray, transform->GetTransformMatrix());

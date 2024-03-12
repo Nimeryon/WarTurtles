@@ -3,6 +3,8 @@
 #include "Utils/Time.h"
 #include "Utils/Window.h"
 #include "Scene.h"
+#include "App.h"
+
 Turtle::SceneManager::SceneManager() :
 	m_currentScene(nullptr),
 	m_currentSceneID(0),
@@ -18,7 +20,7 @@ unsigned int Turtle::SceneManager::AddScene(ScenePtr scene, bool setScene)
 	if (setScene)
 	{
 		SetScene(m_insertedSceneID);
-		inserted->second->OnCreate();
+		//inserted->second->OnCreate(); already done in SetScene
 	}
 
 	m_insertedSceneID++;
@@ -91,10 +93,32 @@ void Turtle::SceneManager::Draw(Window& window) const
 		m_currentScene->Draw(window);
 	}
 }
-void Turtle::SceneManager::Gui(const Time& dt) const
+void Turtle::SceneManager::DebugDraw(Window& window) const
 {
 	if (m_currentScene)
 	{
-		m_currentScene->Gui(dt);
+		m_currentScene->DebugDraw(window);
+	}
+}
+void Turtle::SceneManager::Gui(Window& window, const Time& dt) const
+{
+	if (m_currentScene)
+	{
+		m_currentScene->Gui(window, dt);
+	}
+}
+
+void Turtle::SceneManager::_HandleObjectCreation()
+{
+	if (m_currentScene)
+	{
+		m_currentScene->_HandleObjectCreation();
+	}
+}
+void Turtle::SceneManager::_HandleObjectDestroy()
+{
+	if (m_currentScene)
+	{
+		m_currentScene->_HandleObjectDestroy();
 	}
 }

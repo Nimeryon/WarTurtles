@@ -41,7 +41,8 @@ public:
 	void Update(const Time& deltaTime) override;
 	void FixedUpdate(const Time& fixedTime) override;
 	void Draw(Window& window) override;
-	void Gui(const Time& deltaTime) override;
+	void DebugDraw(Window& window) override;
+	void Gui(Window& window, const Time& deltaTime) override;
 
 	// =====================
 	// Tags

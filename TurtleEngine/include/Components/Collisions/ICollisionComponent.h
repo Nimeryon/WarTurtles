@@ -3,7 +3,6 @@
 #define ICOLLISIONCOMPONENT_H
 #include "Components/Component.h"
 #include "Components/Transform.h"
-#include "Types/Shapes/IShape.h"
 #include "Types/Vector2.h"
 
 namespace Turtle
@@ -13,12 +12,9 @@ namespace Turtle
 	public:
 		ICollisionComponent() = delete;
 		ICollisionComponent(GameObject* parent, const std::string& name);
-		virtual ~ICollisionComponent();
 
-		virtual void UpdateCollisionTransform(Transform& transform) = 0;
-
-		virtual const IShape& GetShape() const = 0;
+		virtual Vector2f GetCenter() const = 0;
 	};
 }
-#endif // !ICOLLISIONCOMPONENT_H
+#endif // ICOLLISIONCOMPONENT_H
 

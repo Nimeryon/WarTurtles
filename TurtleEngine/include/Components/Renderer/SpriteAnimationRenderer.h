@@ -8,7 +8,7 @@
 
 namespace Turtle
 {
-    class SpriteAnimationRenderer final : public Component
+    class SpriteAnimationRenderer : public Component
     {
     public:
         explicit SpriteAnimationRenderer(GameObject* parent, const std::string& name = "SpriteAnimationRenderer");
