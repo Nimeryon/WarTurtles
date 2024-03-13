@@ -156,6 +156,12 @@ Vector2<Type> Vector2<Type>::Normalize(const Vector2& vector)
 }
 
 template<typename Type>
+bool Vector2<Type>::Compare(const Vector2& vector1, const Vector2& vector2, float threshold)
+{
+    return Distance(vector1, vector2) <= threshold;
+}
+
+template<typename Type>
 Type Vector2<Type>::SqrMagnitude() const
 {
     return x * x + y * y;
@@ -191,6 +197,12 @@ std::string Vector2<Type>::ToString() const
     std::ostringstream oss;
     oss << "(" << x << ", " << y << ")";
     return oss.str();
+}
+
+template<typename Type>
+bool Vector2<Type>::Compare(const Vector2& other, float threshold)
+{
+    return Compare(*this, other, threshold);
 }
 
 template<typename Type>

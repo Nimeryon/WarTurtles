@@ -83,6 +83,9 @@ struct Vector2
     // Function to normalize a vector
     static Vector2 Normalize(const Vector2& vector);
 
+    // Function to compare two vectors
+    static bool Compare(const Vector2& vector1, const Vector2& vector2, float threshold = 0.0001f);
+
     // =====================
     // Properties
 	// =====================
@@ -104,6 +107,9 @@ struct Vector2
 
     // Function to parse a string and set the vector's components
     void FromString(const std::string& str);
+
+    // Function to compare two vectors
+    bool Compare(const Vector2& other, float threshold = 0.0001f);
 
     // =====================
     // Operators
