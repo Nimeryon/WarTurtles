@@ -60,6 +60,8 @@ private:
     std::vector<std::function<void(Vector2i)>> m_clickCallbacks;
     Window& m_window;
 
+    bool m_windowHasFocus;
+
     // KeyBoard
     std::array<bool, sf::Keyboard::KeyCount> m_keyboardState;
     std::array<bool, sf::Keyboard::KeyCount> m_oldKeyboardState;

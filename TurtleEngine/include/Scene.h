@@ -31,7 +31,7 @@ public:
 	void OnCreate() override;
 	void OnDestroyed() override;
 
-	void ProcessInputs() override;
+	void ProcessInputs(const InputManager& inputManager) override;
 	void Update(const Time& deltaTime) override;
 	void FixedUpdate(const Time& fixedTime) override;
 	void Draw(Window& window) override;

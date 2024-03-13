@@ -58,7 +58,7 @@ void Turtle::App::_ProcessInputs()
 		ImGui::SFML::ProcessEvent(m_window, event);
 	}
 
-	SceneManager::Instance().ProcessInputs();
+	SceneManager::Instance().ProcessInputs(*m_inputManager.get());
 }
 void Turtle::App::_Update(const Time& deltaTime)
 {

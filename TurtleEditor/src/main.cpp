@@ -17,33 +17,13 @@
 #include "GameObjects/GameObject.h"
 #include "GameObjects/BoxObject.h"
 #include "GameObjects/CircleObject.h"
+#include "Managers/InputManager.h"
 
 class DemoScene : public Turtle::Scene
 {
 public:
     void OnCreate() override
     {
-        // Box
-        auto box = Create<Turtle::BoxObject>("Box");
-        box->InitParameters(100, 100, sf::Color::Blue);
-        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.2f, 0.2f, 0.5f, 0.f);
-        box->GetTransform()->Move({ 500, 200 });
-
-        box = Create<Turtle::BoxObject>("Box");
-        box->InitParameters(100, 100, sf::Color::Blue);
-        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.2f, 0.2f, 0.5f, 0.f);
-        box->GetTransform()->Move({ 600, 200 });
-
-        box = Create<Turtle::BoxObject>("Box");
-        box->InitParameters(100, 100, sf::Color::Blue);
-        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.2f, 0.2f, 0.5f, 0.f);
-        box->GetTransform()->Move({ 500, 300 });
-
-        box = Create<Turtle::BoxObject>("Box");
-        box->InitParameters(100, 100, sf::Color::Blue);
-        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.2f, 0.2f, 0.5f, 0.f);
-        box->GetTransform()->Move({ 600, 300 });
-
         // Ground
         auto ground = Create<Turtle::BoxObject>("Ground");
         ground->InitParameters(500, 50, sf::Color::Blue);
@@ -55,6 +35,16 @@ public:
         circle->GetTransform()->Move({ 200, 320 });
 
         Scene::OnCreate();
+    }
+
+    void ProcessInputs(const Turtle::InputManager& inputManager) override
+    {
+        if (inputManager.IsPointerDown(sf::Mouse::Left))
+        {
+            auto box = Create<Turtle::BoxObject>(inputManager.GetMousePosition(), 0, "Box");
+            box->InitParameters(25, 25, sf::Color::Blue);
+            box->InitPhysicsParameters(Turtle::Vector2f::zero, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
+        }
     }
 
 	void Gui(Turtle::Window& window, const Turtle::Time& deltaTime) override
