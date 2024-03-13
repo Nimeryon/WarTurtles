@@ -19,7 +19,8 @@ namespace Turtle
         void SetAnimationSpeed(float speed);
         void SetColor(const sf::Color& color);
         void SetOrigin(const Vector2f& origin);
-        void SetO(const Vector2f& origin);
+        void SetScale(const Vector2f& scale);
+        void SetPosition(const Vector2f& position);
         
         void Update(const Time& deltaTime) override;
         void Draw(sf::RenderWindow& window) override;
@@ -35,6 +36,7 @@ namespace Turtle
         unsigned m_currentFrame;
         float m_frameDuration;
         float m_elapsedTime;
+        bool flip = false;
     };
 } // namespace Turtle
 

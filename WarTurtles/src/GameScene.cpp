@@ -2,6 +2,7 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
 #include "../include/EndScene.h"
+#include "../include/Player.h"
 #include "../include/TimerViewText.h"
 #include "../include/TurnManager.h"
 #include "Components/Collisions/BoxCollisionComponent.h"
@@ -20,6 +21,7 @@ void GameScene::OnCreate()
     m_fontManager.LoadFont("GameFont","game.ttf");
     m_textureManager.LoadTexture("background","gameBG.jpg");
     m_textureManager.LoadTexture("Player","turtle.png");
+    m_textureManager.LoadTexture("Crate","crate.png");
     
     Turtle::GameObject* background = Create("backgroundGame");
     const auto background_renderer = background->AddComponent<Turtle::SpriteRenderer>();
@@ -50,20 +52,64 @@ void GameScene::OnCreate()
 
     ground->GetTransform()->SetPosition({540,700});
 
-    auto player = Create("Player1");
-    //player->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
-    player->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
-    auto* player1Animation = player->AddComponent<Turtle::SpriteAnimationRenderer>();
-    player1Animation->InitAnimation("Player","Idle");
-
-
     auto turnManagerGO = Create("TurnManager");
     auto* turnManager = turnManagerGO->AddComponent<Turtle::TurnManager>();
     turnManager->SetTurnMaxDuration(WaitingPlayer1,5.f);
     turnManager->SetTurnMaxDuration(WaitingPlayer2,5.f);
     turnManager->SetTurnMaxDuration(Player1Turn,30.f);
     turnManager->SetTurnMaxDuration(Player2Turn,30.f);
-    turnManager->AddTurnCallback(Test);
+    
+    auto player1 = Create("Player1");
+    auto* physicsPlayer1 = player1->AddComponent<Turtle::Physic>();
+    physicsPlayer1->InitPhysicParameters(Turtle::Vector2f{ 0, 0 }, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
+    physicsPlayer1->BlockAngularVelocity(true);
+    player1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(300.f, 600.f);
+    auto* player1Animation = player1->AddComponent<Turtle::SpriteAnimationRenderer>();
+    player1->AddComponent<Turtle::Player>()->Init(0,physicsPlayer1,player1Animation,turnManager);
+    player1Animation->InitAnimation("Player","Idle");
+    player1Animation->SetOrigin({350,350});
+    player1Animation->SetScale({0.1f,0.1f});
+    player1->GetTransform()->SetPosition({200,500});
+    player1->GetTransform()->SetScale({0.2,0.2});
+
+    auto player2 = Create("Player2");
+    auto* physicsPlayer2 = player2->AddComponent<Turtle::Physic>();
+    physicsPlayer2->InitPhysicParameters(Turtle::Vector2f{ 0, 0 }, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
+    physicsPlayer2->BlockAngularVelocity(true);
+    player2->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(300.f, 600.f);
+    auto* player2Animation = player2->AddComponent<Turtle::SpriteAnimationRenderer>();
+    player2Animation->InitAnimation("Player","Idle");
+    player2Animation->SetOrigin({350,350});
+    player2Animation->SetScale({0.1f,0.1f});
+    player2->GetTransform()->SetPosition({800,500});
+    player2->GetTransform()->SetScale({0.2,0.2});
+    
+
+    auto crate1 = Create("Crate1");
+    crate1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 0, 0 }, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
+    crate1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(512.f, 512.f);
+    auto* crate1Renderer = crate1->AddComponent<Turtle::SpriteRenderer>();
+    crate1Renderer->InitTexture(&m_textureManager,"Crate","crate");
+    crate1Renderer->SetOrigin({256,256});
+    crate1->GetTransform()->SetScale({0.15f,0.15f});
+    crate1->GetTransform()->SetPosition({500,550});
+    auto crate2 = Create("Crate2");
+    crate2->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 0, 0 }, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
+    crate2->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(512.f, 512.f);
+    auto* crate2Renderer = crate2->AddComponent<Turtle::SpriteRenderer>();
+    crate2Renderer->InitTexture(&m_textureManager,"Crate","crate");
+    crate2Renderer->SetOrigin({256,256});
+    crate2->GetTransform()->SetScale({0.15f,0.15f});
+    crate2->GetTransform()->SetPosition({600,550});
+    auto crate3 = Create("Crate3");
+    crate3->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 0, 0 }, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
+    crate3->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(512.f, 512.f);
+    auto* crate3Renderer = crate3->AddComponent<Turtle::SpriteRenderer>();
+    crate3Renderer->InitTexture(&m_textureManager,"Crate","crate");
+    crate3Renderer->SetOrigin({256,256});
+    crate3->GetTransform()->SetScale({0.15f,0.15f});
+    crate3->GetTransform()->SetPosition({550,450});
+    
     
     auto turnTextGO = Create("TurnText");
     auto timerTextGO = Create("TimerText");

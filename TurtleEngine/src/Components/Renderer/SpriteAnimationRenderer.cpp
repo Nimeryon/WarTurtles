@@ -23,8 +23,10 @@ namespace Turtle
 
     void SpriteAnimationRenderer::SetAnimation(const AnimationTag& animationTag, float speed)
     {
+        if(animationTag == m_animationTag)return;
         m_animationTag = animationTag;
         m_frameDuration = m_textureManager->GetTextureData(m_textureTag).AnimationsData.find(animationTag)->second.speed;
+        m_animationFrames = m_textureManager->GetTextureData(m_textureTag).AnimationsData.find(animationTag)->second.frames;
         m_currentFrame = 0;
         m_frameDuration = speed;
     }
@@ -47,7 +49,22 @@ namespace Turtle
     {
         m_sprite.setColor(color);
     }
-    
+
+    void SpriteAnimationRenderer::SetOrigin(const Vector2f& origin)
+    {
+        m_sprite.setOrigin(origin.x,origin.y);
+    }
+
+    void SpriteAnimationRenderer::SetScale(const Vector2f& scale)
+    {
+        m_sprite.setScale(scale.x,scale.y);
+    }
+
+    void SpriteAnimationRenderer::SetPosition(const Vector2f& position)
+    {
+        m_sprite.setPosition(position.x,position.y);
+    }
+
 
     void SpriteAnimationRenderer::Update(const Time& deltaTime)
     {

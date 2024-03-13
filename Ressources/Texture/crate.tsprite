@@ -1,0 +1,13 @@
+{
+    "Sprites": [
+    {
+        "Name": "crate",
+	    "X": 0,
+        "Y": 0,
+        "SizeX": 512,
+        "SizeY": 512,
+        "RevertedX": false,
+        "RevertedY": false
+    }],
+    "Animations": []
+}

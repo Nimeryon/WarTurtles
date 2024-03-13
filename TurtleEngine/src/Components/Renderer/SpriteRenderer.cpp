@@ -33,4 +33,19 @@ namespace Turtle
         const Transform* transform = m_parent->GetTransform();
         window.draw(m_sprite,transform->GetTransformMatrix());
     }
+
+    void SpriteRenderer::SetOrigin(const Vector2f& origin)
+    {
+        m_sprite.setOrigin(origin.x,origin.y);
+    }
+
+    void SpriteRenderer::SetScale(const Vector2f& scale)
+    {
+        m_sprite.setScale(scale.x,scale.y);
+    }
+
+    void SpriteRenderer::SetPosition(const Vector2f& position)
+    {
+        m_sprite.setPosition(position.x,position.y);
+    }
 }

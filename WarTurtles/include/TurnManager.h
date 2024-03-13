@@ -24,6 +24,7 @@ namespace Turtle
 
         void Update(const Time& deltaTime) override;
         int GetTimerTime();
+        TurnState GetTurnState();
     private:
         void TriggerCallbacks() const;
         void SwitchTurn(); 

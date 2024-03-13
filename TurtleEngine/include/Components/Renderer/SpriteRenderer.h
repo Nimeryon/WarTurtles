@@ -4,6 +4,7 @@
 #include "Managers/TextureManager.h"
 #include <SFML/Graphics.hpp>
 #include "Components/Component.h"
+#include "Types/Vector2.h"
 
 namespace Turtle
 {
@@ -17,6 +18,10 @@ namespace Turtle
         void SetColor(const sf::Color& color);
         
         void Draw(sf::RenderWindow& window) override;
+
+        void SetOrigin(const Vector2f& origin);
+        void SetScale(const Vector2f& scale);
+        void SetPosition(const Vector2f& position);
 
     private:
         void SetTextureRect(const SpriteTag& spriteTag);
