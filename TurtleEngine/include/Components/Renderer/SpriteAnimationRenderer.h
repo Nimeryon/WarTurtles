@@ -24,7 +24,7 @@ namespace Turtle
         
         void Update(const Time& deltaTime) override;
         void Draw(sf::RenderWindow& window) override;
-
+        void Flip(bool flip);
     private:
         void SetTextureRect(const SpriteTag& spriteTag);
         
@@ -36,7 +36,7 @@ namespace Turtle
         unsigned m_currentFrame;
         float m_frameDuration;
         float m_elapsedTime;
-        bool flip = false;
+        bool m_flip = false;
     };
 } // namespace Turtle
 

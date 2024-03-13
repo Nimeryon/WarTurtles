@@ -1,5 +1,7 @@
 ﻿#include "../include/TurnManager.h"
 
+#include "Managers/SceneManager.h"
+
 namespace Turtle
 {
     TurnManager::TurnManager(GameObject* parent, const std::string& name) : Component(parent, name), m_turnState(WaitingPlayer1)
@@ -15,6 +17,11 @@ namespace Turtle
         }
         m_timer.restart();
         TriggerCallbacks();
+        if(turnType == WaitingPlayer1 || turnType == WaitingPlayer2)return;
+        for(auto bullet : SceneManager::Instance().GetCurrentScene()->Finds("BULLET"))
+        {
+            bullet->Destroy();
+        }
     }
 
     void TurnManager::SetTurnMaxDuration(const TurnState& turnType, float duration)

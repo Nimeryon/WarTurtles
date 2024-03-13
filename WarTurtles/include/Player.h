@@ -3,6 +3,7 @@
 #include "Components/Component.h"
 #include "Components/Physic.h"
 #include "Components/Renderer/SpriteAnimationRenderer.h"
+#include "GameObjects/GameObject.h"
 
 namespace Turtle
 {
@@ -16,11 +17,14 @@ namespace Turtle
         void GoLeft();
         void GoRight();
         void Jump();
+        void Throw(const Vector2i& mousePos);
+        void OnBulletHit(const GameObject& gameObject);
     private:
         bool IsPlayerTurn();
         Physic* m_physic;
         SpriteAnimationRenderer* m_spriteAnimationRenderer;
         TurnManager* m_turnManager;
+        GameObject* currentBullet = nullptr;
         unsigned m_playerId;
         float m_jumpForce = -300;
         float m_speed = 50;

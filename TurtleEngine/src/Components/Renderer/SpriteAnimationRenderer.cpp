@@ -28,7 +28,6 @@ namespace Turtle
         m_frameDuration = m_textureManager->GetTextureData(m_textureTag).AnimationsData.find(animationTag)->second.speed;
         m_animationFrames = m_textureManager->GetTextureData(m_textureTag).AnimationsData.find(animationTag)->second.frames;
         m_currentFrame = 0;
-        m_frameDuration = speed;
     }
 
     void SpriteAnimationRenderer::SetAnimationSpeed(float speed)
@@ -81,5 +80,13 @@ namespace Turtle
     {
         const Transform* transform = m_parent->GetTransform();
         window.draw(m_sprite, transform->GetTransformMatrix());
+    }
+
+    void SpriteAnimationRenderer::Flip(bool flip)
+    {
+        m_flip = flip;
+        auto scale = m_parent->GetTransform()->GetScale();
+        float scaleX = flip?-std::abs(scale.x):std::abs(scale.x);
+        m_parent->GetTransform()->SetScale({scaleX,scale.y});
     }
 } // namespace Turtle

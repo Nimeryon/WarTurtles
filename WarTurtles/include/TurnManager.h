@@ -25,9 +25,9 @@ namespace Turtle
         void Update(const Time& deltaTime) override;
         int GetTimerTime();
         TurnState GetTurnState();
+        void SwitchTurn(); 
     private:
         void TriggerCallbacks() const;
-        void SwitchTurn(); 
         TurnState m_turnState; 
         std::unordered_map<TurnState, float> m_turnDurations;
         Clock m_timer;

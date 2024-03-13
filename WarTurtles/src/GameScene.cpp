@@ -22,20 +22,13 @@ void GameScene::OnCreate()
     m_textureManager.LoadTexture("background","gameBG.jpg");
     m_textureManager.LoadTexture("Player","turtle.png");
     m_textureManager.LoadTexture("Crate","crate.png");
+    m_textureManager.LoadTexture("Bullet","bullet.png");
     
     Turtle::GameObject* background = Create("backgroundGame");
     const auto background_renderer = background->AddComponent<Turtle::SpriteRenderer>();
     background_renderer->InitTexture(&m_textureManager,"background","background");
     background->GetTransform()->SetScale({0.5,0.5});
     background->GetTransform()->SetPosition({0,-100});
-    
-    Turtle::GameObject* backgroundClickable = Create("backgroundClickable");
-    const auto backgroundclick_renderer = backgroundClickable->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
-    
-    backgroundclick_renderer->SetShape(sf::RectangleShape({2000,2000}));
-    backgroundclick_renderer->SetColor(sf::Color(0,0,0,0));
-    backgroundclick_renderer->OnClick(std::bind(&GameScene::FinishGame,this));
-
 
     auto ground = Create("Ground");
     auto* groundCollisionComp = ground->AddComponent<Turtle::BoxCollisionComponent>();
@@ -78,9 +71,11 @@ void GameScene::OnCreate()
     physicsPlayer2->BlockAngularVelocity(true);
     player2->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(300.f, 600.f);
     auto* player2Animation = player2->AddComponent<Turtle::SpriteAnimationRenderer>();
+    player2->AddComponent<Turtle::Player>()->Init(1,physicsPlayer2,player2Animation,turnManager);
     player2Animation->InitAnimation("Player","Idle");
     player2Animation->SetOrigin({350,350});
     player2Animation->SetScale({0.1f,0.1f});
+    player2Animation->Flip(true);
     player2->GetTransform()->SetPosition({800,500});
     player2->GetTransform()->SetScale({0.2,0.2});
     

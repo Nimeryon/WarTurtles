@@ -1,0 +1,13 @@
+{
+    "Sprites": [
+    {
+        "Name": "bullet",
+	    "X": 0,
+        "Y": 0,
+        "SizeX": 640,
+        "SizeY": 404,
+        "RevertedX": false,
+        "RevertedY": false
+    }],
+    "Animations": []
+}

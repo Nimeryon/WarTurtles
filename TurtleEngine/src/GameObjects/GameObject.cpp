@@ -70,8 +70,16 @@ void Turtle::GameObject::OnDestroyed()
 	}
 }
 
+void Turtle::GameObject::SubscribeToCollision(CollisionCallback callback)
+{
+	m_collisionSubscribers.push_back(callback);
+}
+
 void Turtle::GameObject::OnCollide(const GameObject& collidingObject)
 {
+	for (const auto& callback : m_collisionSubscribers) {
+		callback(collidingObject);
+	}
 }
 
 void Turtle::GameObject::ProcessInputs()

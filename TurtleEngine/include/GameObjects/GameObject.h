@@ -1,6 +1,8 @@
 // GameObject.h
 #ifndef GAME_OBJECT_H // include guard
 #define GAME_OBJECT_H
+#include <functional>
+
 #include "Interfaces/IActivable.h"
 #include "Interfaces/INamable.h"
 #include "Interfaces/IObject.h"
@@ -47,6 +49,10 @@ public:
 	void OnCreate() override;
 	void OnDestroyed() override;
 
+	
+	using CollisionCallback = std::function<void(const GameObject&)>;
+	void SubscribeToCollision(CollisionCallback callback);
+	void UnsubscribeFromCollision(CollisionCallback callback);
 	void OnCollide(const GameObject& collidingObject);
 
 	void ProcessInputs() override;
@@ -138,6 +144,7 @@ protected:
 	// Objects
 	std::vector<GameObject*> m_children;
 	GameObject* m_parent;
+	std::vector<CollisionCallback> m_collisionSubscribers;
 };
 }
 
