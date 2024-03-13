@@ -8,7 +8,8 @@ Turtle::Physic::Physic(GameObject* parent, const std::string& name) :
 	StaticFriction(0.2f),
 	DynamicFriction(0.5f),
 	Restitution(0.5f),
-	AngularVelocity(0.f)
+	AngularVelocity(0.f),
+	m_ignoreAngularVelocity(false)
 {
 }
 
@@ -21,7 +22,8 @@ Turtle::Physic::Physic(GameObject* parent, const std::string& name, const Vector
 	DynamicFriction(dynamicFriction),
 	Restitution(restitution),
 	AngularVelocity(angularVelocity),
-	m_localGravity(Vector2f::zero)
+	m_localGravity(Vector2f::zero),
+	m_ignoreAngularVelocity(false)
 {
 }
 
@@ -55,4 +57,21 @@ void Turtle::Physic::InitPhysicParameters(const Vector2f& initialVelocity, const
 	Restitution = restitution;
 	AngularVelocity = angularVelocity;
 	m_localGravity = Vector2f::zero;
+	m_ignoreAngularVelocity = false;
+}
+
+void Turtle::Physic::BlockAngularVelocity(bool block)
+{
+	m_ignoreAngularVelocity = block;
+}
+
+bool Turtle::Physic::IsAngularVelocityBlocked()
+{
+	return m_ignoreAngularVelocity;
+}
+
+void Turtle::Physic::AddAngularVelocity(float value)
+{
+	if (!m_ignoreAngularVelocity)
+		AngularVelocity += value;
 }

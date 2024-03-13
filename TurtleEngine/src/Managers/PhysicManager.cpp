@@ -168,11 +168,11 @@ void Turtle::PhysicManager::CalculateVelocityAndTorqueFor(GameObject& ObjectA, G
 		Vector2f curImpulse = impulses[i];
 		Vector2f ra = raList[i];
 		ObjectAPhysicComponent->Velocity -= curImpulse / ObjectAPhysicComponent->Mass;
-		ObjectAPhysicComponent->AngularVelocity -= Vector2f::Cross(ra, curImpulse) / ObjectACollisionComponent->CalculateRotationalInertia(ObjectAPhysicComponent->Mass);
+		ObjectAPhysicComponent->AddAngularVelocity(- Vector2f::Cross(ra, curImpulse) / ObjectACollisionComponent->CalculateRotationalInertia(ObjectAPhysicComponent->Mass));
 		if (ObjectBPhysicComponent) {
 			Vector2f rb = rbList[i];
 			ObjectBPhysicComponent->Velocity += curImpulse / ObjectBPhysicComponent->Mass;
-			ObjectBPhysicComponent->AngularVelocity += Vector2f::Cross(rb, curImpulse) / ObjectBCollisionComponent->CalculateRotationalInertia(ObjectBPhysicComponent->Mass);
+			ObjectBPhysicComponent->AddAngularVelocity(Vector2f::Cross(rb, curImpulse) / ObjectBCollisionComponent->CalculateRotationalInertia(ObjectBPhysicComponent->Mass));
 		}
 	}
 }
@@ -264,11 +264,11 @@ void Turtle::PhysicManager::CalculateFriction(GameObject& ObjectA, GameObject& O
 		Vector2f curImpulse = impulses[i];
 		Vector2f ra = raList[i];
 		ObjectAPhysicComponent->Velocity -= curImpulse / ObjectAPhysicComponent->Mass;
-		ObjectAPhysicComponent->AngularVelocity -= Vector2f::Cross(ra, curImpulse) / ObjectACollisionComponent->CalculateRotationalInertia(ObjectAPhysicComponent->Mass);
+		ObjectAPhysicComponent->AddAngularVelocity(- Vector2f::Cross(ra, curImpulse) / ObjectACollisionComponent->CalculateRotationalInertia(ObjectAPhysicComponent->Mass));
 		if (ObjectBPhysicComponent) {
 			Vector2f rb = rbList[i];
 			ObjectBPhysicComponent->Velocity += curImpulse / ObjectBPhysicComponent->Mass;
-			ObjectBPhysicComponent->AngularVelocity += Vector2f::Cross(rb, curImpulse) / ObjectBCollisionComponent->CalculateRotationalInertia(ObjectBPhysicComponent->Mass);
+			ObjectBPhysicComponent->AddAngularVelocity(Vector2f::Cross(rb, curImpulse) / ObjectBCollisionComponent->CalculateRotationalInertia(ObjectBPhysicComponent->Mass));
 		}
 	}
 }
