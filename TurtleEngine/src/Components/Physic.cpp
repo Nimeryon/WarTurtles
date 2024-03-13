@@ -74,4 +74,8 @@ void Turtle::Physic::AddAngularVelocity(float value)
 {
 	if (!m_ignoreAngularVelocity)
 		AngularVelocity += value;
+
+	if (std::abs(AngularVelocity) < 0.05f) {
+		AngularVelocity = 0;
+	}
 }
