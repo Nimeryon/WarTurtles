@@ -26,7 +26,7 @@ public:
         // Box
         auto box = Create<Turtle::BoxObject>("Box");
         box->InitParameters(100, 100, sf::Color::Blue);
-        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.f, 0.5f, 0.f);
+        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.4f, 0.6f, 0.5f, 0.f);
         box->GetTransform()->Move({ 600, 200 });
 
         // Ground

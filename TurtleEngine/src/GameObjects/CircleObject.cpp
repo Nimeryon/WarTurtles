@@ -24,9 +24,9 @@ void Turtle::CircleObject::InitParameters(float radius, const Vector2f& center, 
 	SetCenter(center);
 }
 
-void Turtle::CircleObject::InitPhysicsParameters(const Vector2f& initialVelocity, const Vector2f& initialAcceleration, float mass, float friction, float restitution, float angularVelocity)
+void Turtle::CircleObject::InitPhysicsParameters(const Vector2f& initialVelocity, const Vector2f& initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity)
 {
-	m_physicComponent->InitPhysicParameters(initialVelocity, initialAcceleration, mass, friction, restitution, angularVelocity);
+	m_physicComponent->InitPhysicParameters(initialVelocity, initialAcceleration, mass, staticFriction, dynamicFriction, restitution, angularVelocity);
 	m_physicComponent->SetActive(true);
 	m_isStatic = false;
 }

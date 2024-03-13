@@ -22,7 +22,7 @@ public:
 	explicit BoxObject(const std::string& name = "Box Object", GameObject* parent = nullptr);
 
 	void InitParameters(float width = 10, float height = 10, const sf::Color& color = sf::Color::White);
-	void InitPhysicsParameters(const Vector2f& initialVelocity = { 0, 0 }, const Vector2f& initialAcceleration = { 0, 0 }, float mass = 1, float friction = 0, float restitution = 0.5f, float angularVelocity = 0);
+	void InitPhysicsParameters(const Vector2f& initialVelocity = { 0, 0 }, const Vector2f& initialAcceleration = { 0, 0 }, float mass = 0, float staticFriction = 0, float dynamicFriction = 0, float restitution = 0, float angularVelocity = 0);
 
 	bool IsStatic() const;
 	void SetStatic(bool isStatic);

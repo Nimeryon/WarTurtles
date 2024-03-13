@@ -46,6 +46,23 @@ void InputManager::RemoveClickCallback(std::function<void(Vector2i)> callback) {
     );
 }
 
+// KeyBoard Properties
+
+bool InputManager::IsKey(const sf::Keyboard::Key& key) const { return m_keyboardState[key]; }
+bool InputManager::IsKeyDown(const sf::Keyboard::Key& key) const { return m_keyboardState[key] && !m_oldKeyboardState[key]; }
+bool InputManager::IsKeyUp(const sf::Keyboard::Key& key) const { return !m_keyboardState[key] && m_oldKeyboardState[key]; }
+bool InputManager::Ctrl() const { return m_keyCtrl; }
+bool InputManager::Alt() const { return m_keyAlt; }
+bool InputManager::Shift() const { return m_keyShift; }
+
+// Mouse Properties
+
+const Turtle::Vector2f& InputManager::GetMousePosition() const { return m_mousePosition; }
+
+bool InputManager::IsPointer(const sf::Mouse::Button& button) const { return m_mouseState[button]; }
+bool InputManager::IsPointerDown(const sf::Mouse::Button& button) const { return m_mouseState[button] && !m_oldMouseState[button]; }
+bool InputManager::IsPointerUp(const sf::Mouse::Button& button) const { return !m_mouseState[button] && m_oldMouseState[button]; }
+
 void InputManager::Notify(EventType eventType) {
     const auto& callbacksForEvent = m_callbacks[eventType];
     for (auto& callback : callbacksForEvent) {
