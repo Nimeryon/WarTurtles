@@ -31,7 +31,7 @@ public:
 
 	// Pass through methods that will call current scene methods
 
-	void ProcessInputs() const;
+	void ProcessInputs(const InputManager& inputManager) const;
 	void Update(const Time& deltaTime) const;
 	void FixedUpdate(const Time& fixedTime) const;
 	void Draw(Window& window) const;

@@ -8,7 +8,17 @@
 
 namespace Turtle
 {
-InputManager::InputManager(Window& window):m_window(window){}
+InputManager::InputManager(Window& window) :
+    m_window(window),
+    m_windowHasFocus(true),
+    m_keyboardState({}),
+    m_oldKeyboardState({}),
+    m_keyCtrl(false),
+    m_keyAlt(false),
+    m_keyShift(false),
+    m_mouseState({}),
+    m_oldMouseState({})
+{}
 
 void InputManager::AddCallback(std::function<void()> callback, EventType eventType) {
     m_callbacks[eventType].push_back(callback);
@@ -58,7 +68,6 @@ bool InputManager::Shift() const { return m_keyShift; }
 // Mouse Properties
 
 const Turtle::Vector2f& InputManager::GetMousePosition() const { return m_mousePosition; }
-
 bool InputManager::IsPointer(const sf::Mouse::Button& button) const { return m_mouseState[button]; }
 bool InputManager::IsPointerDown(const sf::Mouse::Button& button) const { return m_mouseState[button] && !m_oldMouseState[button]; }
 bool InputManager::IsPointerUp(const sf::Mouse::Button& button) const { return !m_mouseState[button] && m_oldMouseState[button]; }
@@ -78,15 +87,38 @@ void InputManager::NotifyClick(Vector2i clickPosition) {
 }
 
 void InputManager::HandleEvents() {
+    m_oldKeyboardState = m_keyboardState;
+    m_oldMouseState = m_mouseState;
+    m_keyboardState.fill(false);
+    m_mouseState.fill(false);
+
     sf::Event event;
     while (m_window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        switch (event.type)
         {
+        case sf::Event::Closed:
             m_window.close();
-        }
+            break;
 
-        if (event.type == sf::Event::KeyPressed) {
+            // Window Focus Events
+        case sf::Event::LostFocus:
+            m_keyboardState.fill(false);
+            m_mouseState.fill(false);
+
+            m_keyCtrl = false;
+            m_keyAlt = false;
+            m_keyShift = false;
+
+            m_windowHasFocus = false;
+            break;
+
+        case sf::Event::GainedFocus:
+            m_windowHasFocus = true;
+            break;
+
+
+        case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Up) {
                 Notify(EventType::Jump);
             }
@@ -105,19 +137,55 @@ void InputManager::HandleEvents() {
             if (event.key.code == sf::Keyboard::Enter) {
                 Notify(EventType::Validate);
             }
-        }
+            break;
 
-        if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
+        case sf::Event::MouseButtonPressed:
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
                 const auto& mousePos = sf::Mouse::getPosition(m_window);
                 NotifyClick(Vector2i(mousePos.x, mousePos.y));
+            }
+            break;
+        }
+
+        if (m_windowHasFocus)
+        {
+            switch (event.type)
+            {
+            // Keyboard Events
+            case sf::Event::KeyPressed:
+            case sf::Event::KeyReleased:
+            {
+                int keyCode = event.key.code;
+                if (keyCode >= 0 && keyCode < sf::Keyboard::KeyCount)
+                    m_keyboardState[keyCode] = event.type == sf::Event::KeyPressed;
+                m_keyCtrl = event.key.control;
+                m_keyAlt = event.key.alt;
+                m_keyShift = event.key.shift;
+            }
+            break;
+
+            // Mouse Button Events
+            case sf::Event::MouseButtonPressed:
+            case::sf::Event::MouseButtonReleased:
+            {
+                int buttonCode = event.key.code;
+                m_mouseState[buttonCode] = event.type == sf::Event::MouseButtonPressed;
+            }
+            break;
+
+            // Mouse Move Event
+            case sf::Event::MouseMoved:
+                sf::Vector2f mousePos = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
+                m_mousePosition = { mousePos.x, mousePos.y };
+                break;
             }
         }
 
         ImGui::SFML::ProcessEvent(m_window, event);
     }
 
-    SceneManager::Instance().ProcessInputs();
+    SceneManager::Instance().ProcessInputs(*this);
 }
 
 }

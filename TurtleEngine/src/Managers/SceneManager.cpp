@@ -69,11 +69,11 @@ void Turtle::SceneManager::PreviousScene()
 	}
 }
 
-void Turtle::SceneManager::ProcessInputs() const
+void Turtle::SceneManager::ProcessInputs(const InputManager& inputManager) const
 {
 	if (m_currentScene)
 	{
-		m_currentScene->ProcessInputs();
+		m_currentScene->ProcessInputs(inputManager);
 	}
 }
 void Turtle::SceneManager::Update(const Time& deltaTime) const

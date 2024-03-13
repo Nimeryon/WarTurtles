@@ -82,12 +82,12 @@ void Turtle::GameObject::OnCollide(const GameObject& collidingObject)
 	}
 }
 
-void Turtle::GameObject::ProcessInputs()
+void Turtle::GameObject::ProcessInputs(const InputManager& inputManager)
 {
 	for (auto& component : m_components)
 	{
 		if (component->IsActive())
-			component->ProcessInputs();
+			component->ProcessInputs(inputManager);
 	}
 }
 void Turtle::GameObject::Update(const Time& deltaTime)

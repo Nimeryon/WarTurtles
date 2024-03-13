@@ -3,6 +3,7 @@
 #define IOBJECT_H
 #include "Utils/Window.h"
 #include "Utils/Time.h"
+#include "Managers/InputManager.h"
 
 namespace Turtle
 {
@@ -16,7 +17,7 @@ struct IObject
 	virtual void OnDestroyed() {}
 
 	// Called every frame in first
-	virtual void ProcessInputs() {}
+	virtual void ProcessInputs(const InputManager& inputManager) {}
 	// Called every frame
 	virtual void Update(const Time& deltaTime) {}
 	// Called logic time frame

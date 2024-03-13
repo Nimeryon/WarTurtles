@@ -39,12 +39,12 @@ void Turtle::Scene::OnDestroyed()
 	}
 }
 
-void Turtle::Scene::ProcessInputs()
+void Turtle::Scene::ProcessInputs(const InputManager& inputManager)
 {
 	for (auto& object : m_objects)
 	{
 		if (object->IsActive())
-			object->ProcessInputs();
+			object->ProcessInputs(inputManager);
 	}
 }
 void Turtle::Scene::Update(const Time& deltaTime)

@@ -48,14 +48,14 @@ public:
 
 	void OnCreate() override;
 	void OnDestroyed() override;
-
 	
 	using CollisionCallback = std::function<void(const GameObject&)>;
 	void SubscribeToCollision(CollisionCallback callback);
 	void UnsubscribeFromCollision(CollisionCallback callback);
-	void OnCollide(const GameObject& collidingObject);
+	virtual void OnCollide(const GameObject& collidingObject);
 
-	void ProcessInputs() override;
+
+	void ProcessInputs(const InputManager& inputManager) override;
 	void Update(const Time& deltaTime) override;
 	void FixedUpdate(const Time& fixedTime) override;
 	void Draw(Window& window) override;
