@@ -1,6 +1,7 @@
 ﻿#include "../include/Player.h"
 
 #include "App.h"
+#include "../include/EndScene.h"
 #include "Components/Collisions/BoxCollisionComponent.h"
 #include "Components/Renderer/SpriteRenderer.h"
 #include "GameObjects/BoxObject.h"
@@ -19,7 +20,7 @@ void Turtle::Player::OnCreate()
     App::GetInputManager()->AddCallback(std::bind(&Player::GoRight,this),EventType::Right);
     App::GetInputManager()->AddCallback(std::bind(&Player::Jump,this),EventType::Jump);
     App::GetInputManager()->AddClickCallback(std::bind(&Player::Throw,this,std::placeholders::_1));
-    m_parent->SubscribeToCollision(std::bind(&Player::OnBulletHit,this,std::placeholders::_1));
+    m_parent->SubscribeToCollision(std::bind(&Player::GroundHitTest,this,std::placeholders::_1));
 }
 
 void Turtle::Player::Init(unsigned playerId,Physic* physic, SpriteAnimationRenderer* spriteAnimationRenderer,TurnManager* turnManager)
@@ -69,7 +70,8 @@ void Turtle::Player::GoRight()
 void Turtle::Player::Jump()
 {
     
-    if(!IsPlayerTurn())return;
+    if(!IsPlayerTurn() || !isGrounded)return;
+    isGrounded = false;
     m_physic->AddImpulse({0,m_jumpForce});
 }
 
@@ -107,6 +109,30 @@ void Turtle::Player::OnBulletHit(const GameObject& gameObject)
         currentBullet->Destroy();
         currentBullet = nullptr;
     }
+}
+
+void Turtle::Player::GroundHitTest(const GameObject& gameObject)
+{
+    if(gameObject.GetName() == "Ground")isGrounded = true;
+}
+
+void Turtle::Player::GetHit()
+{
+    m_life--;
+    if(m_life<=0)
+    {
+        SceneManager::Instance().AddScene(std::make_unique<EndScene>(m_playerId==0?"Player 2":"Player 1"));
+    }
+}
+
+int Turtle::Player::GetLife()
+{
+    return m_life;
+}
+
+int Turtle::Player::GetMaxLife()
+{
+    return m_maxLife;
 }
 
 bool Turtle::Player::IsPlayerTurn()

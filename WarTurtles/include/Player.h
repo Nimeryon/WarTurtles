@@ -19,6 +19,10 @@ namespace Turtle
         void Jump();
         void Throw(const Vector2i& mousePos);
         void OnBulletHit(const GameObject& gameObject);
+        void GroundHitTest(const GameObject& gameObject);
+        void GetHit();
+        int GetLife();
+        int GetMaxLife();
     private:
         bool IsPlayerTurn();
         Physic* m_physic;
@@ -26,8 +30,11 @@ namespace Turtle
         TurnManager* m_turnManager;
         GameObject* currentBullet = nullptr;
         unsigned m_playerId;
-        float m_jumpForce = -300;
+        unsigned m_maxLife = 3;
+        unsigned m_life = 3;
+        float m_jumpForce = -400;
         float m_speed = 50;
+        bool isGrounded = true;
 
         const std::string& IdleAnim = "Idle";
         const std::string& JumpAnim = "Jump";
