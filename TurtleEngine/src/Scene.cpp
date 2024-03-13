@@ -184,16 +184,16 @@ std::vector<Turtle::GameObject*> Turtle::Scene::Finds(const std::string& name)
 {
 	std::vector<GameObject*> objects;
 
-	if (m_findCacheObject && m_findCacheObject->GetName() == name)
+	if (m_findCacheObject != nullptr )
 	{
-		objects.emplace_back(m_findCacheObject);
+		if(m_findCacheObject->GetName() == name)objects.emplace_back(m_findCacheObject);
 	}
 
 	for (auto& object : m_objects)
 	{
 		if (object->GetName() == name)
 		{
-			m_findCacheObject = object.get();
+			//m_findCacheObject = object.get();
 			objects.emplace_back(object.get());
 		}
 	}

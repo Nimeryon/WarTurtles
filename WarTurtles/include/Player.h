@@ -12,6 +12,7 @@ namespace Turtle
     public:
         explicit Player(GameObject* parent, const std::string& name = "TurnViewText");
         void OnCreate() override;
+        void OnDestroyed() override;
         void Init(unsigned playerId,Physic* physic,SpriteAnimationRenderer* spriteAnimationRenderer,TurnManager* turnManager);
         void Update(const Time& deltaTime) override;
         void GoLeft();

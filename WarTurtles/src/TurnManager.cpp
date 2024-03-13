@@ -21,6 +21,7 @@ namespace Turtle
         for(auto bullet : SceneManager::Instance().GetCurrentScene()->Finds("BULLET"))
         {
             bullet->Destroy();
+            SceneManager::Instance().GetCurrentScene()->GetAudioManager().PlaySound("explosion");
         }
     }
 

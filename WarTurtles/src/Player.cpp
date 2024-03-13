@@ -23,6 +23,14 @@ void Turtle::Player::OnCreate()
     m_parent->SubscribeToCollision(std::bind(&Player::GroundHitTest,this,std::placeholders::_1));
 }
 
+void Turtle::Player::OnDestroyed()
+{
+    App::GetInputManager()->RemoveCallback(std::bind(&Player::GoLeft,this),EventType::Left);
+    App::GetInputManager()->RemoveCallback(std::bind(&Player::GoRight,this),EventType::Right);
+    App::GetInputManager()->RemoveCallback(std::bind(&Player::Jump,this),EventType::Jump);
+    App::GetInputManager()->AddClickCallback(std::bind(&Player::Throw,this,std::placeholders::_1));
+}
+
 void Turtle::Player::Init(unsigned playerId,Physic* physic, SpriteAnimationRenderer* spriteAnimationRenderer,TurnManager* turnManager)
 {
     m_physic = physic;
@@ -99,6 +107,7 @@ void Turtle::Player::Throw(const Vector2i& mousePos)
     bullet->SubscribeToCollision(std::bind(&Player::OnBulletHit,this,std::placeholders::_1));
     physic->AddImpulse(direction);
     currentBullet = bullet;
+    SceneManager::Instance().GetCurrentScene()->GetAudioManager().PlaySound("throw");
 }
 
 void Turtle::Player::OnBulletHit(const GameObject& gameObject)
@@ -106,6 +115,8 @@ void Turtle::Player::OnBulletHit(const GameObject& gameObject)
     if( (gameObject.GetName() == "Player1"  && m_playerId ==1) || (gameObject.GetName() == "Player2" && m_playerId ==0) )
     {
         if(currentBullet == nullptr)return;
+        SceneManager::Instance().GetCurrentScene()->GetAudioManager().PlaySound("explosion");
+        gameObject.GetComponent<Player>()->GetHit();
         currentBullet->Destroy();
         currentBullet = nullptr;
     }
@@ -119,9 +130,12 @@ void Turtle::Player::GroundHitTest(const GameObject& gameObject)
 void Turtle::Player::GetHit()
 {
     m_life--;
+    SceneManager::Instance().GetCurrentScene()->GetAudioManager().PlaySound("hurt");
     if(m_life<=0)
     {
-        SceneManager::Instance().AddScene(std::make_unique<EndScene>(m_playerId==0?"Player 2":"Player 1"));
+        
+        SceneManager::Instance().GetCurrentScene()->GetAudioManager().StopSound("music");
+        SceneManager::Instance().AddScene(std::make_unique<EndScene>(m_playerId==0?"Player 2":"Player 1"),true);
     }
 }
 

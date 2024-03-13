@@ -2,6 +2,7 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
 #include "../include/EndScene.h"
+#include "../include/LifeViewText.h"
 #include "../include/Player.h"
 #include "../include/TimerViewText.h"
 #include "../include/TurnManager.h"
@@ -19,6 +20,17 @@ void GameScene::OnCreate()
 {
     Turtle::SceneManager::Instance().RemoveScene(0);
     m_fontManager.LoadFont("GameFont","game.ttf");
+
+    m_audioManager.LoadSound("music",Turtle::SoundType::Music,"music.mp3");
+    m_audioManager.SetVolume("music",0.5f);
+    m_audioManager.PlaySound("music",true);
+
+    m_audioManager.LoadSound("hurt",Turtle::SoundType::Music,"hurt.mp3");
+    m_audioManager.SetVolume("hurt",0.5f);
+    m_audioManager.LoadSound("throw",Turtle::SoundType::Music,"throw.mp3");
+    m_audioManager.SetVolume("throw",0.5f);
+    m_audioManager.LoadSound("explosion",Turtle::SoundType::Music,"explosion.wav");
+    
     m_textureManager.LoadTexture("background","gameBG.jpg");
     m_textureManager.LoadTexture("Player","turtle.png");
     m_textureManager.LoadTexture("Crate","crate.png");
@@ -44,6 +56,17 @@ void GameScene::OnCreate()
     groundRenderer->SetColor(sf::Color(117,41,0));
 
     ground->GetTransform()->SetPosition({540,700});
+
+    auto leftWall = Create("LeftWall");
+    auto* leftWallCollision = leftWall->AddComponent<Turtle::BoxCollisionComponent>();
+    leftWallCollision->InitCollisionParameters(50, 2000);
+    leftWallCollision->SetName("Wall");
+    auto rightWall = Create("RightWall");
+    auto* rightWallCollision = rightWall->AddComponent<Turtle::BoxCollisionComponent>();
+    rightWallCollision->InitCollisionParameters(50, 2000);
+    rightWallCollision->SetName("Wall");
+    rightWall->GetTransform()->Move({1080,0});
+    
 
     auto turnManagerGO = Create("TurnManager");
     auto* turnManager = turnManagerGO->AddComponent<Turtle::TurnManager>();
@@ -75,9 +98,9 @@ void GameScene::OnCreate()
     player2Animation->InitAnimation("Player","Idle");
     player2Animation->SetOrigin({350,350});
     player2Animation->SetScale({0.1f,0.1f});
-    player2Animation->Flip(true);
     player2->GetTransform()->SetPosition({800,500});
     player2->GetTransform()->SetScale({0.2,0.2});
+    player2Animation->Flip(true);
     
 
     auto crate1 = Create("Crate1");
@@ -123,6 +146,22 @@ void GameScene::OnCreate()
     auto* timerView = turnManagerGO->AddComponent<Turtle::TimerViewText>();
     timerView->Init(turnManager,timerText,turnText);
 
+
+    auto lifeP1 = Create("lifeP1");
+    auto* lifeP1Text = lifeP1->AddComponent<Turtle::TextRenderer>();
+    lifeP1->GetTransform()->SetPosition({120,640});
+    lifeP1Text->SetFont(m_fontManager.GetFont("GameFont").get());
+    lifeP1Text->SetCharacterSize(50);
+
+    auto lifeP2 = Create("lifeP2");
+
+    auto* lifeP2Text = lifeP2->AddComponent<Turtle::TextRenderer>();
+    lifeP2->GetTransform()->SetPosition({750,640});
+    lifeP2Text->SetFont(m_fontManager.GetFont("GameFont").get());
+    lifeP2Text->SetCharacterSize(50);
+
+    lifeP1->AddComponent<Turtle::LifeViewText>()->Init(player1->GetComponent<Turtle::Player>(),lifeP1Text);
+    lifeP2->AddComponent<Turtle::LifeViewText>()->Init(player2->GetComponent<Turtle::Player>(),lifeP2Text);
     turnManager->StartTurn(WaitingPlayer1);
 }
 

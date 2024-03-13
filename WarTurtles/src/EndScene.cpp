@@ -8,10 +8,11 @@
 
 void EndScene::OnCreate()
 {
-    Turtle::SceneManager::Instance().RemoveScene(1);
     m_fontManager.LoadFont("GameFont","game.ttf");
         
     m_textureManager.LoadTexture("background","gameBG.jpg");
+    m_audioManager.LoadSound("music",Turtle::SoundType::Music,"FFFinal.mp3");
+    m_audioManager.SetVolume("music",0.4f);
     m_audioManager.PlaySound("music",true);
     
     Turtle::GameObject* background = Create("background");
@@ -45,6 +46,7 @@ void EndScene::OnCreate()
 
 void EndScene::GoToMenu()
 {
+    Turtle::SceneManager::Instance().RemoveScene(1);
     Turtle::SceneManager::Instance().AddScene(std::make_unique<MenuScene>(),true,0);
 }
 

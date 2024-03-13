@@ -70,6 +70,7 @@ void Turtle::PhysicManager::ResolveCollisions(const Time& fixedTime, std::vector
 {
 	for (auto& object : objects)
 	{
+		if(!object.get())return;
 		if (object->IsActive()) {
 			Physic* objectPhysicComponent = object.get()->GetComponent<Physic>();
 			ICollisionComponent* objectCollisionComponent = object.get()->GetComponent<ICollisionComponent>();
