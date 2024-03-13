@@ -22,6 +22,11 @@ namespace Turtle
 
 		void InitPhysicParameters(const Vector2f& initialVelocity, const Vector2f& initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity);
 
+		void BlockAngularVelocity(bool block);
+		bool IsAngularVelocityBlocked();
+
+		void AddAngularVelocity(float value);
+
 		Vector2f Velocity;
 		Vector2f Acceleration;
 		float Mass;
@@ -30,6 +35,9 @@ namespace Turtle
 		float Restitution;
 		float AngularVelocity;
 		Vector2f m_localGravity; // local gravity, i.e magnet...
+
+	private:
+		bool m_ignoreAngularVelocity;
 	};
 }
 #endif // !PHYSIC_H
