@@ -2,21 +2,23 @@
 
 Turtle::Physic::Physic(GameObject* parent, const std::string& name) : 
 	Component(parent,name), 
-	m_velocity(Vector2f::zero), 
-	m_acceleration(Vector2f::zero), 
-	m_mass(1.f),
-	m_friction(0.2f),
+	Velocity(Vector2f::zero), 
+	Acceleration(Vector2f::zero), 
+	Mass(1.f),
+	StaticFriction(0.2f),
+	DynamicFriction(0.5f),
 	Restitution(0.5f),
 	AngularVelocity(0.f)
 {
 }
 
-Turtle::Physic::Physic(GameObject* parent, const std::string& name, Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float friction, float restitution, float angularVelocity) :
+Turtle::Physic::Physic(GameObject* parent, const std::string& name, Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity) :
 	Component(parent, name), 
-	m_velocity(initialVelocity),
-	m_acceleration(initialAcceleration),
-	m_mass(mass), 
-	m_friction(friction),
+	Velocity(initialVelocity),
+	Acceleration(initialAcceleration),
+	Mass(mass), 
+	StaticFriction(staticFriction),
+	DynamicFriction(dynamicFriction),
 	Restitution(restitution),
 	AngularVelocity(angularVelocity),
 	m_localGravity(Vector2f::zero)
@@ -38,12 +40,18 @@ Turtle::Vector2f Turtle::Physic::GetAllForces()
 	return m_localGravity ;
 }
 
-void Turtle::Physic::InitPhysicParameters(Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float friction, float restitution, float angularVelocity)
+void Turtle::Physic::AddImpulse(const Vector2f& impulse)
 {
-	m_velocity = initialVelocity;
-	m_acceleration = initialAcceleration;
-	m_mass = mass;
-	m_friction = friction;
+	Velocity += impulse / Mass;
+}
+
+void Turtle::Physic::InitPhysicParameters(Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity)
+{
+	Velocity = initialVelocity;
+	Acceleration = initialAcceleration;
+	Mass = mass;
+	StaticFriction = staticFriction;
+	DynamicFriction = dynamicFriction;
 	Restitution = restitution;
 	AngularVelocity = angularVelocity;
 	m_localGravity = Vector2f::zero;

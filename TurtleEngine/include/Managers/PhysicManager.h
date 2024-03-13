@@ -34,6 +34,9 @@ namespace Turtle
 		Vector2f m_globalGravity;
 		CollisionDispatcher<ICollisionComponent> m_collisionDispatcher;
 		ContactPointsCollisionDispatcher<ICollisionComponent> m_contactPointsCollisionDispatcher;
+
+		void CalculateVelocityAndTorqueFor(GameObject& ObjectA, GameObject& ObjectB, const Vector2f& normal, std::vector<float>& appliedForces);
+		void CalculateFriction(GameObject& ObjectA, GameObject& ObjectB, const Vector2f& normal, std::vector<float>& appliedForces);
 	};
 }
 #endif // PHYSICMANAGER_H
