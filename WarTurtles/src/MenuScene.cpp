@@ -41,7 +41,7 @@ void MenuScene::OnCreate()
     startText->SetFont(m_fontManager.GetFont("GameFont").get());
     startText->SetText("START GAME");
     startText->SetCharacterSize(50);
-    buttonStartTextGO->GetTransform()->SetPosition({115,270});
+    buttonStartTextGO->GetTransform()->SetPosition({10,20});
     buttonBg->OnClick([this] {StartGame();});
         
     Turtle::GameObject* buttonQuit = Create("ButtonQuit");
@@ -50,12 +50,12 @@ void MenuScene::OnCreate()
     buttonQuitBg->SetColor(sf::Color::Black);
     buttonQuit->GetTransform()->SetPosition({100,400});
     Turtle::GameObject* buttonQuitTextGO = Create("QuitText");
-    buttonQuitTextGO->SetParent(buttonStart);
+    buttonQuitTextGO->SetParent(buttonQuit);
     const auto quitText = buttonQuitTextGO->AddComponent<Turtle::TextRenderer>();
     quitText->SetFont(m_fontManager.GetFont("GameFont").get());
     quitText->SetText("QUIT GAME");
     quitText->SetCharacterSize(50);
-    buttonQuitTextGO->GetTransform()->SetPosition({115,420});
+    buttonQuitTextGO->GetTransform()->SetPosition({10,20});
     buttonQuitBg->OnClick([this] { QuitGame(); });
 }
 

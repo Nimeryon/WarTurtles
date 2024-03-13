@@ -15,78 +15,29 @@
 #include "Managers/SceneManager.h"
 #include "Types/Vector2.h"
 #include "GameObjects/GameObject.h"
+#include "GameObjects/BoxObject.h"
+#include "GameObjects/CircleObject.h"
 
 class DemoScene : public Turtle::Scene
 {
 public:
     void OnCreate() override
     {
-        // Box 1
-        auto box1 = Create("Box 1");
-        box1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.6f, 0.4f, 0.5f, 0.f);
-        box1->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
-        
-        auto* boxRenderer = box1->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
-        sf::RectangleShape rectangleShape;
-        rectangleShape.setSize({ 100, 100 });
-        rectangleShape.setOrigin({ 50, 50 });
-        rectangleShape.setFillColor(sf::Color::Blue);
-        boxRenderer->SetShape(rectangleShape);
-        boxRenderer->SetColor(sf::Color::Blue);
-
-        box1->GetTransform()->Move({ 600, 200 });
-
-        // Circle 1
-        auto circle1 = Create("Circle 1");
-        circle1->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ 100.f, -100.f }, Turtle::Vector2f::zero, 3.f, 0.6f, 0.4f, 0.5f, 0.f);
-        circle1->AddComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters({}, 50.f);
-
-        auto* shapeRenderer = circle1->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
-        sf::CircleShape circleRender = sf::CircleShape(50.f);
-        circleRender.setOrigin({ 50, 50 });
-        shapeRenderer->SetShape(circleRender);
-        shapeRenderer->SetColor(sf::Color::Blue);
-
-        circle1->GetTransform()->Move({ 200, 200 });
-        
-
-        // Circle 2
-        /*auto circle2 = Create("Circle 2");
-        circle2->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -100.f, -100.f }, Turtle::Vector2f::zero, 5, 0, 0.5f);
-        circle2->AddComponent<Turtle::CircleCollisionComponent>()->InitCollisionParameters({}, 50.f);
-
-        shapeRenderer = circle2->AddComponent<Turtle::ShapeRenderer<sf::CircleShape>>();
-        shapeRenderer->SetShape(circleRender);
-        shapeRenderer->SetColor(sf::Color::Cyan);
-
-        circle2->GetTransform()->Move({ 600, 200 });*/
-
-        // Box 2
-        /*auto box2 = Create("Box 2");
-        box2->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 2, 0, 0.5f);
-        box2->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
-
-        boxRenderer = box2->AddComponent<Turtle::PolygonRenderer>();
-        boxRenderer->SetVertice(box2->GetComponent<Turtle::BoxCollisionComponent>()->GetVertice());
-        boxRenderer->SetColor(sf::Color::Cyan);
-
-        box2->GetTransform()->Move({ 600, 200 });*/
+        // Box
+        auto box = Create<Turtle::BoxObject>("Box");
+        box->InitParameters(100, 100, sf::Color::Blue);
+        box->InitPhysicsParameters(Turtle::Vector2f{ -50.f, -50.f }, Turtle::Vector2f::zero, 3.f, 0.f, 0.5f, 0.f);
+        box->GetTransform()->Move({ 600, 200 });
 
         // Ground
-        auto ground = Create("Ground");
-        auto* groundCollisionComp = ground->AddComponent<Turtle::BoxCollisionComponent>();
-        groundCollisionComp->InitCollisionParameters(500.f, 50.f);
-        groundCollisionComp->SetName("Ground");
-
-        auto* groundRenderer = ground->AddComponent<Turtle::ShapeRenderer<sf::RectangleShape>>();
-        sf::RectangleShape groundShape;
-        groundShape.setSize({ 500, 50 });
-        groundShape.setOrigin({ 250, 25 });
-        groundShape.setFillColor(sf::Color::Blue);
-        groundRenderer->SetShape(groundShape);
-        groundRenderer->SetColor(sf::Color::Blue);
-
+        auto ground = Create<Turtle::BoxObject>("Ground");
+        ground->InitParameters(500, 50, sf::Color::Blue);
         ground->GetTransform()->Move({ 360, 400 });
+
+        // Circle
+        auto circle = Create<Turtle::CircleObject>("Circle");
+        circle->InitParameters(50, {}, sf::Color::Blue);
+        circle->GetTransform()->Move({ 200, 320 });
 
         Scene::OnCreate();
     }

@@ -10,6 +10,7 @@
 namespace Turtle
 {
 class Transform;
+class SceneManager;
 
 class GameObject : public INamable, public IObject, public IActivable
 {
@@ -20,6 +21,15 @@ public:
 	static GameObject* Create(GameObject* parent, const std::string& name = "Empty Object");
 	static GameObject* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
 	static GameObject* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+
+	template<typename Type>
+	static Type* Create(const std::string& name = "Empty Object");
+	template<typename Type>
+	static Type* Create(GameObject* parent, const std::string& name = "Empty Object");
+	template<typename Type>
+	static Type* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+	template<typename Type>
+	static Type* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
 
 	static void Destroy(GameObject* object);
 
@@ -65,6 +75,8 @@ public:
 	// Children
 	// =====================
 
+	GameObject* GetParent() const;
+
 	GameObject* GetChild(const int& index) const;
 	// Return first child with name
 	GameObject* GetChildWidthName(const std::string& name) const;
@@ -100,14 +112,26 @@ public:
 	template<typename Type>
 	void RemoveComponent();
 
+	// Transform update
+
+	void NeedTransformUpdate();
+	void TransformUpdate();
+
+	// Z Index
+
+	int GetZIndex() const;
+	void SetZIndex(int zIndex);
+
 protected:
 	// tags separated by ','
 	std::string m_tags;
-	int m_zIndex;
 
 	// Components
 	std::vector<std::unique_ptr<Component>> m_components;
 	Transform* m_transform;
+
+	int m_zIndex;
+	bool m_needTransformUpdate;
 
 	// Objects
 	std::vector<GameObject*> m_children;

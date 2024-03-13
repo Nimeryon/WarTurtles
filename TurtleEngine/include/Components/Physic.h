@@ -11,16 +11,16 @@ namespace Turtle
 	public:
 		Physic() = delete;
 		Physic(GameObject* parent, const std::string& name = "Physic Component");
-		Physic(GameObject* parent, const std::string& name,Vector2f initialVelocity, Vector2f initialAcceleration, float mass = 1, float staticFriction = 0.2, float dynamicFriction = 0.2, float restitution = 0.5, float angularVelocity = 0.f);
+		Physic(GameObject* parent, const std::string& name,const Vector2f initialVelocity, const Vector2f initialAcceleration, float mass = 1, float staticFriction = 0.2, float dynamicFriction = 0.2, float restitution = 0.5, float angularVelocity = 0.f);
 
 		void FixedUpdate(const Time& fixedTime) override;
 
-		Vector2f GetLocalGravity();
-		Vector2f GetAllForces();
+		const Vector2f& GetLocalGravity();
+		const Vector2f& GetAllForces();
 
 		void AddImpulse(const Vector2f& impulse);
 
-		void InitPhysicParameters(Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity);
+		void InitPhysicParameters(const Vector2f initialVelocity, const Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity);
 
 		Vector2f Velocity;
 		Vector2f Acceleration;

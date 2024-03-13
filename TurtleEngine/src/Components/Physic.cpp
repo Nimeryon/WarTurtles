@@ -12,7 +12,7 @@ Turtle::Physic::Physic(GameObject* parent, const std::string& name) :
 {
 }
 
-Turtle::Physic::Physic(GameObject* parent, const std::string& name, Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity) :
+Turtle::Physic::Physic(GameObject* parent, const std::string& name, const Vector2f initialVelocity, const Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity) :
 	Component(parent, name), 
 	Velocity(initialVelocity),
 	Acceleration(initialAcceleration),
@@ -30,12 +30,12 @@ void Turtle::Physic::FixedUpdate(const Time& fixedTime)
 	//update local gravity
 }
 
-Turtle::Vector2f Turtle::Physic::GetLocalGravity()
+const Turtle::Vector2f& Turtle::Physic::GetLocalGravity()
 {
 	return m_localGravity;
 }
 
-Turtle::Vector2f Turtle::Physic::GetAllForces()
+const Turtle::Vector2f& Turtle::Physic::GetAllForces()
 {
 	return m_localGravity ;
 }
@@ -45,7 +45,7 @@ void Turtle::Physic::AddImpulse(const Vector2f& impulse)
 	Velocity += impulse / Mass;
 }
 
-void Turtle::Physic::InitPhysicParameters(Vector2f initialVelocity, Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity)
+void Turtle::Physic::InitPhysicParameters(const Vector2f initialVelocity, const Vector2f initialAcceleration, float mass, float staticFriction, float dynamicFriction, float restitution, float angularVelocity)
 {
 	Velocity = initialVelocity;
 	Acceleration = initialAcceleration;

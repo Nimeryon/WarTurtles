@@ -2,7 +2,10 @@
 #ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 #include <functional>
+#include <array>
 #include <unordered_map>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 #include "Utils/Window.h"
 #include "Types/Vector2.h"
@@ -35,9 +38,22 @@ namespace Turtle
     private:
         void Notify(EventType eventType);
         void NotifyClick(Vector2i clickPosition);
-        std::unordered_map<EventType, std::vector<std::function<void()>>> callbacks;
-        std::vector<std::function<void(Vector2i)>> clickCallbacks;
+
+        std::unordered_map<EventType, std::vector<std::function<void()>>> m_callbacks;
+        std::vector<std::function<void(Vector2i)>> m_clickCallbacks;
         Window& m_window;
+
+        // KeyBoard
+        std::array<bool, sf::Keyboard::KeyCount> m_keyboardState;
+        std::array<bool, sf::Keyboard::KeyCount> m_oldKeyboardState;
+        bool m_keyCtrl;
+        bool m_keyAlt;
+        bool m_keyShift;
+
+        // Mouse
+        Vector2f m_mousePosition;
+        std::array<bool, sf::Mouse::ButtonCount> m_mouseState;
+        std::array<bool, sf::Mouse::ButtonCount> m_oldMouseState;
     };
 }
 

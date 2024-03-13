@@ -47,6 +47,15 @@ public:
 	GameObject* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
 	GameObject* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
 
+	template<typename Type>
+	Type* Create(const std::string& name = "Empty Object");
+	template<typename Type>
+	Type* Create(GameObject* parent, const std::string& name = "Empty Object");
+	template<typename Type>
+	Type* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+	template<typename Type>
+	Type* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+
 	void Destroy(GameObject* object);
 
 	// Returns first Object with name
@@ -54,8 +63,10 @@ public:
 	// Returns all Object with name
 	std::vector<GameObject*> Finds(const std::string& name);
 
+	void NeedObjectsSorting();
+
 protected:
-	AudioManager m_audioManager;
+	AudioManager m_audioManager; 
 	TextureManager m_textureManager;
 	FontManager m_fontManager;
 	PhysicManager m_physicManager;
@@ -66,6 +77,7 @@ private:
 	std::vector<GameObject*> m_objectsToDestroy;
 	bool m_needObjectCreate;
 	bool m_needObjectDestroy;
+	bool m_needObjectsSorting;
 
 	GameObject* m_findCacheObject;
 

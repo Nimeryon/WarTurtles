@@ -11,11 +11,11 @@ namespace Turtle
 InputManager::InputManager(Window& window):m_window(window){}
 
 void InputManager::AddCallback(std::function<void()> callback, EventType eventType) {
-    callbacks[eventType].push_back(callback);
+    m_callbacks[eventType].push_back(callback);
 }
 
 void InputManager::RemoveCallback(std::function<void()> callback, EventType eventType) {
-    auto& callbacksForEvent = callbacks[eventType];
+    auto& callbacksForEvent = m_callbacks[eventType];
         
     callbacksForEvent.erase(
         std::remove_if(
@@ -30,31 +30,31 @@ void InputManager::RemoveCallback(std::function<void()> callback, EventType even
 }
 
 void InputManager::AddClickCallback(std::function<void(Vector2i)> callback) {
-    clickCallbacks.push_back(callback);
+    m_clickCallbacks.push_back(callback);
 }
 
 void InputManager::RemoveClickCallback(std::function<void(Vector2i)> callback) {
-    clickCallbacks.erase(
+    m_clickCallbacks.erase(
         std::remove_if(
-            clickCallbacks.begin(),
-            clickCallbacks.end(),
+            m_clickCallbacks.begin(),
+            m_clickCallbacks.end(),
             [&callback](const std::function<void(Vector2i)>& storedCallback) {
                 return storedCallback.target<void(Vector2i)>() == callback.target<void(Vector2i)>();
             }
         ),
-        clickCallbacks.end()
+        m_clickCallbacks.end()
     );
 }
 
 void InputManager::Notify(EventType eventType) {
-    const auto& callbacksForEvent = callbacks[eventType];
+    const auto& callbacksForEvent = m_callbacks[eventType];
     for (auto& callback : callbacksForEvent) {
         callback();
     }
 }
 
 void InputManager::NotifyClick(Vector2i clickPosition) {
-    for (auto& clickCallback : clickCallbacks) {
+    for (auto& clickCallback : m_clickCallbacks) {
         if(!clickCallback)continue;
         clickCallback(clickPosition);
     }

@@ -2,6 +2,7 @@
 #include "Components/Renderer/SpriteAnimationRenderer.h"
 #include "Components/Transform.h"
 #include "GameObjects/GameObject.h"
+#include "Managers/SceneManager.h"
 
 namespace Turtle
 {
@@ -46,6 +47,7 @@ namespace Turtle
     {
         m_sprite.setColor(color);
     }
+    
 
     void SpriteAnimationRenderer::Update(const Time& deltaTime)
     {
