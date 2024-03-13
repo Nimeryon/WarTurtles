@@ -62,7 +62,9 @@ void Turtle::PhysicManager::ResolveCollisionFor(GameObject& ObjectA, GameObject&
 
 	CalculateVelocityAndTorqueFor(ObjectA, ObjectB, normal, appliedForces);
 	CalculateFriction(ObjectA, ObjectB, normal, appliedForces);
-	
+
+	ObjectA.OnCollide(ObjectB);
+	ObjectB.OnCollide(ObjectA);
 }
 void Turtle::PhysicManager::ResolveCollisions(const Time& fixedTime, std::vector<std::unique_ptr<GameObject>>& objects)
 {

@@ -47,6 +47,8 @@ public:
 	void OnCreate() override;
 	void OnDestroyed() override;
 
+	void OnCollide(const GameObject& collidingObject);
+
 	void ProcessInputs() override;
 	void Update(const Time& deltaTime) override;
 	void FixedUpdate(const Time& fixedTime) override;

@@ -70,6 +70,10 @@ void Turtle::GameObject::OnDestroyed()
 	}
 }
 
+void Turtle::GameObject::OnCollide(const GameObject& collidingObject)
+{
+}
+
 void Turtle::GameObject::ProcessInputs()
 {
 	for (auto& component : m_components)
