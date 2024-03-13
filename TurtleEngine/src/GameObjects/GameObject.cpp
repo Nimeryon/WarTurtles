@@ -1,7 +1,6 @@
 #include "GameObjects/GameObject.h"
-
-#include "Managers/SceneManager.h"
 #include "Utils/String.h"
+#include "Managers/SceneManager.h"
 
 Turtle::GameObject::GameObject(const std::string& name, GameObject* parent) :
 	INamable(name),

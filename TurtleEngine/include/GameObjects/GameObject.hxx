@@ -5,7 +5,27 @@
 
 #include "GameObject.h"
 #include "Components/Transform.h"
-#include "Managers/SceneManager.h"
+
+template<typename Type>
+Type* Turtle::GameObject::Create(const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create<Type>(name);
+}
+template<typename Type>
+Type* Turtle::GameObject::Create(GameObject* parent, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create<Type>(parent, name);
+}
+template<typename Type>
+Type* Turtle::GameObject::Create(const Vector2f& position, float rotation, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create<Type>(position, rotation, name);
+}
+template<typename Type>
+Type* Turtle::GameObject::Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name)
+{
+	return SceneManager::Instance().GetCurrentScene()->Create<Type>(parent, position, rotation, name);
+}
 
 template <typename Type>
 Type* Turtle::GameObject::GetComponent() const
@@ -15,8 +35,9 @@ Type* Turtle::GameObject::GetComponent() const
 	for (auto& component : m_components)
 	{
 		if (Type* castComponent = dynamic_cast<Type*>(component.get()))
-		{
-			return castComponent;
+		{ 
+			if (castComponent->IsActive())
+				return castComponent;
 		}
 	}
 

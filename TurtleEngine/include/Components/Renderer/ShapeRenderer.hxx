@@ -11,6 +11,9 @@ namespace Turtle
 template <typename ShapeType>
 Turtle::ShapeRenderer<ShapeType>::ShapeRenderer(GameObject* parent, const std::string& name) : Component(parent, name),Clickable(&m_shape) {}
 
+template<typename ShapeType>
+ShapeType& Turtle::ShapeRenderer<ShapeType>::GetShape() { return m_shape; }
+
 template <typename ShapeType>
 void Turtle::ShapeRenderer<ShapeType>::SetShape(const ShapeType& shape)
 {

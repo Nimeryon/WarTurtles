@@ -10,6 +10,7 @@
 namespace Turtle
 {
 class Transform;
+class SceneManager;
 
 class GameObject : public INamable, public IObject, public IActivable
 {
@@ -20,6 +21,15 @@ public:
 	static GameObject* Create(GameObject* parent, const std::string& name = "Empty Object");
 	static GameObject* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
 	static GameObject* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+
+	template<typename Type>
+	static Type* Create(const std::string& name = "Empty Object");
+	template<typename Type>
+	static Type* Create(GameObject* parent, const std::string& name = "Empty Object");
+	template<typename Type>
+	static Type* Create(const Vector2f& position, float rotation, const std::string& name = "Empty Object");
+	template<typename Type>
+	static Type* Create(GameObject* parent, const Vector2f& position, float rotation, const std::string& name = "Empty Object");
 
 	static void Destroy(GameObject* object);
 

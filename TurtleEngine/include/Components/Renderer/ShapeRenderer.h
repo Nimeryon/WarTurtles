@@ -15,6 +15,8 @@ namespace Turtle
     public:
         explicit ShapeRenderer(GameObject* parent, const std::string& name = "ShapeRenderer");
 
+        ShapeType& GetShape();
+
         void SetShape(const ShapeType& shape);
         void SetOrigin(const Vector2f& origin);
         void SetColor(const sf::Color& color);
