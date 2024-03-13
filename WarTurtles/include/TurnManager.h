@@ -23,7 +23,7 @@ namespace Turtle
         void AddTurnCallback(std::function<void(int)> callback);
 
         void Update(const Time& deltaTime) override;
-
+        int GetTimerTime();
     private:
         void TriggerCallbacks() const;
         void SwitchTurn(); 

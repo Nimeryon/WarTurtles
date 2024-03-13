@@ -33,6 +33,12 @@ namespace Turtle
             SwitchTurn();
         }
     }
+
+    int TurnManager::GetTimerTime()
+    {
+        return  m_turnDurations[m_turnState] - m_timer.getElapsedTime().asSeconds();
+    }
+
     void TurnManager::AddTurnCallback(std::function<void(int)> callback)
     {
         m_turnCallbacks.push_back(callback);

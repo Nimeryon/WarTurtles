@@ -2,7 +2,7 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
 #include "../include/EndScene.h"
-#include "../include/MenuScene.h"
+#include "../include/TimerViewText.h"
 #include "../include/TurnManager.h"
 #include "Components/Collisions/BoxCollisionComponent.h"
 #include "Components/Renderer/ShapeRenderer.h"
@@ -51,22 +51,38 @@ void GameScene::OnCreate()
     ground->GetTransform()->SetPosition({540,700});
 
     auto player = Create("Player1");
-    player->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
+    //player->AddComponent<Turtle::Physic>()->InitPhysicParameters(Turtle::Vector2f{ -150.f, -150.f }, Turtle::Vector2f::zero, 3, 0, 0.5f);
     player->AddComponent<Turtle::BoxCollisionComponent>()->InitCollisionParameters(100.f, 100.f);
     auto* player1Animation = player->AddComponent<Turtle::SpriteAnimationRenderer>();
     player1Animation->InitAnimation("Player","Idle");
 
 
-    auto turnManagerGO = Create("RoundManager");
+    auto turnManagerGO = Create("TurnManager");
     auto* turnManager = turnManagerGO->AddComponent<Turtle::TurnManager>();
     turnManager->SetTurnMaxDuration(WaitingPlayer1,5.f);
     turnManager->SetTurnMaxDuration(WaitingPlayer2,5.f);
     turnManager->SetTurnMaxDuration(Player1Turn,30.f);
     turnManager->SetTurnMaxDuration(Player2Turn,30.f);
     turnManager->AddTurnCallback(Test);
+    
+    auto turnTextGO = Create("TurnText");
+    auto timerTextGO = Create("TimerText");
+    turnTextGO->SetParent(turnManagerGO);
+    timerTextGO->SetParent(turnManagerGO);
+    
+    auto* turnText = turnTextGO->AddComponent<Turtle::TextRenderer>();
+    turnTextGO->GetTransform()->SetPosition({10,10});
+    turnText->SetFont(m_fontManager.GetFont("GameFont").get());
+    turnText->SetCharacterSize(60);
+    
+    auto* timerText = timerTextGO->AddComponent<Turtle::TextRenderer>();
+    timerTextGO->GetTransform()->SetPosition({10,100});
+    timerText->SetFont(m_fontManager.GetFont("GameFont").get());
+    timerText->SetCharacterSize(60);
+    auto* timerView = turnManagerGO->AddComponent<Turtle::TimerViewText>();
+    timerView->Init(turnManager,timerText,turnText);
+
     turnManager->StartTurn(WaitingPlayer1);
-    
-    
 }
 
 void GameScene::Gui(Turtle::Window& window, const Turtle::Time& deltaTime)
